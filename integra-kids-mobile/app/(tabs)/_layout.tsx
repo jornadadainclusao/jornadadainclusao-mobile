@@ -28,7 +28,7 @@ export default function TabLayout() {
     >
       {/* Jogos */}
       <Tabs.Screen
-        name="index"
+        name="jogos"
         options={{
           title: 'Jogos',
           tabBarIcon: ({ color, size }) => (
