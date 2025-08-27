@@ -15,25 +15,25 @@ export default function Jogos() {
       text: 'Jogo das Cores',
       borderColor: '#FF4D4D',
       description: 'Aprenda e reconheça as cores de forma divertida.',
-      route: '/jogos/jogo-das-cores',
+      route: '../jogos/jogoCores',
     },
     {
       text: 'Jogo da Memória',
       borderColor: '#4DB6FF',
       description: 'Desafie sua memória e memore imagens rapidamente.',
-      route: '/jogos/jogo-da-memoria',
+      route: '../jogos/jogoMemoria',
     },
     {
       text: 'Jogo das Vogais',
       borderColor: '#4DFF88',
       description: 'Aprenda as vogais de forma divertida e interativa.',
-      route: '/jogos/jogo-das-vogais',
+      route: '../jogos/jogoVogais',
     },
     {
       text: 'Jogo dos Números',
       borderColor: '#FFA64D',
       description: 'Treine contagem e números de forma divertida.',
-      route: '/jogos/jogo-dos-numeros',
+      route: '../jogos/jogoNumeros',
     },
   ];
 
@@ -61,21 +61,21 @@ export default function Jogos() {
             style={{
               backgroundColor: colorScheme === 'dark' ? '#222' : '#eee',
               borderRadius: 12,
-              borderWidth: 2,
+              borderWidth: 3,
               borderColor: btn.borderColor,
               marginBottom: 16,
-              paddingVertical: 60, // mantém padding grande
+              paddingVertical: 40, // mantém padding grande
               paddingHorizontal: 16,
               alignItems: 'center', // mantém centralizado
             }}
           >
-            <Text style={{ color: colors.text, fontSize: 18, fontWeight: 'bold', textAlign: 'center' }}>
+            <Text style={{ color: colors.text, fontSize: 28, fontWeight: 'bold', textAlign: 'center' }}>
               {btn.text}
             </Text>
 
             {isExpanded && (
               <View style={{ marginTop: 16, alignItems: 'center' }}>
-                <Text style={{ color: colors.text, fontSize: 14, marginBottom: 12, textAlign: 'center' }}>
+                <Text style={{ color: colors.text, fontSize: 20, marginBottom: 12, textAlign: 'center' }}>
                   {btn.description}
                 </Text>
                 <TouchableOpacity

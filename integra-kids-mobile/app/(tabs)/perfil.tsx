@@ -10,12 +10,12 @@ export default function Perfil() {
 
   // Configuração dos botões com a rota de destino
   const buttons = [
-    { text: 'Editar Cadastro', borderColor: '#FF4D4D', route: '/perfil/editar-cadastro' },
-    { text: 'Adicionar Criança', borderColor: '#4DB6FF', route: '/perfil/adicionar-crianca' },
-    { text: 'Editar Criança', borderColor: '#4DFF88', route: '/perfil/editar-crianca' },
-    { text: 'Mudar Jogador', borderColor: '#FFA64D', route: '/perfil/mudar-jogador' },
-    { text: 'Resultados', borderColor: '#D14DFF', route: '/perfil/resultados' },
-    { text: 'Fazer Logout', borderColor: '#FF4D96', route: '/login' },
+    { text: 'Editar Cadastro', borderColor: '#FF4D4D', route: '../perfil/editCadastro' },
+    { text: 'Adicionar Criança', borderColor: '#4DB6FF', route: '../perfil/addCrianca' },
+    { text: 'Editar Criança', borderColor: '#4DFF88', route: '../perfil/editCrianca' },
+    { text: 'Mudar Jogador', borderColor: '#FFA64D', route: '../perfil/mudarPlayer' },
+    { text: 'Resultados', borderColor: '#D14DFF', route: '../perfil/resultados' },
+    { text: 'Fazer Logout', borderColor: '#FF4D96', route: '../logCad' },
   ];
 
   const handlePress = (route: string) => {
@@ -48,14 +48,14 @@ export default function Perfil() {
               height: 200,
               backgroundColor: colorScheme === 'dark' ? '#222' : '#eee',
               borderRadius: 12,
-              borderWidth: 2,
+              borderWidth: 3,
               borderColor: btn.borderColor,
               justifyContent: 'center',
               alignItems: 'center',
               marginBottom: 16,
             }}
           >
-            <Text style={{ color: colors.text, fontSize: 16 }}>{btn.text}</Text>
+            <Text style={{ color: colors.text, fontSize: 26, padding: 20, fontWeight: "bold" }}>{btn.text}</Text>
           </TouchableOpacity>
         ))}
       </View>
