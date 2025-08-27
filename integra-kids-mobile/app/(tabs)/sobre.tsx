@@ -19,7 +19,8 @@ export default function Sobre() {
   const sections = [
     {
       image: require('../../assets/images/sobre/sobre1.jpeg'),
-      text: 'A plataforma "Integra Kids" foi desenvolvida com o objetivo de apoiar crianças do ensino fundamental que enfrentam dificuldades em matérias específicas. Com um ambiente lúdico e interativo, a plataforma oferece uma variedade de games educativos que tornam o aprendizado mais divertido e acessível. Ao identificar as áreas em que o aluno precisa de mais ajuda, a plataforma adapta as atividades, proporcionando um suporte personalizado que visa aumentar a confiança e a compreensão da criança.'},
+      text: 'A plataforma "Integra Kids" foi desenvolvida com o objetivo de apoiar crianças do ensino fundamental que enfrentam dificuldades em matérias específicas. Com um ambiente lúdico e interativo, a plataforma oferece uma variedade de games educativos que tornam o aprendizado mais divertido e acessível. Ao identificar as áreas em que o aluno precisa de mais ajuda, a plataforma adapta as atividades, proporcionando um suporte personalizado que visa aumentar a confiança e a compreensão da criança.'
+    },
     {
       image: require('../../assets/images/sobre/sobre2.jpeg'),
       text: 'Os jogos disponíveis na Integra Kids abrangem disciplinas, como: matemática, ciências e língua portuguesa. Cada jogo é projetado para ser divertido e desafiador, promovendo o engajamento dos alunos enquanto trabalham suas habilidades. A plataforma também conta com um sistema de feedback, que permite que os educadores e pais acompanhem o progresso da criança, identificando as dificuldades específicas e proporcionando conquistas ao longo do caminho.',
@@ -118,16 +119,19 @@ export default function Sobre() {
                 value={name}
                 onChangeText={setName}
                 placeholder="Seu Nome (opcional)"
+                placeholderTextColor={colors.text + "99"} // texto do placeholder adaptado ao tema
                 style={{
                   width: '100%',
                   padding: 10,
                   marginBottom: 12,
-                  backgroundColor: colors.background,
+                  backgroundColor: colors.card, // card fica diferente do background no dark
                   borderRadius: 8,
                   borderWidth: 1,
                   borderColor: colors.border,
+                  color: colors.text, // garante cor certa do texto
                 }}
               />
+
 
               {/* Campo Email */}
               <TextInput
@@ -135,14 +139,16 @@ export default function Sobre() {
                 onChangeText={setEmail}
                 placeholder="Seu E-mail (opcional)"
                 keyboardType="email-address"
-                style={{
+                placeholderTextColor={colors.text + "99"}
+                 style={{
                   width: '100%',
                   padding: 10,
                   marginBottom: 12,
-                  backgroundColor: colors.background,
+                  backgroundColor: colors.card, // card fica diferente do background no dark
                   borderRadius: 8,
                   borderWidth: 1,
                   borderColor: colors.border,
+                  color: colors.text, // garante cor certa do texto
                 }}
               />
 
@@ -153,14 +159,16 @@ export default function Sobre() {
                 placeholder="Sua Mensagem"
                 multiline
                 numberOfLines={4}
-                style={{
+                placeholderTextColor={colors.text + "99"}
+                 style={{
                   width: '100%',
                   padding: 10,
                   marginBottom: 12,
-                  backgroundColor: colors.background,
+                  backgroundColor: colors.card, // card fica diferente do background no dark
                   borderRadius: 8,
                   borderWidth: 1,
                   borderColor: colors.border,
+                  color: colors.text, // garante cor certa do texto
                 }}
               />
 

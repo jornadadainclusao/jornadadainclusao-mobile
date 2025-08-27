@@ -69,7 +69,7 @@ export default function Jogos() {
               alignItems: 'center', // mantém centralizado
             }}
           >
-            <Text style={{ color: colors.text, fontSize: 28, fontWeight: 'bold', textAlign: 'center' }}>
+            <Text style={{ color: colors.text, fontSize: 25, fontWeight: 'bold', textAlign: 'center' }}>
               {btn.text}
             </Text>
 

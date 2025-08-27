@@ -55,7 +55,7 @@ export default function Perfil() {
               marginBottom: 16,
             }}
           >
-            <Text style={{ color: colors.text, fontSize: 26, padding: 20, fontWeight: "bold" }}>{btn.text}</Text>
+            <Text style={{ color: colors.text, fontSize: 25, padding: 20, fontWeight: "bold" }}>{btn.text}</Text>
           </TouchableOpacity>
         ))}
       </View>
