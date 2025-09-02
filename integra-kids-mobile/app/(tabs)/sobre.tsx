@@ -15,7 +15,7 @@ export default function Sobre() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
-  // Conteúdo de exemplo
+  // Conteúdo de exemplo*
   const sections = [
     {
       image: require('../../assets/images/sobre/sobre1.jpeg'),

@@ -1,0 +1,2 @@
+Onde ficam as funções que conversam com a API.
+🔧 Ex: services/api.ts para configurar axios/fetch, services/auth.ts para login/logout, etc.
