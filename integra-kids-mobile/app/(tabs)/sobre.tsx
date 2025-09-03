@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, Modal, TextInput, Button } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
+import { Image as ExpoImage } from 'expo-image'; // expo-image para GIF
 
 export default function Sobre() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
 
-  // Estado para controlar a exibição do modal
+  // Estado para controlar a exibição do modal de contato
   const [modalVisible, setModalVisible] = useState(false);
+  // Estado para controlar o loading
+  const [loading, setLoading] = useState(false);
 
   // Estado para os campos do formulário
   const [name, setName] = useState('');
@@ -19,7 +22,7 @@ export default function Sobre() {
   const sections = [
     {
       image: require('../../assets/images/sobre/sobre1.jpeg'),
-      text: 'A plataforma "Integra Kids" foi desenvolvida com o objetivo de apoiar crianças do ensino fundamental que enfrentam dificuldades em matérias específicas. Com um ambiente lúdico e interativo, a plataforma oferece uma variedade de games educativos que tornam o aprendizado mais divertido e acessível. Ao identificar as áreas em que o aluno precisa de mais ajuda, a plataforma adapta as atividades, proporcionando um suporte personalizado que visa aumentar a confiança e a compreensão da criança.'
+      text: 'A plataforma "Integra Kids" foi desenvolvida com o objetivo de apoiar crianças do ensino fundamental que enfrentam dificuldades em matérias específicas. Com um ambiente lúdico e interativo, a plataforma oferece uma variedade de games educativos que tornam o aprendizado mais divertido e acessível. Ao identificar as áreas em que o aluno precisa de mais ajuda, a plataforma adapta as atividades, proporcionando um suporte personalizado que visa aumentar a confiança e a compreensão da criança.',
     },
     {
       image: require('../../assets/images/sobre/sobre2.jpeg'),
@@ -37,10 +40,14 @@ export default function Sobre() {
 
   // Função para enviar o formulário
   const handleFormSubmit = () => {
-    // Aqui você pode processar os dados ou simplesmente exibir um alerta.
-    alert(`Nome: ${name}\nEmail: ${email}\nMensagem: ${message}`);
-    // Fechar o modal após o envio
-    setModalVisible(false);
+    setLoading(true); // abre o loading
+
+    // simulação de envio (ex: requisição API)
+    setTimeout(() => {
+      setLoading(false); // fecha o loading
+      setModalVisible(false); // fecha o modal
+      alert(`Nome: ${name}\nEmail: ${email}\nMensagem: ${message}`);
+    }, 20000);
   };
 
   return (
@@ -48,6 +55,7 @@ export default function Sobre() {
       <Text style={{ color: colors.text, fontSize: 40, fontWeight: 'bold', padding: 22, marginTop: 30, textAlign: 'center' }}>
         Nosso App
       </Text>
+
       {sections.map((section, index) => (
         <View key={index} style={{ marginBottom: 24, alignItems: 'center', padding: 16 }}>
           <Image
@@ -71,7 +79,9 @@ export default function Sobre() {
           alignItems: 'center',
         }}
       >
-        <Text style={{ color: colors.background, fontSize: 18, fontWeight: 'bold' }}>Entre em contato conosco</Text>
+        <Text style={{ color: colors.background, fontSize: 18, fontWeight: 'bold' }}>
+          Entre em contato conosco
+        </Text>
       </TouchableOpacity>
 
       {/* Modal de Contato */}
@@ -102,36 +112,45 @@ export default function Sobre() {
             <View
               style={{
                 width: '100%',
-                backgroundColor: colors.background, // Caixa com fundo
+                backgroundColor: colors.background,
                 padding: 20,
                 borderRadius: 12,
                 shadowColor: '#000',
                 shadowOffset: { width: 0, height: 5 },
                 shadowOpacity: 0.3,
                 shadowRadius: 10,
-                elevation: 5, // sombra para Android
+                elevation: 5,
               }}
             >
-              <Text style={{ color: colors.text, fontSize: 22, fontWeight: 'bold', marginBottom: 20, textAlign: "center" }}>Fale Conosco</Text>
+              <Text
+                style={{
+                  color: colors.text,
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                  marginBottom: 20,
+                  textAlign: 'center',
+                }}
+              >
+                Fale Conosco
+              </Text>
 
               {/* Campo Nome */}
               <TextInput
                 value={name}
                 onChangeText={setName}
                 placeholder="Seu Nome (opcional)"
-                placeholderTextColor={colors.text + "99"} // texto do placeholder adaptado ao tema
+                placeholderTextColor={colors.text + '99'}
                 style={{
                   width: '100%',
                   padding: 10,
                   marginBottom: 12,
-                  backgroundColor: colors.card, // card fica diferente do background no dark
+                  backgroundColor: colors.card,
                   borderRadius: 8,
                   borderWidth: 1,
                   borderColor: colors.border,
-                  color: colors.text, // garante cor certa do texto
+                  color: colors.text,
                 }}
               />
-
 
               {/* Campo Email */}
               <TextInput
@@ -139,16 +158,16 @@ export default function Sobre() {
                 onChangeText={setEmail}
                 placeholder="Seu E-mail (opcional)"
                 keyboardType="email-address"
-                placeholderTextColor={colors.text + "99"}
-                 style={{
+                placeholderTextColor={colors.text + '99'}
+                style={{
                   width: '100%',
                   padding: 10,
                   marginBottom: 12,
-                  backgroundColor: colors.card, // card fica diferente do background no dark
+                  backgroundColor: colors.card,
                   borderRadius: 8,
                   borderWidth: 1,
                   borderColor: colors.border,
-                  color: colors.text, // garante cor certa do texto
+                  color: colors.text,
                 }}
               />
 
@@ -159,16 +178,16 @@ export default function Sobre() {
                 placeholder="Sua Mensagem"
                 multiline
                 numberOfLines={4}
-                placeholderTextColor={colors.text + "99"}
-                 style={{
+                placeholderTextColor={colors.text + '99'}
+                style={{
                   width: '100%',
                   padding: 10,
                   marginBottom: 12,
-                  backgroundColor: colors.card, // card fica diferente do background no dark
+                  backgroundColor: colors.card,
                   borderRadius: 8,
                   borderWidth: 1,
                   borderColor: colors.border,
-                  color: colors.text, // garante cor certa do texto
+                  color: colors.text,
                 }}
               />
 
@@ -201,6 +220,34 @@ export default function Sobre() {
                 <Text style={{ color: colors.background, fontSize: 18, fontWeight: 'bold' }}>Fechar</Text>
               </TouchableOpacity>
             </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Modal de Loading */}
+      <Modal transparent visible={loading} animationType="fade" statusBarTranslucent>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: '#fff',
+              padding: 20,
+              borderRadius: 20,
+              alignItems: 'center',
+            }}
+          >
+            <ExpoImage
+              source={require("@/assets/images/loading.gif")}
+              style={{ width: 150, height: 200 }}
+              contentFit="cover"
+            />
+            <Text style={{ marginTop: 10, fontSize: 16, fontWeight: 'bold' }}>Carregando...</Text>
           </View>
         </View>
       </Modal>
