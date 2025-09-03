@@ -6,7 +6,17 @@
       "@/*": [
         "./*"
       ]
+<<<<<<< Updated upstream
+    },
+    "checkJs": true,
+    "jsx": "react",
+||||||| Stash base
     }
+=======
+    }
+    "checkJs": true,
+    "jsx": "react",
+>>>>>>> Stashed changes
   },
   "include": [
     "**/*.ts",
