@@ -3,7 +3,6 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -19,8 +18,6 @@ export default function RootLayout() {
   const backgroundColor = isDark ? '#000' : '#fff'; // ou use a cor do seu tema
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor }}>
         <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -29,7 +26,5 @@ export default function RootLayout() {
           </Stack>
           <StatusBar style={isDark ? "light" : "dark"} />
         </ThemeProvider>
-      </SafeAreaView>
-    </SafeAreaProvider>
   );
 }
