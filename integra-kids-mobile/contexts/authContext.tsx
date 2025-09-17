@@ -1,50 +1,117 @@
-// ideia provisória de adicionar o backend, sujeito a mudanças
+// context/AuthContext.tsx
+import React, { createContext, useState, useEffect, ReactNode } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { login } from "../services/api"; // seu service unificado
 
-import { createContext, useState, ReactNode, useEffect } from "react";
-import * as SecureStore from "expo-secure-store"; // para guardar token com segurança
-import { login, logout, getProfile } from "../services/auth";
+// ---------------------------
+// Tipos
+// ---------------------------
+export interface Usuario {
+  id: number;
+  nome: string;
+  email?: string;
+  usuario?: string;
+  foto?: string;
+  senha?: string;
+  token?: string;
+}
 
-type AuthContextType = {
-  user: any;
-  token: string | null;
-  signIn: (email: string, senha: string) => Promise<void>;
-  signOut: () => Promise<void>;
-};
+export interface AuthContextType {
+  usuario: Usuario;
+  handleLogin: (usuarioLogin: { usuario: string; senha: string }) => Promise<void>;
+  handleLogout: () => Promise<void>;
+  isLoading: boolean;
+}
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<any>(null);
-  const [token, setToken] = useState<string | null>(null);
+// ---------------------------
+// Contexto
+// ---------------------------
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [usuario, setUsuario] = useState<Usuario>({
+    id: 0,
+    nome: "",
+    email: "",
+    usuario: "",
+    foto: "",
+    senha: "",
+    token: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Recupera usuário e token do AsyncStorage ao iniciar
   useEffect(() => {
-    // tenta restaurar sessão ao abrir o app
-    SecureStore.getItemAsync("token").then(async (savedToken) => {
-      if (savedToken) {
-        setToken(savedToken);
-        const profile = await getProfile(savedToken);
-        setUser(profile);
+    const carregarUsuario = async () => {
+      const token = await AsyncStorage.getItem("token");
+      const dadosUsuario = await AsyncStorage.getItem("usuario");
+
+      if (token && dadosUsuario) {
+        const usuarioParse: Usuario = JSON.parse(dadosUsuario);
+        setUsuario({ ...usuarioParse, token });
       }
-    });
+    };
+
+    carregarUsuario();
   }, []);
 
-  async function signIn(email: string, senha: string) {
-    const data = await login(email, senha);
-    setToken(data.token);
-    setUser(data.user);
-    await SecureStore.setItemAsync("token", data.token);
-  }
+  // ---------------------------
+  // Login
+  // ---------------------------
+  const handleLogin = async (usuarioLogin: { usuario: string; senha: string }) => {
+    setIsLoading(true);
+    try {
+      await login("/usuarios/logar", usuarioLogin, async (resposta: Usuario) => {
+        setUsuario(resposta);
 
-  async function signOut() {
-    await logout();
-    setToken(null);
-    setUser(null);
-    await SecureStore.deleteItemAsync("token");
-  }
+        // Limpa storage antigo
+        await AsyncStorage.clear();
+
+        await AsyncStorage.setItem("token", resposta.token || "");
+        await AsyncStorage.setItem(
+          "usuario",
+          JSON.stringify({
+            id: resposta.id,
+            nome: resposta.nome,
+            email: resposta.usuario,
+            foto: resposta.foto,
+          })
+        );
+      });
+    } catch (error) {
+      console.error(error);
+      throw new Error("Usuário ou senha inválidos");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // ---------------------------
+  // Logout
+  // ---------------------------
+  const handleLogout = async () => {
+    setUsuario({
+      id: 0,
+      nome: "",
+      email: "",
+      usuario: "",
+      foto: "",
+      senha: "",
+      token: "",
+    });
+
+    await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("usuario");
+  };
 
   return (
-    <AuthContext.Provider value={{ user, token, signIn, signOut }}>
+    <AuthContext.Provider value={{ usuario, handleLogin, handleLogout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
