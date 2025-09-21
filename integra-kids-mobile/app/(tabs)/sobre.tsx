@@ -236,7 +236,7 @@ export default function Sobre() {
         >
           <View
             style={{
-              backgroundColor: '#fff',
+              backgroundColor: colors.background,
               padding: 20,
               borderRadius: 20,
               alignItems: 'center',
@@ -247,7 +247,7 @@ export default function Sobre() {
               style={{ width: 150, height: 200 }}
               contentFit="cover"
             />
-            <Text style={{ marginTop: 10, fontSize: 16, fontWeight: 'bold' }}>Carregando...</Text>
+            <Text style={{ marginTop: 10, fontSize: 16, fontWeight: 'bold', color:colors.text }}>Carregando...</Text>
           </View>
         </View>
       </Modal>
