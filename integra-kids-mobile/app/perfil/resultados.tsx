@@ -4,6 +4,10 @@ import { Picker } from '@react-native-picker/picker'; // para o select
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
 
+import BarChartComponent from '@/components/charts/BarChartComponent';
+import ProgressChartComponent from '@/components/charts/ProgressChartComponent';
+import RadarChartComponent from '@/components/charts/RadarChartComponent';
+
 export default function Resultados() {
   const colorScheme = useColorScheme(); // 'light' ou 'dark'
   const colors = Colors[colorScheme ?? 'light'];
@@ -38,11 +42,34 @@ export default function Resultados() {
 
       {/* Espaço para gráfico */}
       <View style={[styles.graficoContainer, { borderColor: colors.tint }]}>
-        <Text style={{ color: colors.text }}>
-          {graficoSelecionado === 'barras' && 'Gráfico de Barras (placeholder)'}
-          {graficoSelecionado === 'metrica' && 'Gráfico de Métrica (placeholder)'}
-          {graficoSelecionado === 'radar' && 'Gráfico Radar (placeholder)'}
-        </Text>
+        {graficoSelecionado === 'barras' && (
+          <BarChartComponent
+            data={{
+              labels: ['Memória', 'Cores', 'Vogais', 'Números'],
+              datasets: [{ data: [8, 10, 7, 6] }],
+            }}
+            themeColors={colors}
+          />
+        )}
+
+        {graficoSelecionado === 'metrica' && (
+          <ProgressChartComponent
+            data={{
+              labels: ['Memória', 'Cores', 'Vogais', 'Numeros'],
+              data: [0.8, 1, 0.7, 0.5],
+            }}
+            themeColors={colors}
+          />
+        )}
+
+        {graficoSelecionado === 'radar' && (
+          <RadarChartComponent
+            data={{
+              labels: ['Atenção', 'Reflexo', 'Memória'],
+              datasets: [{ data: [75, 60, 90] }],
+            }}
+          />
+        )}
       </View>
 
       {/* Select para mudar gráfico */}
@@ -60,7 +87,7 @@ export default function Resultados() {
 
       {/* Checkbox para mostrar últimas partidas */}
       <View style={styles.checkboxContainer}>
-        <Text style={[styles.label, { color: colors.text}]}>Mostrar últimas partidas?</Text>
+        <Text style={[styles.label, { color: colors.text }]}>Mostrar últimas partidas?</Text>
         <Switch
           value={mostrarUltimas}
           onValueChange={(value) => setMostrarUltimas(value)}
@@ -68,7 +95,7 @@ export default function Resultados() {
       </View>
 
       {/* Histórico de partidas */}
-            <Text style={[styles.label, { color: colors.text }]}>Histórico de partidas:</Text>
+      <Text style={[styles.label, { color: colors.text }]}>Histórico de partidas:</Text>
       {mostrarUltimas && (
         <ScrollView style={[styles.historicoContainer, { borderColor: colors.text }]}>
           {historicoPartidas.map((item) => (
@@ -90,16 +117,16 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     marginBottom: 6,
-    textAlign:'center',
-    fontWeight:'bold',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   picker: {
     borderWidth: 1,
     marginBottom: 12,
-    borderColor:'white',
+    borderColor: 'white',
   },
   graficoContainer: {
-    height: 300,
+    height: 250,
     borderWidth: 1,
     borderRadius: 18,
     justifyContent: 'center',
