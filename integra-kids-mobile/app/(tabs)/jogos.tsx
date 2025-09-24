@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { View, Text, TouchableOpacity } from 'react-native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
 import { useState } from 'react';
@@ -46,12 +46,14 @@ export default function Jogos() {
         justifyContent: 'center',
       }}
     >
-      <Text style={{ color: colors.text,
-                            fontSize: 40,
-                            fontWeight: "bold",
-                            padding: 22,
-                            marginTop: 30,
-                            textAlign: 'center',}}>Jogos</Text>
+      <Text style={{
+        color: colors.text,
+        fontSize: 40,
+        fontWeight: "bold",
+        padding: 22,
+        marginTop: 30,
+        textAlign: 'center',
+      }}>Jogos</Text>
       {buttons.map((btn, index) => {
         const isExpanded = expandedIndex === index;
         return (
@@ -85,7 +87,7 @@ export default function Jogos() {
                     paddingVertical: 12,
                     paddingHorizontal: "40%",
                     borderRadius: 8,
-                    marginTop:10,
+                    marginTop: 10,
                   }}
                 >
                   <Text style={{ color: '#fff', fontSize: 16 }}>Jogar</Text>
