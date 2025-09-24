@@ -1,8 +1,8 @@
 // services/api.ts
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import MMKVStorage from "react-native-mmkv-storage";
 import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
+// import * as Sharing from "expo-sharing";
 
 // ---------------------------
 // Tipos
@@ -29,6 +29,7 @@ export interface UserData {
 
 export type SetDados<T> = (data: T) => void;
 
+const MMKV = new MMKVStorage.Loader().initialize();
 // ---------------------------
 // Instância Axios
 // ---------------------------
@@ -38,7 +39,7 @@ export const api: AxiosInstance = axios.create({
 
 // Adiciona token automaticamente
 api.interceptors.request.use(async (config) => {
-  const token = await AsyncStorage.getItem("token");
+  const token = await MMKV.get("token");
   if (token && config.headers) {
     config.headers.Authorization = token;
   }
@@ -80,14 +81,14 @@ export const deletarUsuario = async (id: number) => {
 // ---------------------------
 // Dependentes
 // ---------------------------
-export const cadastrarDependente = async (dependente: Dependente) => {
+export const insereDependenteBd = async (dependente: Dependente) => {
   const response = await api.post("/dependente", dependente);
   return response.data;
 };
 
 export const fetchDependentes = async (): Promise<Dependente[]> => {
-  const usuarioJson = await AsyncStorage.getItem("usuario");
-  const token = await AsyncStorage.getItem("token");
+  const usuarioJson = await MMKV.get("usuario");
+  const token = await MMKV.get("token");
   if (!usuarioJson || !token) return [];
 
   const usuario: Usuario = JSON.parse(usuarioJson);
@@ -96,7 +97,7 @@ export const fetchDependentes = async (): Promise<Dependente[]> => {
 };
 
 export const updateDependente = async (id: number, formData: Partial<Dependente>, avatarSelecionado?: string) => {
-  const usuarioJson = await AsyncStorage.getItem("usuario");
+  const usuarioJson = await MMKV.get("usuario");
   if (!usuarioJson) throw new Error("Usuário não encontrado");
 
   const usuario: Usuario = JSON.parse(usuarioJson);
@@ -115,7 +116,7 @@ export const deleteDependente = async (id: number) => {
 // ---------------------------
 export const escolherDependenteComoPlayer = async (dependente: Dependente) => {
   if (!dependente.id || !dependente.nome || !dependente.foto) return;
-  await AsyncStorage.setItem("player", JSON.stringify(dependente));
+  await MMKV.set("player", JSON.stringify(dependente));
 };
 
 // ---------------------------
@@ -135,23 +136,23 @@ export const Gettoken = async (url: string): Promise<AxiosResponse<any>> => api.
 // ---------------------------
 // Downloads PDF / Excel
 // ---------------------------
-const downloadFile = async (url: string, filename: string) => {
-  const token = await AsyncStorage.getItem("token") || "";
-  const fileUri = FileSystem.documentDirectory + filename;
+// const downloadFile = async (url: string, filename: string) => {
+//   const token = await MMKV.get("token") || "";
+//   const fileUri = FileSystem.documentDirectory + filename;
 
-  const downloadResumable = FileSystem.createDownloadResumable(url, fileUri, {
-    headers: { Authorization: token },
-  });
+//   const downloadResumable = FileSystem.createDownloadResumable(url, fileUri, {
+//     headers: { Authorization: token },
+//   });
 
-  try {
-    const { uri } = await downloadResumable.downloadAsync();
-    if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(uri);
-    }
-  } catch (error) {
-    console.error("Erro ao baixar arquivo:", error);
-  }
-};
+//   try {
+//     const { uri } = await downloadResumable.downloadAsync();
+//     if (await Sharing.isAvailableAsync()) {
+//       await Sharing.shareAsync(uri);
+//     }
+//   } catch (error) {
+//     console.error("Erro ao baixar arquivo:", error);
+//   }
+// };
 
 export const downloadPdfInfoJogos = async (dependenteId: number) =>
   downloadFile(`/dependente/exportPdf/${dependenteId}`, "relatorio.pdf");

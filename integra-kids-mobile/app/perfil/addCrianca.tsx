@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Stack } from 'expo-router';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import insereDependenteBd from '@/services/api'
 
 export default function AddCrianca() {
   const colorScheme = useColorScheme();
@@ -43,6 +44,33 @@ export default function AddCrianca() {
     }
     return idade;
   };
+
+  const cadastrarDependente = async () => {
+
+    const objDependente = {
+      nome: nome,
+      idade: dataNascimento,
+      sexo: genero,
+      foto: imagens[selectedIndex],
+      usuario_id_fk: {
+        id: 1
+      }
+    }
+    try {
+      const response = await insereDependenteBd(objDependente);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const json = await response.json();
+      console.log(json);
+      
+    } catch (e) {
+      console.log(e);
+    } finally {
+      console.log('deu bom');
+    }
+
+  }
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: colors.background }}>
@@ -166,7 +194,7 @@ export default function AddCrianca() {
 
         {/* Botões */}
         <TouchableOpacity
-          onPress={() => console.log('Salvar alterações')}
+          onPress={() => cadastrarDependente}
           style={{
             backgroundColor: colors.tint,
             width: '100%',
