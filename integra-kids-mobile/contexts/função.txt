@@ -1,2 +1,0 @@
-usar essa pasta para para gerenciar estados globais, como autenticação do usuário.
-🔧 Ex: contexts/AuthContext.tsx guarda o usuário logado, token, funções de login/logout.

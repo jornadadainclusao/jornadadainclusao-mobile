@@ -1,1 +1,0 @@
-usar essa pasta para funções auxiliares (tratamento de erros, formatação de dados, validação, etc).
