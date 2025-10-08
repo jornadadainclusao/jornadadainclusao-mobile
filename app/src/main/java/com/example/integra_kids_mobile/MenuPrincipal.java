@@ -1,23 +1,25 @@
 package com.example.integra_kids_mobile;
 
 import android.os.Bundle;
+
+import com.example.integra_kids_mobile.databinding.MenuPrincipalBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import com.example.integra_kids_mobile.databinding.ActivityMain2Binding;
+import com.example.integra_kids_mobile.databinding.MenuPrincipalBinding;
 
-public class MainActivity2 extends AppCompatActivity {
+public class MenuPrincipal extends AppCompatActivity {
 
-private ActivityMain2Binding binding;
+private MenuPrincipalBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-     binding = ActivityMain2Binding.inflate(getLayoutInflater());
+     binding = MenuPrincipalBinding.inflate(getLayoutInflater());
      setContentView(binding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);

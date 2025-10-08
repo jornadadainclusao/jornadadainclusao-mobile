@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Integrakidsmobile" >
         <activity
-            android:name=".MainActivity2"
+            android:name=".MenuPrincipal"
             android:exported="false"
             android:label="@string/title_activity_menu_principal" />
         <activity

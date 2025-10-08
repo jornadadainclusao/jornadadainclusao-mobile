@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile.ui.home;
+package com.example.integra_kids_mobile.ui.jogos;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile.ui.notifications;
+package com.example.integra_kids_mobile.ui.sobre;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

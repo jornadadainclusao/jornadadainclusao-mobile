@@ -4,26 +4,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.integra_kids_mobile.databinding.FragmentHomeBinding;
+import com.example.integra_kids_mobile.databinding.JogosBinding;
 
-public class HomeFragment extends Fragment {
+public class Jogos extends Fragment {
 
-private FragmentHomeBinding binding;
+private JogosBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        JogosViewModel jogosViewModel =
+                new ViewModelProvider(this).get(JogosViewModel.class);
 
-    binding = FragmentHomeBinding.inflate(inflater, container, false);
+    binding = JogosBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
-
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

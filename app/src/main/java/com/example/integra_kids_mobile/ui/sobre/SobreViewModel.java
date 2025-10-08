@@ -1,14 +1,14 @@
-package com.example.integra_kids_mobile.ui.notifications;
+package com.example.integra_kids_mobile.ui.sobre;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class SobreViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public SobreViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fragment");
     }

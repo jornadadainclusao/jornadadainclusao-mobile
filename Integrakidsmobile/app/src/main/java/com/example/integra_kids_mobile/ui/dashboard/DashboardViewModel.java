@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile.ui.dashboard;
+package com.example.integra_kids_mobile.ui.perfil;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

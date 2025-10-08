@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile.ui.dashboard;
+package com.example.integra_kids_mobile.ui.sobre;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,22 +8,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.example.integra_kids_mobile.databinding.FragmentDashboardBinding;
+import com.example.integra_kids_mobile.databinding.SobreBinding;
 
-public class DashboardFragment extends Fragment {
+public class Sobre extends Fragment {
 
-private FragmentDashboardBinding binding;
+private SobreBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        SobreViewModel sobreViewModel =
+                new ViewModelProvider(this).get(SobreViewModel.class);
 
-    binding = FragmentDashboardBinding.inflate(inflater, container, false);
+    binding = SobreBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
-
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

@@ -43,7 +43,7 @@ public class LoginCadastro extends AppCompatActivity {
             }
         });
         btnCadLog1.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity2.class);
+            Intent intent = new Intent(this, MenuPrincipal.class);
             startActivity(intent);
             finish();
         });
