@@ -16,4 +16,9 @@
         android:icon="@drawable/about"
         android:title="@string/title_about" />
 
+    <item
+        android:id="@+id/usuarioConfig"
+        android:icon="@drawable/gear"
+        android:title="@string/title_configuration" />
+
 </menu>

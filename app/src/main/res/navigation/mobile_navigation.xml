@@ -22,4 +22,11 @@
         android:name="com.example.integra_kids_mobile.ui.sobre.Sobre"
         android:label="@string/title_about"
         tools:layout="@layout/sobre" />
+    <fragment
+        android:id="@+id/usuarioConfig"
+        android:name="com.example.integra_kids_mobile.UsuarioConfig"
+        android:label="usuario_config"
+        tools:layout="@layout/usuario_config" />
+
+
 </navigation>
