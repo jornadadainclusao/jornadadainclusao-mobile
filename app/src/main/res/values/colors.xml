@@ -4,4 +4,11 @@
     <color name="background">#FFFFFFFF</color>
     <color name="tint">#e60000</color>
     <color name="icon">#687076</color>
+
+    <color name="red">#F44336</color>
+    <color name="blue">#03A9F4</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="green">#4CAF50</color>
+    <color name="orange">#FF9800</color>
+    <color name="purple">#9C27B0</color>
 </resources>
