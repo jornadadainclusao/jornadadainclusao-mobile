@@ -66,10 +66,9 @@
 
             <TextView
                 android:id="@+id/textView11"
-                style="@style/text_enun"
+                style="@style/text_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
                 android:text="Acessibilidade" />
         </RadioGroup>
 

@@ -7,7 +7,7 @@
     </style>
 
     <style name="text_enun">
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:justificationMode">inter_word</item>
     </style>
@@ -34,6 +34,7 @@
 
     <style name="GameButton" parent="Widget.AppCompat.Button">
         <item name="android:paddingVertical">50dp</item>
+        <item name="android:layout_marginVertical">10dp</item>
         <item name="android:state_pressed">true</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textStyle">bold</item>

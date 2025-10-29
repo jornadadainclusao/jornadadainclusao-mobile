@@ -7,69 +7,6 @@
     tools:context=".ui.jogos.Jogos">
 
 
-    <Button
-        android:id="@+id/btnGame1"
-        android:background="@drawable/border"
-        app:backgroundTint="@color/red"
-        style="@style/GameButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:text="Jogo da Memória"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <Button
-        android:id="@+id/btnGame"
-        android:background="@drawable/border"
-        app:backgroundTint="@color/blue"
-        style="@style/GameButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:text="Jogo das Letras"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
-
-    <Button
-        android:id="@+id/btnGame2"
-        android:background="@drawable/border"
-        app:backgroundTint="@color/yellow"
-        style="@style/GameButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:text="Jogo dos Números"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.65"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
-
-    <Button
-        android:id="@+id/btnGame3"
-        android:background="@drawable/border"
-        app:backgroundTint="@color/green"
-        style="@style/GameButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:text="Jogo das Cores"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
-
     <TextView
         android:id="@+id/txtTitle_pageGame"
         android:layout_width="wrap_content"
@@ -82,4 +19,121 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.07" />
+
+    <LinearLayout
+        android:id="@+id/layoutGameList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
+        app:layout_constraintVertical_bias="0.5">
+
+        <Button
+            android:id="@+id/btnGame1"
+            style="@style/GameButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="openGameView"
+            android:tag="1"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/border"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="Jogo da Memória"
+            app:backgroundTint="@color/red" />
+
+        <Button
+            android:id="@+id/btnGame2"
+            style="@style/GameButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/border"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="Jogo das Letras"
+            app:backgroundTint="@color/blue" />
+
+        <Button
+            android:id="@+id/btnGame3"
+            style="@style/GameButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/border"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="Jogo dos Números"
+            app:backgroundTint="@color/yellow" />
+
+        <Button
+            android:id="@+id/btnGame4"
+            style="@style/GameButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:background="@drawable/border"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="Jogo das Cores"
+            app:backgroundTint="@color/green" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutGameFocus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        app:backgroundTint="@color/background"
+        app:cornerRadius="16dp"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="20dp"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:layout_constraintVertical_bias="0.5">
+
+        <Button
+            android:id="@+id/btnGameScreenReturn"
+            android:layout_width="wrap_content"
+            style="@style/PrimaryButton"
+            android:layout_height="wrap_content"
+            android:text="Voltar a Lista" />
+
+        <ImageView
+            android:id="@+id/imgGame"
+            android:layout_width="300dp"
+            android:layout_gravity="center"
+            android:layout_height="300dp"
+            android:layout_marginVertical="30dp"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textGameName"
+            style="@style/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome do jogo" />
+
+        <TextView
+            android:id="@+id/textGameDescribe"
+            style="@style/text_enun"
+            android:layout_marginVertical="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descrição" />
+
+        <Button
+            android:id="@+id/btnPlay"
+            style="@style/PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jogar jogo" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
