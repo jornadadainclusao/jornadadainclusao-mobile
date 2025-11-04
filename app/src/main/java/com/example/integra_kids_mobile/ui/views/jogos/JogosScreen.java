@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile.ui.jogos;
+package com.example.integra_kids_mobile.ui.views.jogos;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.databinding.JogosBinding;
 
-public class Jogos extends Fragment {
+public class JogosScreen extends Fragment {
 
     int[] gameDescribe = {
             R.string.game_describe_mem,
@@ -43,10 +43,8 @@ public class Jogos extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        JogosViewModel jogosViewModel =
-                new ViewModelProvider(this).get(JogosViewModel.class);
-    binding = JogosBinding.inflate(inflater, container, false);
-    View root = binding.getRoot();
+        binding = JogosBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
         btnGame1 = root.findViewById(R.id.btnGame1);
         btnGame2 = root.findViewById(R.id.btnGame2);

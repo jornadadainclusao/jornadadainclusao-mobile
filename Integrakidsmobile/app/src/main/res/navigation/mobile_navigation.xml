@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.integra_kids_mobile.ui.jogos.Jogos"
+        android:name="com.example.integra_kids_mobile.ui.views.jogos.JogosScreen"
         android:label="@string/title_games"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.integra_kids_mobile.ui.perfil.Perfil"
+        android:name="com.example.integra_kids_mobile.ui.views.perfil.PerfilScreen"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.integra_kids_mobile.ui.sobre.Sobre"
+        android:name="com.example.integra_kids_mobile.ui.views.sobre.SobreScreen"
         android:label="@string/title_about"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

@@ -19,8 +19,8 @@ private MenuPrincipalBinding binding;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-     binding = MenuPrincipalBinding.inflate(getLayoutInflater());
-     setContentView(binding.getRoot());
+        binding = MenuPrincipalBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
