@@ -3,6 +3,8 @@ package com.example.integra_kids_mobile.ui.views.jogos;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,25 +22,28 @@ import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.databinding.JogosBinding;
 
 public class JogosScreen extends Fragment {
-
     int[] gameDescribe = {
             R.string.game_describe_mem,
             R.string.game_describe_vog,
             R.string.game_describe_num,
             R.string.game_describe_cor,
     };
-    View[] gameRoute = {}; // colocar as rotas dps aqui
+    View[] gameRoute = {
+
+    }; // colocar as rotas dps aqui
+
     int[] viewImg = {
             R.drawable.memoria,
             R.drawable.vogais,
             R.drawable.numeros,
-            R.drawable.cores};
+            R.drawable.cores
+    };
+
     String viewGame;
     Button btnGame1, btnGame2, btnGame3, btnGame4, btnGameScreenReturn, btnPlay;
     LinearLayout layoutGameList, layoutGameFocus;
     ImageView imgGame;
     TextView textGameName, textGameDescribe;
-
     private JogosBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -75,6 +80,12 @@ public class JogosScreen extends Fragment {
             layoutGameFocus.setVisibility(GONE);
             layoutGameList.setVisibility(VISIBLE);
         });
+
+        btnPlay.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), JogoCores.class);
+            startActivity(intent);
+        });
+
         return root;
     }
 
@@ -92,6 +103,5 @@ public class JogosScreen extends Fragment {
         textGameDescribe.setText(gameDescribe[id]);
         imgGame.setImageResource(viewImg[id]);
         // tem q adicionar as rotas dps aqui
-
     }
 }

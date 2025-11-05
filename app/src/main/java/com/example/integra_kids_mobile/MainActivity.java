@@ -25,10 +25,6 @@ public class MainActivity extends AppCompatActivity {
         final long rightNow = Calendar.getInstance().getTimeInMillis();
         final long previousLogin = sharedPreferences.getLong("previousLogin", rightNow);
 
-        System.out.println("dsoiajdosiado");
-        System.out.println(rightNow);
-        System.out.println(previousLogin);
-
         // Sete dias após o último login realizado pelo usuário
         Intent intent;
         if (sevenDaysInMillis + previousLogin < rightNow) {
@@ -37,5 +33,6 @@ public class MainActivity extends AppCompatActivity {
             intent = new Intent(this, MainScreen.class);
         }
         startActivity(intent);
+        finish();
     }
 }
