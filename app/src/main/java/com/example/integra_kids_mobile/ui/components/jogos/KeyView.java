@@ -40,9 +40,6 @@ public class KeyView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int viewWidth = getWidth();
-        int viewHeight = getHeight();
-
         int startX = 0;
         int startY = 0;
 
@@ -51,8 +48,7 @@ public class KeyView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int size = Math.max(this.keyWidth, this.keyHeight);
-        setMeasuredDimension(size, size);
+        setMeasuredDimension(this.keyWidth, this.keyHeight);
     }
 
     public char getKeyContent() {
