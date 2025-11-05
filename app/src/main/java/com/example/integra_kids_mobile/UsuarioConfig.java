@@ -2,21 +2,28 @@ package com.example.integra_kids_mobile;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
+import com.example.integra_kids_mobile.API.ApiClient;
+
 public class UsuarioConfig extends Fragment {
 
     private RadioGroup radioGroup;
     private RadioButton radioSystem, radioLight, radioDark;
+    private Button btnDevApi;
+    private TextView textDevStatus;
 
     public UsuarioConfig() {
         // Construtor vazio obrigatório
@@ -38,6 +45,24 @@ public class UsuarioConfig extends Fragment {
         radioSystem = view.findViewById(R.id.radioButton);
         radioLight = view.findViewById(R.id.radioButton2);
         radioDark = view.findViewById(R.id.radioButton3);
+
+        textDevStatus = view.findViewById(R.id.textDevStatus);
+        btnDevApi = view.findViewById(R.id.btnDevApi);
+        btnDevApi.setOnClickListener(v -> {
+            new Thread(() -> {
+                try {
+                    String response = ApiClient.get("/"); // Rede na background thread
+
+                    requireActivity().runOnUiThread(() -> {
+                        textDevStatus.setText("API OK: " + response);
+                    });
+                } catch (Exception e) {
+                    requireActivity().runOnUiThread(() -> {
+                        textDevStatus.setText("Erro ao testar API");
+                    });
+                }
+            }).start();
+        });
 
         // Recupera a preferência salva
         SharedPreferences prefs = requireContext().getSharedPreferences("AppPrefs", requireContext().MODE_PRIVATE);

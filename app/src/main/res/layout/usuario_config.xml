@@ -28,7 +28,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15">
+        app:layout_constraintVertical_bias="0.2">
 
         <TextView
             android:id="@+id/textView10"
@@ -64,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Modo Escuro" />
+        </RadioGroup>
 
             <TextView
                 android:id="@+id/textView11"
@@ -79,7 +80,50 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="Em breve..." />
-        </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/secretLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/text_title"
+                android:text="Dev Mode" />
+
+            <Button
+                android:id="@+id/btnDevApi"
+                style="@style/ParalelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Testar conexão com a API" />
+
+                <Button
+                    android:id="@+id/button5"
+                    style="@style/ParalelButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Testar GET" />
+
+                <Button
+                    android:id="@+id/button6"
+                    style="@style/ParalelButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Testar POST" />
+
+                <TextView
+                    android:id="@+id/textDevStatus"
+                    style="@style/text_title"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="[Status]" />
+            </LinearLayout>
 
     </LinearLayout>
 
