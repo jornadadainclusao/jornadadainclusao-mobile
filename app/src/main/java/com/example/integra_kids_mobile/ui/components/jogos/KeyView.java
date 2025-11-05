@@ -51,7 +51,6 @@ public class KeyView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // Calculate required width and height
         int size = Math.max(this.keyWidth, this.keyHeight);
         setMeasuredDimension(size, size);
     }

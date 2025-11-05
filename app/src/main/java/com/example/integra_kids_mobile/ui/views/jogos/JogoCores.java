@@ -67,20 +67,19 @@ public class JogoCores extends AppCompatActivity {
             square.setStateListAnimator(null);
             square.setLayoutParams(params);
 
+            // Não pode passar variáveis para lambdas
             final int idx = ids[i];
             slots[idx].setOnClickListener(v -> {
-                if (this.currentlySelected == -1) {
-                    return;
-                } else if (this.currentlySelected != idx) {
-                    return;
-                } else {
+                KeyView s = squares.get(this.currentlySelected);
+
+                if (this.currentlySelected == idx && s.isFocusable()) {
                     ConstraintLayout l = (ConstraintLayout) v;
                     GridLayout parent = findViewById(R.id.cores_grid);
 
-                    KeyView s = squares.get(this.currentlySelected);
                     parent.removeView(s);
                     l.addView(s);
                     s.setFocusable(false);
+                    s.setKeyBackgroundColor(Color.parseColor(cores[idx][1]));
                 }
             });
 
@@ -100,6 +99,11 @@ public class JogoCores extends AppCompatActivity {
                 previousSquare = squares.get(previousSelected);
                 this.currentlySelected = v.getId();
                 currentSquare = squares.get(this.currentlySelected);
+
+                // Pode acontecer se escolher um círculo já settado
+                if (previousSquare == currentSquare) {
+                    return;
+                }
 
                 previousSquare.setKeyBackgroundColor(Color.parseColor(cores[previousSelected][1]));
                 currentSquare.setKeyBackgroundColor(Color.parseColor(cores[this.currentlySelected][2]));
