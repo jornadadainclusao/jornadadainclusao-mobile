@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile;
+package com.example.integra_kids_mobile.ui.views;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.integra_kids_mobile.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UsuarioConfig#newInstance} factory method to
+ * Use the {@link PreferencesScreen#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UsuarioConfig extends Fragment {
+public class PreferencesScreen extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class UsuarioConfig extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public UsuarioConfig() {
+    public PreferencesScreen() {
         // Required empty public constructor
     }
 
@@ -37,8 +39,8 @@ public class UsuarioConfig extends Fragment {
      * @return A new instance of fragment UsuarioConfig.
      */
     // TODO: Rename and change types and number of parameters
-    public static UsuarioConfig newInstance(String param1, String param2) {
-        UsuarioConfig fragment = new UsuarioConfig();
+    public static PreferencesScreen newInstance(String param1, String param2) {
+        PreferencesScreen fragment = new PreferencesScreen();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

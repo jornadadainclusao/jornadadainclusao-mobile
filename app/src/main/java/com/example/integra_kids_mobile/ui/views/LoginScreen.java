@@ -1,6 +1,8 @@
-package com.example.integra_kids_mobile;
+package com.example.integra_kids_mobile.ui.views;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +12,11 @@ import android.widget.LinearLayout;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginCadastro extends AppCompatActivity {
+import com.example.integra_kids_mobile.R;
 
+import java.util.Calendar;
+
+public class LoginScreen extends AppCompatActivity {
     private ImageView imageLogo;
     private Button btnCadLog1, btnCadLog2;
     private LinearLayout layoutRegister, layoutLogin;
@@ -43,7 +48,12 @@ public class LoginCadastro extends AppCompatActivity {
             }
         });
         btnCadLog1.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MenuPrincipal.class);
+            SharedPreferences sharedPreferences = this.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putLong("previousLogin", Calendar.getInstance().getTimeInMillis());
+            editor.apply();
+
+            Intent intent = new Intent(this, MainScreen.class);
             startActivity(intent);
             finish();
         });

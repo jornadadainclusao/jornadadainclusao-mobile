@@ -1,7 +1,8 @@
-package com.example.integra_kids_mobile;
+package com.example.integra_kids_mobile.ui.views;
 
 import android.os.Bundle;
 
+import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.databinding.MenuPrincipalBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,9 +10,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import com.example.integra_kids_mobile.databinding.MenuPrincipalBinding;
 
-public class MenuPrincipal extends AppCompatActivity {
+public class MainScreen extends AppCompatActivity {
 
 private MenuPrincipalBinding binding;
 

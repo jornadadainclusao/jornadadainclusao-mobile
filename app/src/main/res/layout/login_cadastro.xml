@@ -6,7 +6,7 @@
     android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginCadastro">
+    tools:context=".ui.views.LoginScreen">
 
     <ImageView
         android:id="@+id/imageLogo"

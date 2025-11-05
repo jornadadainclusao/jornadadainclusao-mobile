@@ -12,11 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Integrakidsmobile" >
         <activity
-            android:name=".MenuPrincipal"
+            android:name=".ui.views.LoginScreen"
+            android:exported="false" />
+        <activity
+            android:name=".ui.views.MainScreen"
             android:exported="false"
             android:label="@string/title_activity_menu_principal" />
         <activity
-            android:name=".LoginCadastro"
+            android:name=".MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

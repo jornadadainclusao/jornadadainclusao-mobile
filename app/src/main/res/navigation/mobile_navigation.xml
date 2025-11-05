@@ -24,7 +24,7 @@
         tools:layout="@layout/sobre" />
     <fragment
         android:id="@+id/usuarioConfig"
-        android:name="com.example.integra_kids_mobile.UsuarioConfig"
+        android:name="com.example.integra_kids_mobile.ui.views.PreferencesScreen"
         android:label="usuario_config"
         tools:layout="@layout/usuario_config" />
 
