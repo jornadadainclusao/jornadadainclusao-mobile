@@ -1,64 +1,77 @@
 package com.example.integra_kids_mobile;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UsuarioConfig#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
+
 public class UsuarioConfig extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RadioGroup radioGroup;
+    private RadioButton radioSystem, radioLight, radioDark;
 
     public UsuarioConfig() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UsuarioConfig.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static UsuarioConfig newInstance(String param1, String param2) {
-        UsuarioConfig fragment = new UsuarioConfig();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        // Construtor vazio obrigatório
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Infla o layout do fragment
         return inflater.inflate(R.layout.usuario_config, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Referências para os elementos
+        radioGroup = view.findViewById(R.id.radioTheme);
+        radioSystem = view.findViewById(R.id.radioButton);
+        radioLight = view.findViewById(R.id.radioButton2);
+        radioDark = view.findViewById(R.id.radioButton3);
+
+        // Recupera a preferência salva
+        SharedPreferences prefs = requireContext().getSharedPreferences("AppPrefs", requireContext().MODE_PRIVATE);
+        int themeMode = prefs.getInt("themeMode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+
+        // Aplica o tema atual
+        AppCompatDelegate.setDefaultNightMode(themeMode);
+
+        // Marca o botão correspondente
+        switch (themeMode) {
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                radioDark.setChecked(true);
+                break;
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                radioLight.setChecked(true);
+                break;
+            default:
+                radioSystem.setChecked(true);
+        }
+
+        // Listener de mudança
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int selectedMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+
+            if (checkedId == R.id.radioButton2)
+                selectedMode = AppCompatDelegate.MODE_NIGHT_NO;
+            else if (checkedId == R.id.radioButton3)
+                selectedMode = AppCompatDelegate.MODE_NIGHT_YES;
+
+            // Aplica o novo tema
+            AppCompatDelegate.setDefaultNightMode(selectedMode);
+
+            // Salva preferência
+            prefs.edit().putInt("themeMode", selectedMode).apply();
+        });
     }
 }

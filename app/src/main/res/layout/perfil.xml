@@ -15,28 +15,13 @@
         android:text="Editar perfil"
         app:backgroundTint="@color/red"
         app:cornerRadius="16dp"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
-
-    <Button
-        android:id="@+id/btnProfile"
-        style="@style/GameButton"
-        android:layout_width="175dp"
-        android:layout_height="200dp"
-        android:background="@drawable/border"
-        android:text="Cadastrar Criança"
-        app:backgroundTint="@color/green"
-        app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.15" />
 
     <Button
         android:id="@+id/btnProfile2"
@@ -44,15 +29,16 @@
         android:layout_width="175dp"
         android:layout_height="200dp"
         android:background="@drawable/border"
-        android:text="Editar Criança"
-        app:backgroundTint="@color/yellow"
+        android:text="Cadastrar Criança"
+        app:backgroundTint="@color/green"
         app:cornerRadius="16dp"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.15" />
 
     <Button
         android:id="@+id/btnProfile3"
@@ -60,12 +46,13 @@
         android:layout_width="175dp"
         android:layout_height="200dp"
         android:background="@drawable/border"
-        android:text="Resultados"
-        app:backgroundTint="@color/purple"
+        android:text="Editar Criança"
+        app:backgroundTint="@color/yellow"
         app:cornerRadius="16dp"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5" />
@@ -76,15 +63,16 @@
         android:layout_width="175dp"
         android:layout_height="200dp"
         android:background="@drawable/border"
-        android:text="Trocar Jogador"
-        app:backgroundTint="@color/blue"
+        android:text="Resultados"
+        app:backgroundTint="@color/purple"
         app:cornerRadius="16dp"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/btnProfile5"
@@ -92,15 +80,33 @@
         android:layout_width="175dp"
         android:layout_height="200dp"
         android:background="@drawable/border"
+        android:text="Trocar Jogador"
+        app:backgroundTint="@color/blue"
+        app:cornerRadius="16dp"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.85" />
+
+    <Button
+        android:id="@+id/btnProfile6"
+        style="@style/GameButton"
+        android:layout_width="175dp"
+        android:layout_height="200dp"
+        android:background="@drawable/border"
         android:text="Fazer Logout"
         app:backgroundTint="@color/orange"
         app:cornerRadius="16dp"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
+        app:layout_constraintVertical_bias="0.85" />
 
     <TextView
         android:id="@+id/textView9"
@@ -113,4 +119,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.07" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

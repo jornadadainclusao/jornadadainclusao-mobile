@@ -3,6 +3,7 @@ package com.example.integra_kids_mobile.ui.jogos;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +14,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.integra_kids_mobile.LoginCadastro;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.databinding.JogosBinding;
+import com.example.integra_kids_mobile.games.JogoCores;
+import com.example.integra_kids_mobile.games.JogoMemoria;
+import com.example.integra_kids_mobile.games.JogoNumeros;
+import com.example.integra_kids_mobile.games.JogoVogais;
 
 public class Jogos extends Fragment {
 
@@ -33,6 +40,19 @@ public class Jogos extends Fragment {
             R.drawable.vogais,
             R.drawable.numeros,
             R.drawable.cores};
+    int[] colors = {
+            R.color.red,
+            R.color.blue,
+            R.color.yellow,
+            R.color.green
+    };
+    private Class<?>[] gameRoutes = {
+            JogoMemoria.class,
+            JogoVogais.class,
+            JogoNumeros.class,
+            JogoCores.class
+    };
+    int localGame;
     String viewGame;
     Button btnGame1, btnGame2, btnGame3, btnGame4, btnGameScreenReturn, btnPlay;
     LinearLayout layoutGameList, layoutGameFocus;
@@ -77,6 +97,11 @@ public class Jogos extends Fragment {
             layoutGameFocus.setVisibility(GONE);
             layoutGameList.setVisibility(VISIBLE);
         });
+
+        btnPlay.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), gameRoutes[localGame]);
+            startActivity(intent);
+        });
         return root;
     }
 
@@ -90,10 +115,17 @@ public class Jogos extends Fragment {
         layoutGameList.setVisibility(GONE);
         layoutGameFocus.setVisibility(VISIBLE);
 
+        layoutGameFocus.setBackgroundResource(R.drawable.border);
+        layoutGameFocus.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), colors[id]));
+
         textGameName.setText(name);
         textGameDescribe.setText(gameDescribe[id]);
         imgGame.setImageResource(viewImg[id]);
         // tem q adicionar as rotas dps aqui
+        setGame(id);
+    }
 
+    public void setGame(int id){
+        localGame = id;
     }
 }

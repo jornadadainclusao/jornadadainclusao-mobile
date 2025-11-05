@@ -39,6 +39,7 @@
             android:text="Tema do App:" />
 
         <RadioGroup
+            android:id="@+id/radioTheme"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="20dp">
@@ -70,6 +71,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Acessibilidade" />
+
+            <TextView
+                android:id="@+id/textView2"
+                style="@style/text_enun"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Em breve..." />
         </RadioGroup>
 
     </LinearLayout>

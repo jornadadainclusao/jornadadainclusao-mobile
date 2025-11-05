@@ -12,6 +12,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Integrakidsmobile" >
         <activity
+            android:name=".profile.PerfilTrocarPlayer"
+            android:exported="false" />
+        <activity
+            android:name=".profile.PerfilResultados"
+            android:exported="false" />
+        <activity
+            android:name=".profile.PerfilEditKid"
+            android:exported="false" />
+        <activity
+            android:name=".profile.PerfilCadKid"
+            android:exported="false" />
+        <activity
+            android:name=".profile.PerfilEditCad"
+            android:exported="false" />
+        <activity
+            android:name=".games.JogoNumeros"
+            android:exported="false" />
+        <activity
+            android:name=".games.JogoVogais"
+            android:exported="false" />
+        <activity
+            android:name=".games.JogoMemoria"
+            android:exported="false" />
+        <activity
+            android:name=".games.JogoCores"
+            android:exported="false" />
+        <activity
             android:name=".MenuPrincipal"
             android:exported="false"
             android:label="@string/title_activity_menu_principal" />
