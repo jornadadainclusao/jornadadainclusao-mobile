@@ -44,6 +44,11 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
-    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0' // para a API
+
+    implementation 'com.github.bumptech.glide:glide:4.16.0' // ambos para tratar o GIF de loading
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+
 
 }

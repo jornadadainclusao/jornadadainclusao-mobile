@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="40dp">
+            android:paddingHorizontal="20dp">
 
             <!-- Exemplo de elementos para testar a rolagem -->
             <TextView
@@ -91,7 +91,7 @@
                 android:padding="8dp"/>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnContact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="100dp"
