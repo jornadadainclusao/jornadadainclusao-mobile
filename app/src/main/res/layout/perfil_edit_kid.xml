@@ -7,17 +7,293 @@
     android:layout_height="match_parent"
     tools:context=".profile.PerfilEditKid">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btnReturn"
+        style="@style/ParalelButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:fontFamily="monospace"
+        android:text="x"
+        android:textColor="@color/tint"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tela de edição de criança"
-        style="@style/text_title"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.55">
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/text_title"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Editar cadastro da criança" />
+
+
+        <Button
+            android:id="@+id/btnSelectedPlayer"
+            style="@style/PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Escolher qual criança atualizar" />
+
+        <LinearLayout
+            android:id="@+id/layoutEditKid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/text_enun"
+                android:textAlignment="center"
+                android:text="Trocar de Icone:" />
+
+            <GridLayout
+                android:id="@+id/gridAvatares"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:alignmentMode="alignMargins"
+                android:columnCount="3"
+                android:rowCount="4"
+                android:useDefaultMargins="true"
+                android:rowOrderPreserved="false">
+
+                <ImageButton
+                    android:id="@+id/avatar1"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon1" />
+
+                <ImageButton
+                    android:id="@+id/avatar2"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon2" />
+
+                <ImageButton
+                    android:id="@+id/avatar3"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon3" />
+
+                <ImageButton
+                    android:id="@+id/avatar4"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon4" />
+
+                <ImageButton
+                    android:id="@+id/avatar5"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon5" />
+
+                <ImageButton
+                    android:id="@+id/avatar6"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon6" />
+
+                <ImageButton
+                    android:id="@+id/avatar7"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon7" />
+
+                <ImageButton
+                    android:id="@+id/avatar8"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon8" />
+
+                <ImageButton
+                    android:id="@+id/avatar9"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon9" />
+
+                <ImageButton
+                    android:id="@+id/avatar10"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon10" />
+
+                <ImageButton
+                    android:id="@+id/avatar11"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon11" />
+
+                <ImageButton
+                    android:id="@+id/avatar12"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/player_icon12" />
+            </GridLayout>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Nome da criança" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Data de nascimento (entre 3 à 10 anos)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:id="@+id/textView7"
+                    style="@style/text_enun"
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:text="Gênero:" />
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Masculino"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Feminino"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"/>
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/button"
+                style="@style/PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Atualizar cadastro" />
+
+            <Button
+                android:id="@+id/button5"
+                style="@style/ParalelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Deletar criança" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

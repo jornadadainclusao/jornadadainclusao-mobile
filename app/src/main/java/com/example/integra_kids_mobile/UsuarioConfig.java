@@ -2,7 +2,6 @@ package com.example.integra_kids_mobile;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,6 @@ public class UsuarioConfig extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Infla o layout do fragment
         return inflater.inflate(R.layout.usuario_config, container, false);
     }
 
@@ -40,38 +38,39 @@ public class UsuarioConfig extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Referências para os elementos
+        // Referências dos elementos
         radioGroup = view.findViewById(R.id.radioTheme);
         radioSystem = view.findViewById(R.id.radioButton);
         radioLight = view.findViewById(R.id.radioButton2);
         radioDark = view.findViewById(R.id.radioButton3);
-
         textDevStatus = view.findViewById(R.id.textDevStatus);
         btnDevApi = view.findViewById(R.id.btnDevApi);
+
+        // 🔄 Botão para testar o backend
         btnDevApi.setOnClickListener(v -> {
+            textDevStatus.setText("Testando conexão...");
             new Thread(() -> {
                 try {
-                    String response = ApiClient.get("/"); // Rede na background thread
+                    // Faz a chamada GET para o endpoint de ping
+                    String response = ApiClient.get("/ping");
 
                     requireActivity().runOnUiThread(() -> {
-                        textDevStatus.setText("API OK: " + response);
+                        // Exibe o resultado na tela
+                        textDevStatus.setText("✅ Servidor ativo: " + response);
                     });
                 } catch (Exception e) {
                     requireActivity().runOnUiThread(() -> {
-                        textDevStatus.setText("Erro ao testar API");
+                        textDevStatus.setText("❌ Erro: servidor ou banco inativo");
                     });
                 }
             }).start();
         });
 
-        // Recupera a preferência salva
+        // 🎨 Recupera e aplica o tema atual
         SharedPreferences prefs = requireContext().getSharedPreferences("AppPrefs", requireContext().MODE_PRIVATE);
         int themeMode = prefs.getInt("themeMode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-
-        // Aplica o tema atual
         AppCompatDelegate.setDefaultNightMode(themeMode);
 
-        // Marca o botão correspondente
         switch (themeMode) {
             case AppCompatDelegate.MODE_NIGHT_YES:
                 radioDark.setChecked(true);
@@ -83,7 +82,7 @@ public class UsuarioConfig extends Fragment {
                 radioSystem.setChecked(true);
         }
 
-        // Listener de mudança
+        // 🌓 Listener para mudar o tema
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             int selectedMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
 
@@ -92,10 +91,7 @@ public class UsuarioConfig extends Fragment {
             else if (checkedId == R.id.radioButton3)
                 selectedMode = AppCompatDelegate.MODE_NIGHT_YES;
 
-            // Aplica o novo tema
             AppCompatDelegate.setDefaultNightMode(selectedMode);
-
-            // Salva preferência
             prefs.edit().putInt("themeMode", selectedMode).apply();
         });
     }

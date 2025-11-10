@@ -1,6 +1,7 @@
 package com.example.integra_kids_mobile.profile;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.common.ReturnButton;
 
 public class PerfilEditCad extends AppCompatActivity {
 
@@ -17,10 +19,7 @@ public class PerfilEditCad extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.perfil_edit_cad);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        ReturnButton.configurar(this);
     }
 }
