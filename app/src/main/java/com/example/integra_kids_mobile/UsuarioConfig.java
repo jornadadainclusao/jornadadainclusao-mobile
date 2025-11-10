@@ -46,22 +46,51 @@ public class UsuarioConfig extends Fragment {
         textDevStatus = view.findViewById(R.id.textDevStatus);
         btnDevApi = view.findViewById(R.id.btnDevApi);
 
-        // 🔄 Botão para testar o backend
+        // 🔄 Botão para testar o backend com várias tentativas
         btnDevApi.setOnClickListener(v -> {
-            textDevStatus.setText("Testando conexão...");
-            new Thread(() -> {
-                try {
-                    // Faz a chamada GET para o endpoint de ping
-                    String response = ApiClient.get("/ping");
+            textDevStatus.setText("Testando conexão com o servidor...");
 
-                    requireActivity().runOnUiThread(() -> {
-                        // Exibe o resultado na tela
-                        textDevStatus.setText("✅ Servidor ativo: " + response);
-                    });
-                } catch (Exception e) {
-                    requireActivity().runOnUiThread(() -> {
-                        textDevStatus.setText("❌ Erro: servidor ou banco inativo");
-                    });
+            new Thread(() -> {
+                int maxTentativas = 15;
+                int tentativa = 0;
+                boolean sucesso = false;
+
+                while (tentativa < maxTentativas && !sucesso) {
+                    tentativa++;
+                    final int tentativaAtual = tentativa;
+
+                    try {
+                        // Mostra tentativa atual
+                        requireActivity().runOnUiThread(() ->
+                                textDevStatus.setText("🔄 Tentando conectar... (" + tentativaAtual + "/" + maxTentativas + ")"));
+
+                        // Faz o ping (pode ser /ping, /health ou / dependendo da tua API)
+                        String response = ApiClient.get("/");
+
+                        // Se não lançar exceção, conexão bem-sucedida
+                        sucesso = true;
+                        final String respostaFinal = response;
+
+                        requireActivity().runOnUiThread(() ->
+                                textDevStatus.setText("✅ Servidor ativo! Resposta: " + respostaFinal));
+
+                    } catch (Exception e) {
+                        // Exibe falha da tentativa atual
+                        requireActivity().runOnUiThread(() ->
+                                textDevStatus.setText("❌ Tentativa " + tentativaAtual + " falhou..."));
+
+                        try {
+                            // Espera 1 segundo antes da próxima tentativa
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+
+                if (!sucesso) {
+                    requireActivity().runOnUiThread(() ->
+                            textDevStatus.setText("❌ Falha após " + maxTentativas + " tentativas. Servidor inativo."));
                 }
             }).start();
         });

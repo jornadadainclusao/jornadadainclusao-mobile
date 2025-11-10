@@ -7,19 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".profile.PerfilResultados">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tela de resultados"
-        style="@style/text_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
     <Button
         android:id="@+id/btnReturn"
         style="@style/ParalelButton"
@@ -35,5 +22,140 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.03" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tela de resultados" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnChooseChild"
+                style="@style/PrimaryButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:text="Escolher Criança" />
+
+            <Button
+                android:id="@+id/btnChooseGraph"
+                style="@style/PrimaryButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Escolher Grafico" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mostrar ultimo Resultado de cada jogo" />
+
+            <TextView
+                android:id="@+id/textView13"
+                style="@style/text_enun"
+                android:textAlignment="center"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Grafico [tipo]" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chartView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:visibility="visible"
+                android:layout_marginTop="16dp"/>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/meterChart"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp" />
+
+            <com.github.mikephil.charting.charts.RadarChart
+                android:id="@+id/radarChart"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/textView14"
+                style="@style/text_title"
+                android:textSize="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Histórico de partidas:" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerHistorico"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="16dp"
+                android:overScrollMode="never"
+                android:scrollbars="vertical"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/PrimaryButton"
+                    android:id="@+id/btnPDF"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
+                    android:text="Gerar PDF" />
+
+                <Button
+                    style="@style/PrimaryButton"
+                    android:id="@+id/btnExcel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Gerar Planilha" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
