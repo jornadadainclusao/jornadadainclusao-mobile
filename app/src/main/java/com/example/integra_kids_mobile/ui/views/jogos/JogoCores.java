@@ -17,28 +17,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JogoCores extends AppCompatActivity {
-    enum colorsEnum {
-        NAME,
-        NORMAL_TONE,
-        DARKER_TONE,
-    };
-    final private String[][] colors = {
-            {"branco", "#E9E9E9", "#B8B6B6"},
-            {"rosa", "#FA70E4", "#CC5CBA"},
-            {"verde", "#8FF43F", "#78BD42"},
-            {"laranja", "#FAA94B", "#BF8A4D"},
-            {"amarelo", "#FFE96A", "#BFB15C"},
-            {"vermelho", "#EB4A4A", "#B84444"}
-    };
+    // Tons para cores
+    // Java enums suck
+    private final int NORMAL = 0, DARKER = 1;
 
-    List<KeyView> squares = new ArrayList<>();
-    int previouslySelected = -1, currentlySelected = -1;
+    private final List<JogoCoresData> data = new ArrayList<>();
+    private int previouslySelectedIdx = -1, currentlySelectedIdx = -1;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.jogo_cores);
 
+        String[][] colors = {
+                {"#E9E9E9", "#B8B6B6"}, // branco
+                {"#FA70E4", "#CC5CBA"}, // rosa
+                {"#8FF43F", "#78BD42"}, // verde
+                {"#FAA94B", "#BF8A4D"}, // laranja
+                {"#FFE96A", "#BFB15C"}, // amarelo
+                {"#EB4A4A", "#B84444"}  // vermelho
+        };
         ConstraintLayout[] slots = {
                 findViewById(R.id.coelho_slot),
                 findViewById(R.id.borboleta_slot),
@@ -50,58 +48,72 @@ public class JogoCores extends AppCompatActivity {
 
         final GridLayout gridLayout = findViewById(R.id.cores_grid);
 
-        for (int i = 0; i < this.colors.length; i++) {
-            this.squares.add(i, new KeyView(this));
-            final KeyView square = this.squares.get(i);
+        for (int i = 0; i < colors.length; i++) {
+            // Crie a cor
+            final JogoCoresData currentData = new JogoCoresData.Builder()
+                    .withId(i)
+                    .withColors(colors[i])
+                    .withContainer(slots[i])
+                    .withKeyView(new KeyView(this))
+                    .build();
 
+            data.add(currentData);
+            final KeyView circle = currentData.circle;
+
+            // Coloque a cor no grid
             final GridLayout.LayoutParams gridParams = new GridLayout.LayoutParams();
             gridParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             gridParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            final int margin = (int) (square.getKeyWidth() * 0.20);
+            final int margin = (int) (circle.getKeyWidth() * 0.20);
             gridParams.setMargins(margin, margin, margin, margin);
 
-            square.setId(i);
-            square.setKeyBackgroundColor(Color.parseColor(this.colors[i][colorsEnum.NORMAL_TONE.ordinal()]));
-            square.setStateListAnimator(null);
-            square.setLayoutParams(gridParams);
-            gridLayout.addView(square);
+            circle.setId(i);
+            circle.setKeyBackgroundColor(Color.parseColor(currentData.colors[NORMAL]));
+            circle.setStateListAnimator(null);
+            circle.setLayoutParams(gridParams);
+            gridLayout.addView(circle);
 
             // Não pode passar variáveis para lambdas
-            final int idx = i;
-            final View slot = slots[idx];
+            final long idx = currentData.id;
+            final View slot = currentData.container;
             slot.setOnClickListener(v -> {
-                KeyView s = this.squares.get(this.currentlySelected);
+                KeyView c = data.get(this.currentlySelectedIdx).circle;
 
-                if (this.currentlySelected == idx && s.isFocusable()) {
+                if (this.currentlySelectedIdx == idx && ! c.isPlaced()) {
+                    final JogoCoresData _currentData = data.get(this.currentlySelectedIdx);
+
                     ConstraintLayout l = (ConstraintLayout) v;
                     GridLayout parent = findViewById(R.id.cores_grid);
+                    String color = _currentData.colors[NORMAL];
 
-                    parent.removeView(s);
-                    l.addView(s);
-                    s.setFocusable(false);
-                    s.setKeyBackgroundColor(Color.parseColor(this.colors[idx][colorsEnum.NORMAL_TONE.ordinal()]));
+                    parent.removeView(c);
+                    l.addView(c);
+                    c.setFocusable(false);
+                    c.setPlaced(true);
+                    c.setKeyBackgroundColor(Color.parseColor(color));
                 }
             });
 
-            // NOTE (renato): Escureça o botão caso selecionado
-            square.setOnClickListener(v -> {
-                this.previouslySelected = this.currentlySelected;
-                this.currentlySelected = v.getId();
-                final KeyView currentSquare = this.squares.get(this.currentlySelected);
-
-                if (this.previouslySelected == -1) {
-                    currentSquare.setKeyBackgroundColor(Color.parseColor(colors[this.currentlySelected][colorsEnum.NORMAL_TONE.ordinal()]));
+            // NOTE (renato): Escureça o círculo caso selecionado
+            circle.setOnClickListener(v -> {
+                final KeyView c = (KeyView) v;
+                if (c.isPlaced()) {
                     return;
                 }
-                final KeyView previousSquare = this.squares.get(this.previouslySelected);
+                this.previouslySelectedIdx = this.currentlySelectedIdx;
+                this.currentlySelectedIdx = c.getId();
 
-                // Caso escolha um círculo já settado
-                if (previousSquare == currentSquare) {
+                final JogoCoresData _currentData = data.get(this.currentlySelectedIdx);
+                final KeyView currentCircle = _currentData.circle;
+                if (this.previouslySelectedIdx == -1) {
+                    currentCircle.setKeyBackgroundColor(Color.parseColor(_currentData.colors[NORMAL]));
                     return;
                 }
 
-                previousSquare.setKeyBackgroundColor(Color.parseColor(this.colors[this.previouslySelected][colorsEnum.NORMAL_TONE.ordinal()]));
-                currentSquare.setKeyBackgroundColor(Color.parseColor(this.colors[this.currentlySelected][colorsEnum.DARKER_TONE.ordinal()]));
+                final JogoCoresData previousData = data.get(this.previouslySelectedIdx);
+                final KeyView previousSquare = data.get(this.previouslySelectedIdx).circle;
+                previousSquare.setKeyBackgroundColor(Color.parseColor(previousData.colors[NORMAL]));
+                currentCircle.setKeyBackgroundColor(Color.parseColor(_currentData.colors[DARKER]));
             });
         }
     }

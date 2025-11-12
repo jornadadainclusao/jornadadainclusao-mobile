@@ -15,6 +15,7 @@ public class KeyView extends View {
     private int keyHeight = 150;
     private int keyFontSize = (int) (this.keyWidth * 0.75);
     private int keyBackgroundColor = Color.RED;
+    private boolean isPlaced = false;
 
     public KeyView(Context context) {
         super(context);
@@ -100,5 +101,13 @@ public class KeyView extends View {
         paint.setColor(this.keyBackgroundColor);
         requestLayout();
         invalidate();
+    }
+
+    public boolean isPlaced() {
+        return this.isPlaced;
+    }
+
+    public void setPlaced(boolean b) {
+        this.isPlaced = b;
     }
 }
