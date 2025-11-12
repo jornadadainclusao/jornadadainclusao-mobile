@@ -17,12 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JogoCores extends AppCompatActivity {
-    // Tons para cores
-    // Java enums suck
-    private final int NORMAL = 0, DARKER = 1;
-
-    private final List<JogoCoresData> data = new ArrayList<>();
-    private int previouslySelectedIdx = -1, currentlySelectedIdx = -1;
+    private final long id = 4;
+    private final int NORMAL = 0, DARKER = 1; // Tons para cores (Java enums suck)
+    private final List<ColorBox> data = new ArrayList<>();
+    private int currentlySelectedCircleIdx = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +49,7 @@ public class JogoCores extends AppCompatActivity {
 
         for (int i = 0; i < colors.length; i++) {
             // Crie a cor
-            final JogoCoresData currentData = new JogoCoresData.Builder()
+            final ColorBox currentData = new ColorBox.Builder()
                     .withId(i)
                     .withColors(colors[i])
                     .withContainer(containers[i])
@@ -79,7 +77,7 @@ public class JogoCores extends AppCompatActivity {
                 KeyView c = data.get(this.currentlySelectedIdx).getCircle();
 
                 if (this.currentlySelectedIdx == currentData.getId() && ! c.isPlaced()) {
-                    final JogoCoresData _currentData = data.get(this.currentlySelectedIdx);
+                    final ColorBox _currentData = data.get(this.currentlySelectedIdx);
 
                     ConstraintLayout l = (ConstraintLayout) v;
                     GridLayout parent = findViewById(R.id.cores_grid);
@@ -94,26 +92,36 @@ public class JogoCores extends AppCompatActivity {
             });
 
             // NOTE (renato): Escureça o círculo caso selecionado
+            // TODO (renato): Guardar uma referência do último círculo e usar colors como uma stack
             circle.setOnClickListener(v -> {
                 final KeyView c = (KeyView) v;
                 if (c.isPlaced()) {
                     return;
                 }
+                if (this.currentlySelectedCircleIdx == -1) {
+                    this.currentlySelectedCircleIdx = c.getId();
+                }
+
+
+
                 this.previouslySelectedIdx = this.currentlySelectedIdx;
                 this.currentlySelectedIdx = c.getId();
 
-                final JogoCoresData _currentData = data.get(this.currentlySelectedIdx);
+                final ColorBox _currentData = data.get(this.currentlySelectedIdx);
                 final KeyView currentCircle = _currentData.getCircle();
                 if (this.previouslySelectedIdx == -1) {
                     currentCircle.setKeyBackgroundColor(Color.parseColor(_currentData.getColors()[NORMAL]));
                     return;
                 }
 
-                final JogoCoresData previousData = data.get(this.previouslySelectedIdx);
+                final ColorBox previousData = data.get(this.previouslySelectedIdx);
                 final KeyView previousCircle = data.get(this.previouslySelectedIdx).getCircle();
                 previousCircle.setKeyBackgroundColor(Color.parseColor(previousData.getColors()[NORMAL]));
                 currentCircle.setKeyBackgroundColor(Color.parseColor(_currentData.getColors()[DARKER]));
             });
         }
+
+        // Pegar o id do dependente
+        // InfoJogos info = new InfoJogos(id, /* dependente */);
     }
 }

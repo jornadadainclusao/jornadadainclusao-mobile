@@ -4,13 +4,17 @@ import android.view.View;
 
 import com.example.integra_kids_mobile.ui.components.jogos.KeyView;
 
-public class JogoCoresData {
+public class ColorBox {
     private long id;
+
+    // Para usar como se fosse um enum (Java enums suck)
+    private final int NORMAL = 0, DARK = 1;
+    private int currentColor = NORMAL;
     private String[] colors;
     private View container;
     private KeyView circle;
 
-    JogoCoresData(long id, String[] colors, View container, KeyView circle) {
+    ColorBox(long id, String[] colors, View container, KeyView circle) {
         this.id = id;
         this.colors = colors;
         this.container = container;
@@ -23,6 +27,14 @@ public class JogoCoresData {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setNormalColor() {
+        this.currentColor = NORMAL;
+    }
+
+    public void setDarkColor() {
+        this.currentColor = DARK;
     }
 
     public String[] getColors() {
@@ -77,8 +89,8 @@ public class JogoCoresData {
             return this;
         }
 
-        public JogoCoresData build() {
-            return new JogoCoresData(this.id, this.colors, this.container, this.circle);
+        public ColorBox build() {
+            return new ColorBox(this.id, this.colors, this.container, this.circle);
         }
     }
 }
