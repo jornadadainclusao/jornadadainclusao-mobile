@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.views.jogos.JogoCores"
+            android:name=".ui.views.jogos.jogoCores.JogoCores"
             android:exported="false" />
     </application>
 

@@ -3,7 +3,6 @@ package com.example.integra_kids_mobile.ui.views.jogos;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,10 +15,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.databinding.JogosBinding;
+import com.example.integra_kids_mobile.ui.views.jogos.jogoCores.JogoCores;
 
 public class JogosScreen extends Fragment {
     int[] gameDescribe = {
