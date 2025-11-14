@@ -12,13 +12,16 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.ui.components.jogos.KeyView;
+import com.example.integra_kids_mobile.ui.views.jogos.InfoJogos;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class JogoCores extends AppCompatActivity {
     private final long id = 4;
+    private final InfoJogos infoJogos = new InfoJogos(this.id, 0); // hardcoded
     private final List<ColorBox> data = new ArrayList<>();
+    private int placedKeyViews = 0;
     private int selectedColorBoxIdx = -1;
 
     @Override
@@ -75,8 +78,13 @@ public class JogoCores extends AppCompatActivity {
             container.setOnClickListener(v -> {
                 KeyView kv = data.get(this.selectedColorBoxIdx).getKeyView();
 
+                infoJogos.setTentativas(infoJogos.getTentativas() + 1);
+
                 if (this.selectedColorBoxIdx == currentData.getId() && !kv.isPlaced()) {
                     final ColorBox _currentData = data.get(this.selectedColorBoxIdx);
+
+                    infoJogos.setAcertos(infoJogos.getAcertos() + 1);
+                    placedKeyViews += 1;
 
                     ConstraintLayout l = (ConstraintLayout) v;
                     GridLayout parent = findViewById(R.id.cores_grid);
@@ -87,10 +95,17 @@ public class JogoCores extends AppCompatActivity {
                     kv.setFocusable(false);
                     kv.setPlaced(true);
                     kv.setKeyBackgroundColor(Color.parseColor(color));
+
+                    if (placedKeyViews == data.toArray().length) {
+                        infoJogos.terminarJogo();
+                        finish();
+                    }
+                } else {
+                    infoJogos.setErros(infoJogos.getErros() + 1);
                 }
             });
 
-            // NOTE (renato): Escureça o círculo caso selecionado
+            // Escureça o círculo caso selecionado
             keyView.setOnClickListener(v -> {
                 final KeyView kv = (KeyView) v;
                 if (kv.isPlaced()) {
@@ -105,7 +120,6 @@ public class JogoCores extends AppCompatActivity {
             });
         }
 
-        // Pegar o id do dependente
-        // InfoJogos info = new InfoJogos(id, /* dependente */);
+        infoJogos.comecarJogo();
     }
 }
