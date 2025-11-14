@@ -18,9 +18,8 @@ import java.util.List;
 
 public class JogoCores extends AppCompatActivity {
     private final long id = 4;
-    private final int NORMAL = 0, DARKER = 1; // Tons para cores (Java enums suck)
     private final List<ColorBox> data = new ArrayList<>();
-    private int currentlySelectedCircleIdx = -1;
+    private int selectedColorBoxIdx = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +28,12 @@ public class JogoCores extends AppCompatActivity {
         setContentView(R.layout.jogo_cores);
 
         String[][] colors = {
-                {"#E9E9E9", "#B8B6B6"}, // branco
-                {"#FA70E4", "#CC5CBA"}, // rosa
-                {"#8FF43F", "#78BD42"}, // verde
-                {"#FAA94B", "#BF8A4D"}, // laranja
-                {"#FFE96A", "#BFB15C"}, // amarelo
-                {"#EB4A4A", "#B84444"}  // vermelho
+                { "#E9E9E9", "#B8B6B6" }, // branco
+                { "#FA70E4", "#CC5CBA" }, // rosa
+                { "#8FF43F", "#78BD42" }, // verde
+                { "#FAA94B", "#BF8A4D" }, // laranja
+                { "#FFE96A", "#BFB15C" }, // amarelo
+                { "#EB4A4A", "#B84444" } // vermelho
         };
         ConstraintLayout[] containers = {
                 findViewById(R.id.coelho_slot),
@@ -57,67 +56,52 @@ public class JogoCores extends AppCompatActivity {
                     .build();
 
             data.add(currentData);
-            final KeyView circle = currentData.getCircle();
+            final KeyView keyView = currentData.getKeyView();
 
             // Coloque a cor no grid
             final GridLayout.LayoutParams gridParams = new GridLayout.LayoutParams();
             gridParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             gridParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            final int margin = (int) (circle.getKeyWidth() * 0.20);
+            final int margin = (int) (keyView.getKeyWidth() * 0.20);
             gridParams.setMargins(margin, margin, margin, margin);
 
-            circle.setId(i);
-            circle.setKeyBackgroundColor(Color.parseColor(currentData.getColors()[NORMAL]));
-            circle.setStateListAnimator(null);
-            circle.setLayoutParams(gridParams);
-            gridLayout.addView(circle);
+            keyView.setId(i);
+            keyView.setKeyBackgroundColor(Color.parseColor(currentData.getColors()[currentData.NORMAL]));
+            keyView.setStateListAnimator(null);
+            keyView.setLayoutParams(gridParams);
+            gridLayout.addView(keyView);
 
             final View container = currentData.getContainer();
             container.setOnClickListener(v -> {
-                KeyView c = data.get(this.currentlySelectedIdx).getCircle();
+                KeyView kv = data.get(this.selectedColorBoxIdx).getKeyView();
 
-                if (this.currentlySelectedIdx == currentData.getId() && ! c.isPlaced()) {
-                    final ColorBox _currentData = data.get(this.currentlySelectedIdx);
+                if (this.selectedColorBoxIdx == currentData.getId() && !kv.isPlaced()) {
+                    final ColorBox _currentData = data.get(this.selectedColorBoxIdx);
 
                     ConstraintLayout l = (ConstraintLayout) v;
                     GridLayout parent = findViewById(R.id.cores_grid);
-                    String color = _currentData.getColors()[NORMAL];
+                    String color = _currentData.getColors()[_currentData.NORMAL];
 
-                    parent.removeView(c);
-                    l.addView(c);
-                    c.setFocusable(false);
-                    c.setPlaced(true);
-                    c.setKeyBackgroundColor(Color.parseColor(color));
+                    parent.removeView(kv);
+                    l.addView(kv);
+                    kv.setFocusable(false);
+                    kv.setPlaced(true);
+                    kv.setKeyBackgroundColor(Color.parseColor(color));
                 }
             });
 
             // NOTE (renato): Escureça o círculo caso selecionado
-            // TODO (renato): Guardar uma referência do último círculo e usar colors como uma stack
-            circle.setOnClickListener(v -> {
-                final KeyView c = (KeyView) v;
-                if (c.isPlaced()) {
-                    return;
-                }
-                if (this.currentlySelectedCircleIdx == -1) {
-                    this.currentlySelectedCircleIdx = c.getId();
-                }
-
-
-
-                this.previouslySelectedIdx = this.currentlySelectedIdx;
-                this.currentlySelectedIdx = c.getId();
-
-                final ColorBox _currentData = data.get(this.currentlySelectedIdx);
-                final KeyView currentCircle = _currentData.getCircle();
-                if (this.previouslySelectedIdx == -1) {
-                    currentCircle.setKeyBackgroundColor(Color.parseColor(_currentData.getColors()[NORMAL]));
+            keyView.setOnClickListener(v -> {
+                final KeyView kv = (KeyView) v;
+                if (kv.isPlaced()) {
                     return;
                 }
 
-                final ColorBox previousData = data.get(this.previouslySelectedIdx);
-                final KeyView previousCircle = data.get(this.previouslySelectedIdx).getCircle();
-                previousCircle.setKeyBackgroundColor(Color.parseColor(previousData.getColors()[NORMAL]));
-                currentCircle.setKeyBackgroundColor(Color.parseColor(_currentData.getColors()[DARKER]));
+                if (this.selectedColorBoxIdx != -1) {
+                    data.get(this.selectedColorBoxIdx).toggleColor();
+                }
+                this.selectedColorBoxIdx = kv.getId();
+                data.get(this.selectedColorBoxIdx).toggleColor();
             });
         }
 

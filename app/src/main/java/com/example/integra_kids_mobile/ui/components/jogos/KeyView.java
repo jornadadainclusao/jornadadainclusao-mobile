@@ -10,12 +10,12 @@ import android.widget.Button;
 
 public class KeyView extends View {
     final protected Paint paint = new Paint();
-    protected char keyContent = '\0';
-    protected int keyWidth = 150;
-    protected int keyHeight = 150;
-    protected int keyFontSize = (int) (this.keyWidth * 0.75);
-    protected int keyBackgroundColor = Color.RED;
-    protected boolean isPlaced = false;
+    private char keyContent = '\0';
+    private int keyWidth = 150;
+    private int keyHeight = 150;
+    private int keyFontSize = (int) (this.keyWidth * 0.75);
+    private int keyBackgroundColor = Color.RED; // Cor padrão bem óbvia caso algo inesperado ocorra
+    private boolean isPlaced = false;
 
     public KeyView(Context context) {
         super(context);
