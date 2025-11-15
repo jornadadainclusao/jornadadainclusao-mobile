@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".LoginCadastro">
 
+    <!-- LOGO -->
     <ImageView
         android:id="@+id/imageLogo"
         android:layout_width="250dp"
@@ -20,6 +21,7 @@
         app:layout_constraintVertical_bias="0.2"
         app:srcCompat="@drawable/logoik" />
 
+    <!-- BOTÃO DE IR PARA CADASTRO -->
     <Button
         android:id="@+id/btnCadLog2"
         style="@style/ParalelButton"
@@ -33,22 +35,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95" />
 
+    <!-- ================================ -->
+    <!--           LOGIN LAYOUT           -->
+    <!-- ================================ -->
     <LinearLayout
         android:id="@+id/layoutLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginHorizontal="40dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55"
-        android:visibility="visible">
-
+        app:layout_constraintVertical_bias="0.55">
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/txtLoginTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -56,35 +60,42 @@
             android:textAlignment="center"
             android:text="Bem-vindo de volta!\nFaça seu login para continuar." />
 
+        <!-- EMAIL LOGIN -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLoginEmailLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
-                android:hint="Digite seu nome" />
+                android:hint="Digite seu e-mail" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- SENHA LOGIN -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLoginSenhaLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputLoginSenha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Digite sua senha" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/checkBoxLembrar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Lembrar login?" />
 
+        <!-- ESQUECI A SENHA -->
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/btnEsqueciSenha"
             style="@style/ParalelButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,22 +103,24 @@
 
     </LinearLayout>
 
+    <!-- ================================ -->
+    <!--         CADASTRO LAYOUT          -->
+    <!-- ================================ -->
     <LinearLayout
         android:id="@+id/layoutRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginHorizontal="40dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6"
-        android:visibility="gone"
-        >
+        app:layout_constraintVertical_bias="0.6">
 
         <TextView
-            android:id="@+id/textView09"
+            android:id="@+id/txtRegisterTitulo"
             style="@style/text_enun"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,44 +128,56 @@
             android:textAlignment="center"
             android:text="Bem-vindo!\nCrie sua conta para continuar." />
 
+        <!-- NOME -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputRegNomeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputRegNome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
                 android:hint="Digite seu nome" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- EMAIL -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputRegEmailLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputRegEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
                 android:hint="Digite seu e-mail" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- SENHA -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputRegSenhaLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputRegSenha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
                 android:hint="Digite sua senha" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- CONFIRMAR SENHA -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputRegSenhaConfLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputRegSenhaConf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Confirme sua senha" />
@@ -160,6 +185,7 @@
 
     </LinearLayout>
 
+    <!-- BOTÃO INFERIOR (LOGAR / CADASTRAR) -->
     <Button
         android:id="@+id/btnCadLog1"
         android:layout_width="match_parent"
@@ -173,6 +199,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.9" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

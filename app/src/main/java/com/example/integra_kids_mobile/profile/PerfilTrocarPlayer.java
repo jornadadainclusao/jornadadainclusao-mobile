@@ -30,10 +30,6 @@ public class PerfilTrocarPlayer extends AppCompatActivity {
 
         recyclerJogadores = findViewById(R.id.recyclerJogadores);
 
-        // 🔹 Define layout em grade com 2 colunas
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        recyclerJogadores.setLayoutManager(gridLayoutManager);
-
         // Lista de exemplo
         listaJogadores = new ArrayList<>();
         listaJogadores.add(new Jogador(1,"Luna", R.drawable.player_icon1));
@@ -42,11 +38,27 @@ public class PerfilTrocarPlayer extends AppCompatActivity {
         listaJogadores.add(new Jogador(4,"Leo", R.drawable.player_icon4));
         listaJogadores.add(new Jogador(5,"Junin", R.drawable.player_icon11));
         listaJogadores.add(new Jogador(6,"Kleiton", R.drawable.player_icon6));
+        listaJogadores.add(new Jogador(7,"Jubileu", R.drawable.player_icon7));
 
         jogadorAdapter = new JogadorAdapter(listaJogadores, this);
+
+        // 🔹 GridLayout com 2 colunas
+        GridLayoutManager glm = new GridLayoutManager(this, 2);
+
+        // 🔹 Centraliza o último item quando o total for ímpar
+        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                int total = jogadorAdapter.getItemCount();
+
+                if (total % 2 == 1 && position == total - 1) {
+                    return 2; // ocupa as duas colunas → centraliza
+                }
+                return 1;
+            }
+        });
+
+        recyclerJogadores.setLayoutManager(glm);
         recyclerJogadores.setAdapter(jogadorAdapter);
     }
-
 }
-
-
