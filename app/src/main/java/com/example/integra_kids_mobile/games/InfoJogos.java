@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile.ui.views.jogos;
+package com.example.integra_kids_mobile.games;
 
 import java.util.Calendar;
 

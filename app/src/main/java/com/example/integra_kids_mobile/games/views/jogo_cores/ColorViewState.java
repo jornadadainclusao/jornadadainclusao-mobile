@@ -1,8 +1,8 @@
-package com.example.integra_kids_mobile.ui.views.jogos.jogoCores;
+package com.example.integra_kids_mobile.games.views.jogo_cores;
 
 import android.view.View;
 
-import com.example.integra_kids_mobile.ui.components.jogos.jogo_cores.ColorView;
+import com.example.integra_kids_mobile.games.components.jogo_cores.ColorView;
 
 public class ColorViewState {
     private long id;

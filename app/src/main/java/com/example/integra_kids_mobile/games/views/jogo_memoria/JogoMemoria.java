@@ -1,12 +1,6 @@
-package com.example.integra_kids_mobile.ui.views.jogos.jogoMemoria;
+package com.example.integra_kids_mobile.games.views.jogo_memoria;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.transition.ChangeTransform;
-import android.transition.Transition;
-import android.transition.TransitionManager;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.GridLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -14,16 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.integra_kids_mobile.R;
-import com.example.integra_kids_mobile.ui.components.jogos.KeyView;
-import com.example.integra_kids_mobile.ui.components.jogos.KeyViewStateEnum;
-import com.example.integra_kids_mobile.ui.components.jogos.Timer;
-import com.example.integra_kids_mobile.ui.components.jogos.jogo_cores.ColorView;
-import com.example.integra_kids_mobile.ui.views.jogos.InfoJogos;
+import com.example.integra_kids_mobile.games.components.KeyView;
+import com.example.integra_kids_mobile.games.components.Timer;
+import com.example.integra_kids_mobile.games.InfoJogos;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class jogoMemoria extends AppCompatActivity {
+public class JogoMemoria extends AppCompatActivity {
     private final long id = 1;
     private final InfoJogos infoJogos = new InfoJogos(this.id, 0); // hardcoded
     private Timer timer;

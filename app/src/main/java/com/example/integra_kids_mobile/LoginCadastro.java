@@ -100,7 +100,7 @@ public class LoginCadastro extends AppCompatActivity {
 
                 new Thread(() -> {
                     try {
-                        JSONObject resp = UsuarioService.cadastrarUsuario(nome, cadEmail, cadSenha);
+                        JSONObject resp = UsuarioService.cadastrar(this, nome, cadEmail, cadSenha);
 
                         runOnUiThread(() -> {
                             Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile.ui.components.jogos;
+package com.example.integra_kids_mobile.games.components;
 
 // Java enums are overengineered
 public interface KeyViewStateEnum {

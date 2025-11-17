@@ -21,10 +21,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.integra_kids_mobile.LoginCadastro;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.databinding.JogosBinding;
-import com.example.integra_kids_mobile.games.JogoCores;
-import com.example.integra_kids_mobile.games.JogoMemoria;
-import com.example.integra_kids_mobile.games.JogoNumeros;
-import com.example.integra_kids_mobile.games.JogoVogais;
+import com.example.integra_kids_mobile.games.views.jogo_cores.JogoCores;
+import com.example.integra_kids_mobile.games.views.jogo_memoria.JogoMemoria;
+import com.example.integra_kids_mobile.games.views.jogo_numeros.JogoNumeros;
+import com.example.integra_kids_mobile.games.views.jogo_vogais.JogoVogais;
 
 public class Jogos extends Fragment {
 

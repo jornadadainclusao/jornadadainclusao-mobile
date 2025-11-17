@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile.ui.components.jogos.jogo_cores;
+package com.example.integra_kids_mobile.games.components.jogo_cores;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,8 +9,8 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Size;
 
-import com.example.integra_kids_mobile.ui.components.jogos.KeyView;
-import com.example.integra_kids_mobile.ui.components.jogos.KeyViewStateEnum;
+import com.example.integra_kids_mobile.games.components.KeyView;
+import com.example.integra_kids_mobile.games.components.KeyViewStateEnum;
 
 public class ColorView extends KeyView {
     @Size(2)

@@ -1,4 +1,4 @@
-package com.example.integra_kids_mobile.ui.views.jogos.jogoCores;
+package com.example.integra_kids_mobile.games.views.jogo_cores;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,11 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.integra_kids_mobile.R;
-import com.example.integra_kids_mobile.ui.components.jogos.KeyView;
-import com.example.integra_kids_mobile.ui.components.jogos.KeyViewStateEnum;
-import com.example.integra_kids_mobile.ui.components.jogos.Timer;
-import com.example.integra_kids_mobile.ui.components.jogos.jogo_cores.ColorView;
-import com.example.integra_kids_mobile.ui.views.jogos.InfoJogos;
+import com.example.integra_kids_mobile.games.components.KeyView;
+import com.example.integra_kids_mobile.games.components.KeyViewStateEnum;
+import com.example.integra_kids_mobile.games.components.Timer;
+import com.example.integra_kids_mobile.games.components.jogo_cores.ColorView;
+import com.example.integra_kids_mobile.games.InfoJogos;
 
 import java.util.ArrayList;
 import java.util.List;
