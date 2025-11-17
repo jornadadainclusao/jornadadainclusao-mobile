@@ -87,12 +87,6 @@
                 android:hint="Digite sua senha" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/checkBoxLembrar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lembrar login?" />
-
         <!-- ESQUECI A SENHA -->
         <Button
             android:id="@+id/btnEsqueciSenha"

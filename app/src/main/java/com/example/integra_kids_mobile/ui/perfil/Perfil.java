@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.integra_kids_mobile.auth.LoginAuth;
 import com.example.integra_kids_mobile.databinding.PerfilBinding;
 
 import com.example.integra_kids_mobile.R;
@@ -30,7 +32,6 @@ public class Perfil extends Fragment {
             PerfilEditKid.class,
             PerfilResultados.class,
             PerfilTrocarPlayer.class,
-            LoginCadastro.class
     };
 
 private PerfilBinding binding;
@@ -55,7 +56,7 @@ private PerfilBinding binding;
     btnProfile3.setOnClickListener(v -> callProfileScreen(2));
     btnProfile4.setOnClickListener(v -> callProfileScreen(3));
     btnProfile5.setOnClickListener(v -> callProfileScreen(4));
-    btnProfile6.setOnClickListener(v -> callProfileScreen(5));
+    btnProfile6.setOnClickListener(v -> LoginAuth.logout(requireContext()));
 
         return root;
     }

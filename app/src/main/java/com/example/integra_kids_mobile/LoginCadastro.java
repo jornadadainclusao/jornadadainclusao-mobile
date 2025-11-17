@@ -28,10 +28,13 @@ public class LoginCadastro extends AppCompatActivity {
     private LinearLayout layoutRegister, layoutLogin;
     private TextInputEditText inputLoginEmail, inputLoginSenha;
     private TextInputEditText inputRegNome, inputRegEmail, inputRegSenha, inputRegSenhaConf;
-    private CheckBox checkBoxLembrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Se já estiver logado, vai direto para o MenuPrincipal
+        LoginAuth.checkLoginRedirect(this);
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.login_cadastro);
@@ -49,7 +52,6 @@ public class LoginCadastro extends AppCompatActivity {
         // LOGIN INPUTS
         inputLoginEmail = findViewById(R.id.inputLoginEmail);
         inputLoginSenha = findViewById(R.id.inputLoginSenha);
-        checkBoxLembrar = findViewById(R.id.checkBoxLembrar);
 
         // REGISTER INPUTS
         inputRegNome = findViewById(R.id.inputRegNome);

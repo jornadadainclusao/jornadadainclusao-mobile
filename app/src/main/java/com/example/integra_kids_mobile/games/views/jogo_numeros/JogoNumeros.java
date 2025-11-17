@@ -21,7 +21,6 @@ public class JogoNumeros extends AppCompatActivity {
     private Timer timer;
     private List<KeyView> keyViewList = new ArrayList<>();
     private int placedNumberBoxes = 0;
-    private int selectedNumberBoxIdx = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,29 +28,33 @@ public class JogoNumeros extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.jogo_cores);
 
-        final ConstraintLayout constraintLayout = findViewById(R.id.timer);
-        this.timer = new Timer(this);
-        constraintLayout.addView(this.timer);
+        // Adiciona timer
+        ConstraintLayout constraintLayout = findViewById(R.id.timer);
+        timer = new Timer(this);
+        constraintLayout.addView(timer);
 
-        final GridLayout gridLayout = findViewById(R.id.numeros_grid);
+        GridLayout gridLayout = findViewById(R.id.numeros_grid);
 
-        for (int i = '0'; i < '9'; i++) {
-            keyViewList.add(new KeyView(this));
-            KeyView keyView = keyViewList.get(i);
+        // Cria 9 KeyViews para os números de 0 a 8
+        for (int i = 0; i < 9; i++) {
+            KeyView keyView = new KeyView(this);
+            keyViewList.add(keyView);
 
             keyView.setOnClickListener(v -> {
                 infoJogos.setTentativas(infoJogos.getTentativas() + 1);
-                if (true) {
-                    infoJogos.setAcertos(infoJogos.getAcertos() + 1);
-                    placedNumberBoxes++;
-                    if (placedNumberBoxes == keyViewList.toArray().length) {
-                        infoJogos.terminarJogo();
-                        finish();
-                    }
-                } else {
-                    infoJogos.setErros(infoJogos.getErros() + 1);
+
+                // Aqui você pode colocar sua lógica de acerto/erro
+                infoJogos.setAcertos(infoJogos.getAcertos() + 1);
+                placedNumberBoxes++;
+
+                if (placedNumberBoxes == keyViewList.size()) {
+                    infoJogos.terminarJogo();
+                    finish();
                 }
             });
+
+            // Adiciona a KeyView na GridLayout
+            gridLayout.addView(keyView);
         }
 
         infoJogos.comecarJogo();

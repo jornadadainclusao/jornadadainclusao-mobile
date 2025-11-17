@@ -47,19 +47,19 @@
             android:exported="false" />
 
         <activity
-            android:name=".games.JogoNumeros"
+            android:name=".games.views.jogo_numeros.JogoNumeros"
             android:exported="false" />
 
         <activity
-            android:name=".games.JogoVogais"
+            android:name=".games.views.jogo_vogais.JogoVogais"
             android:exported="false" />
 
         <activity
-            android:name=".games.JogoMemoria"
+            android:name=".games.views.jogo_memoria.JogoMemoria"
             android:exported="false" />
 
         <activity
-            android:name=".games.JogoCores"
+            android:name=".games.views.jogo_cores.JogoCores"
             android:exported="false" />
 
         <activity
