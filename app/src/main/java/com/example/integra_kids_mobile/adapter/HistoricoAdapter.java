@@ -1,5 +1,6 @@
 package com.example.integra_kids_mobile.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +17,15 @@ import java.util.List;
 
 public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.ViewHolder> {
 
-    private final List<Partida> partidas;
-    private final OnDeleteClickListener listener;
+    private List<Partida> listaPartidas;
+    private OnItemClickListener listener;
 
-    public interface OnDeleteClickListener {
-        void onDeleteClick(Partida partida);
+    public interface OnItemClickListener {
+        void onItemClick(Partida partida);
     }
 
-    public HistoricoAdapter(List<Partida> partidas, OnDeleteClickListener listener) {
-        this.partidas = partidas;
+    public HistoricoAdapter(List<Partida> lista, OnItemClickListener listener) {
+        this.listaPartidas = lista;
         this.listener = listener;
     }
 
@@ -38,16 +39,27 @@ public class HistoricoAdapter extends RecyclerView.Adapter<HistoricoAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Partida partida = partidas.get(position);
-        holder.textNomeJogo.setText(partida.getNomeJogo());
-        holder.textData.setText(partida.getData());
+        Partida partida = listaPartidas.get(position);
 
-        holder.btnDeletar.setOnClickListener(v -> listener.onDeleteClick(partida));
+        Log.d("HistoricoAdapter", "Bind -> Nome: " + partida.getNomeJogo() + ", ID: " + partida.getId());
+        holder.textNomeJogo.setText(partida.getNomeJogo() + " (" + partida.getId() + ")");
+        holder.textData.setText(partida.getUpdateDate()); // se Partida tiver data, senão pode remover
+
+        holder.btnDeletar.setOnClickListener(v -> {
+            if (listener != null) listener.onItemClick(partida);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return partidas.size();
+        return listaPartidas.size();
+    }
+
+    // ================= NOVO MÉTODO =================
+    public void atualizarLista(List<Partida> novaLista) {
+        this.listaPartidas.clear();
+        this.listaPartidas.addAll(novaLista);
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

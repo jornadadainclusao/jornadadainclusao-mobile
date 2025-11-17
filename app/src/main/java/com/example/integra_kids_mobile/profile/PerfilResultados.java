@@ -3,10 +3,15 @@ package com.example.integra_kids_mobile.profile;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,9 +21,11 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.integra_kids_mobile.API.DependenteService;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.adapter.HistoricoAdapter;
 import com.example.integra_kids_mobile.common.ReturnButton;
+import com.example.integra_kids_mobile.model.DependenteCallback;
 import com.example.integra_kids_mobile.model.Partida;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -26,7 +33,6 @@ import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -38,6 +44,8 @@ import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,11 +53,17 @@ import java.util.Map;
 
 public class PerfilResultados extends AppCompatActivity {
 
-    LinearLayout layoutResult;
-    Button btnChooseChild, btnChooseGraph;
-    TextView textGraph;
+    private LinearLayout layoutResult;
+    private Button btnChooseChild, btnChooseGraph;
+    private TextView textGraph;
+    private HistoricoAdapter adapter;
 
-    int currentChartIndex = 0; // 0 = Bar, 1 = Pie, 2 = Radar
+    private int currentChartIndex = 0; // 0 = Bar, 1 = Pie, 2 = Radar
+
+    private BarChart barChart;
+    private PieChart pieChart;
+    private RadarChart radarChart;
+    private RecyclerView recyclerHistorico;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,214 +72,269 @@ public class PerfilResultados extends AppCompatActivity {
         setContentView(R.layout.perfil_resultados);
 
         ReturnButton.configurar(this);
+
         layoutResult = findViewById(R.id.layoutResult);
         btnChooseChild = findViewById(R.id.btnChooseChild);
         btnChooseGraph = findViewById(R.id.btnChooseGraph);
         textGraph = findViewById(R.id.textGraph);
 
-        BarChart barChart = findViewById(R.id.barChart);
-        PieChart pieChart = findViewById(R.id.pieChart);
-        RadarChart radarChart = findViewById(R.id.radarChart);
+        barChart = findViewById(R.id.barChart);
+        pieChart = findViewById(R.id.pieChart);
+        radarChart = findViewById(R.id.radarChart);
+        recyclerHistorico = findViewById(R.id.recyclerHistorico);
 
         layoutResult.setVisibility(GONE);
         btnChooseGraph.setEnabled(false);
 
-        // Lista simulada de partidas
-        List<Partida> lista = new ArrayList<>();
-        lista.add(new Partida("Jogo da Memória", "10/11/2025", 8, 2, 45));
-        lista.add(new Partida("Jogo das Cores", "09/11/2025", 6, 4, 60));
-        lista.add(new Partida("Jogo das Vogais", "08/11/2025", 9, 1, 40));
-        lista.add(new Partida("Jogo dos Números", "08/11/2025", 7, 3, 55));
-        lista.add(new Partida("Jogo da Memória", "07/11/2025", 10, 0, 38));
-        lista.add(new Partida("Jogo das Cores", "07/11/2025", 5, 5, 70));
-        lista.add(new Partida("Jogo das Vogais", "06/11/2025", 8, 2, 42));
-        lista.add(new Partida("Jogo dos Números", "06/11/2025", 6, 4, 64));
+        // Inicializa RecyclerView com lista vazia
+        recyclerHistorico.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new HistoricoAdapter(new ArrayList<>(), partida ->
+                Toast.makeText(this, "Partida deletada: " + partida.getNomeJogo(), Toast.LENGTH_SHORT).show());
+        recyclerHistorico.setAdapter(adapter);
 
-        // ✅ Preparar dados do último resultado de cada jogo
-        Map<String, Partida> ultimoPorJogo = new HashMap<>();
-        for (Partida p : lista) {
-            ultimoPorJogo.put(p.getNomeJogo(), p); // substitui se já existe (mantém o mais recente)
-        }
-
-        // ========= Alimentar gráficos =========
-        configurarBarChart(barChart, ultimoPorJogo);
-        configurarPieChart(pieChart, ultimoPorJogo);
-        configurarRadarChart(radarChart, ultimoPorJogo);
-
-        // ========= Botões =========
-        btnChooseChild.setOnClickListener(v -> {
+        // Configura botões
+        btnChooseChild.setOnClickListener(v -> abrirDialogDependentes(obj -> {
+            int dependenteId = obj.optInt("id", -1);
+            carregarResultados(dependenteId);
             layoutResult.setVisibility(VISIBLE);
-            btnChooseGraph.setBackgroundColor(ContextCompat.getColor(this, R.color.tint));
-            btnChooseChild.setText("Mudar criança");
             btnChooseGraph.setEnabled(true);
-        });
-
-        barChart.setVisibility(VISIBLE);
-        pieChart.setVisibility(GONE);
-        radarChart.setVisibility(GONE);
-        btnChooseGraph.setText("Acertos e erros");
-        textGraph.setText("Gráfico de Tentativas:");
+            btnChooseGraph.setBackgroundColor(getResources().getColor(R.color.tint));
+            btnChooseChild.setText("Trocar criança");
+        }));
 
         btnChooseGraph.setOnClickListener(v -> {
             currentChartIndex = (currentChartIndex + 1) % 3;
-
-            switch (currentChartIndex) {
-                case 0:
-                    barChart.setVisibility(VISIBLE);
-                    pieChart.setVisibility(GONE);
-                    radarChart.setVisibility(GONE);
-                    btnChooseGraph.setText("Acertos e erros");
-                    textGraph.setText("Gráfico de Tentativas:");
-                    break;
-                case 1:
-                    barChart.setVisibility(GONE);
-                    pieChart.setVisibility(VISIBLE);
-                    radarChart.setVisibility(GONE);
-                    btnChooseGraph.setText("Tempo médio");
-                    textGraph.setText("Gráfico de Tempo:");
-                    break;
-                case 2:
-                    barChart.setVisibility(GONE);
-                    pieChart.setVisibility(GONE);
-                    radarChart.setVisibility(VISIBLE);
-                    btnChooseGraph.setText("Desempenho geral");
-                    textGraph.setText("Gráfico de Desempenho:");
-                    break;
-            }
+            atualizarVisibilidadeGraficos();
         });
 
-        // RecyclerView de histórico
-        RecyclerView recyclerHistorico = findViewById(R.id.recyclerHistorico);
-        recyclerHistorico.setLayoutManager(new LinearLayoutManager(this));
-
-        HistoricoAdapter adapter = new HistoricoAdapter(lista, partida -> {
-            Toast.makeText(this,
-                    "Partida deletada: " + partida.getNomeJogo(), Toast.LENGTH_SHORT).show();
-        });
-        recyclerHistorico.setAdapter(adapter);
+        // Inicialmente mostra BarChart
+        atualizarVisibilidadeGraficos();
     }
 
-    private void configurarBarChart(BarChart chart, Map<String, Partida> dados) {
+    private void atualizarVisibilidadeGraficos() {
+        switch (currentChartIndex) {
+            case 0:
+                barChart.setVisibility(VISIBLE);
+                pieChart.setVisibility(GONE);
+                radarChart.setVisibility(GONE);
+                btnChooseGraph.setText("Acertos e erros");
+                textGraph.setText("Gráfico de Tentativas:");
+                break;
+            case 1:
+                barChart.setVisibility(GONE);
+                pieChart.setVisibility(VISIBLE);
+                radarChart.setVisibility(GONE);
+                btnChooseGraph.setText("Tempo médio");
+                textGraph.setText("Gráfico de Tempo:");
+                break;
+            case 2:
+                barChart.setVisibility(GONE);
+                pieChart.setVisibility(GONE);
+                radarChart.setVisibility(VISIBLE);
+                btnChooseGraph.setText("Desempenho geral");
+                textGraph.setText("Gráfico de Desempenho:");
+                break;
+        }
+    }
+
+    private void abrirDialogDependentes(DependenteCallback callback) {
+        new Thread(() -> {
+            try {
+                int userId = getSharedPreferences("AuthPrefs", MODE_PRIVATE).getInt("user_id", -1);
+                List<JSONObject> dependentes = DependenteService.getDependentesByUsuario(this, userId);
+
+                runOnUiThread(() -> {
+                    View dialogView = getLayoutInflater().inflate(R.layout.dialog_dependente, null);
+                    ListView listView = dialogView.findViewById(R.id.listDependentes);
+
+                    List<String> nomes = new ArrayList<>();
+                    for (JSONObject d : dependentes) nomes.add(d.optString("nome"));
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                            android.R.layout.simple_list_item_1, nomes);
+                    listView.setAdapter(adapter);
+
+                    AlertDialog dialog = new AlertDialog.Builder(this)
+                            .setTitle("Selecione a criança")
+                            .setView(dialogView)
+                            .create();
+
+                    listView.setOnItemClickListener((parent, view, position, id) -> {
+                        callback.onDependenteSelecionado(dependentes.get(position));
+                        dialog.dismiss();
+                    });
+
+                    dialog.show();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() ->
+                        Toast.makeText(this, "Erro ao carregar dependentes", Toast.LENGTH_SHORT).show()
+                );
+            }
+        }).start();
+    }
+
+    private void carregarResultados(int dependenteId) {
+        new Thread(() -> {
+            try {
+                List<Partida> lista = DependenteService.getPartidasByDependente(this, dependenteId);
+
+                // Agrupar dados
+                Map<String, Integer> totalAcertos = new HashMap<>();
+                Map<String, Integer> totalErros = new HashMap<>();
+                Map<String, Float> totalTempo = new HashMap<>();
+
+                for (Partida p : lista) {
+                    Log.d("PerfilResultados", "Partida recebida -> ID: " + p.getId() +
+                            ", Nome: " + p.getNomeJogo() +
+                            ", Acertos: " + p.getAcertos() +
+                            ", Erros: " + p.getErros() +
+                            ", Tempo: " + p.getTempoTotal());
+                    String nome = p.getNomeJogo(); // já corrigido acima
+                    totalAcertos.put(nome, totalAcertos.getOrDefault(nome, 0) + p.getAcertos());
+                    totalErros.put(nome, totalErros.getOrDefault(nome, 0) + p.getErros());
+                    totalTempo.put(nome, totalTempo.getOrDefault(nome, 0f) + (float)p.getTempoTotal());
+
+                    Log.d("PerfilResultados", "Mapa atualizado -> Nome: " + nome +
+                            ", Acertos: " + totalAcertos.get(nome) +
+                            ", Erros: " + totalErros.get(nome) +
+                            ", Tempo: " + totalTempo.get(nome));
+                }
+
+
+                runOnUiThread(() -> {
+                    configurarBarChart(barChart, totalAcertos, totalErros);
+                    configurarPieChart(pieChart, totalTempo);
+                    configurarRadarChart(radarChart, totalAcertos);
+
+                    adapter.atualizarLista(lista); // atualiza dados do RecyclerView
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() ->
+                        Toast.makeText(this, "Erro ao carregar resultados!", Toast.LENGTH_SHORT).show()
+                );
+            }
+        }).start();
+    }
+
+    // ---------------------- MÉTODOS GRÁFICOS ----------------------
+
+    private void configurarBarChart(BarChart chart, Map<String, Integer> acertos, Map<String, Integer> erros) {
         List<BarEntry> tentativas = new ArrayList<>();
-        List<BarEntry> acertos = new ArrayList<>();
-        List<BarEntry> erros = new ArrayList<>();
-        List<String> nomesLimpos = new ArrayList<>();
-        List<String> nomesOriginais = new ArrayList<>(dados.keySet());
+        List<BarEntry> entradasAcertos = new ArrayList<>();
+        List<BarEntry> entradasErros = new ArrayList<>();
+        List<String> nomes = new ArrayList<>();
+        List<String> nomesOriginais = new ArrayList<>(); // para manter correspondência com o mapa
 
-        // 🔤 Remove o prefixo "Jogo de / da / do / das / dos"
-        for (String nomeOriginal : nomesOriginais) {
-            String nomeLimpo = nomeOriginal
-                    .replaceFirst("(?i)^jogo\\s+(de|da|do|das|dos)\\s+", "")
-                    .trim();
-            nomesLimpos.add(nomeLimpo);
+        for (String nomeOriginal : acertos.keySet()) {
+            String nomeLimpo = nomeOriginal.replaceFirst("(?i)^jogo\\s+(de|da|do|das|dos)\\s+", "").trim();
+            nomes.add(nomeLimpo);
+            nomesOriginais.add(nomeOriginal);
         }
 
-        for (int i = 0; i < nomesOriginais.size(); i++) {
-            Partida p = dados.get(nomesOriginais.get(i));
-            tentativas.add(new BarEntry(i, p.getAcertos() + p.getErros()));
-            acertos.add(new BarEntry(i, p.getAcertos()));
-            erros.add(new BarEntry(i, p.getErros()));
+        int i = 0;
+        for (int j = 0; j < nomes.size(); j++) {
+            String nomeOriginal = nomesOriginais.get(j);
+            int a = acertos.getOrDefault(nomeOriginal, 0);
+            int e = erros.getOrDefault(nomeOriginal, 0);
+            entradasAcertos.add(new BarEntry(i, a));
+            entradasErros.add(new BarEntry(i, e));
+            tentativas.add(new BarEntry(i, a + e));
+            i++;
         }
+
+        int corTexto = getResources().getColor(R.color.text);
 
         BarDataSet dsTentativas = new BarDataSet(tentativas, "Tentativas");
         dsTentativas.setColor(Color.rgb(66, 135, 245));
-        BarDataSet dsAcertos = new BarDataSet(acertos, "Acertos");
+        dsTentativas.setValueTextColor(corTexto);
+
+        BarDataSet dsAcertos = new BarDataSet(entradasAcertos, "Acertos");
         dsAcertos.setColor(Color.rgb(76, 175, 80));
-        BarDataSet dsErros = new BarDataSet(erros, "Erros");
+        dsAcertos.setValueTextColor(corTexto);
+
+        BarDataSet dsErros = new BarDataSet(entradasErros, "Erros");
         dsErros.setColor(Color.rgb(244, 67, 54));
+        dsErros.setValueTextColor(corTexto);
 
         BarData data = new BarData(dsTentativas, dsAcertos, dsErros);
         chart.setData(data);
         chart.getDescription().setEnabled(false);
 
-        int textColor = ContextCompat.getColor(this, R.color.text);
+        // legenda
+        Legend legend = chart.getLegend();
+        legend.setTextColor(corTexto);
 
-        // 🟢 Cor dos textos
-        chart.getXAxis().setTextColor(textColor);
-        chart.getAxisLeft().setTextColor(textColor);
-        chart.getAxisRight().setTextColor(textColor);
-        chart.getLegend().setTextColor(textColor);
-        chart.getData().setValueTextColor(textColor);
-
-        // 🟢 Configuração do eixo X
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
-        xAxis.setCenterAxisLabels(true); // 🔥 Corrige o desalinhamento
         xAxis.setDrawGridLines(false);
-        xAxis.setYOffset(10f);
         xAxis.setTextSize(9f);
-
-        // Formatter com nomes limpos
+        xAxis.setTextColor(corTexto);
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
                 int index = (int) value;
-                return (index >= 0 && index < nomesLimpos.size()) ? nomesLimpos.get(index) : "";
+                return (index >= 0 && index < nomes.size()) ? nomes.get(index) : "";
             }
         });
 
-        // 🟢 Espaçamento e alinhamento corrigido
-        float groupSpace = 0.3f;
-        float barSpace = 0.05f;
-        float barWidth = 0.2f;
+        float groupSpace = 0.3f, barSpace = 0.05f, barWidth = 0.2f;
         data.setBarWidth(barWidth);
-
         float groupWidth = data.getGroupWidth(groupSpace, barSpace);
-        chart.getXAxis().setAxisMinimum(0);
-        chart.getXAxis().setAxisMaximum(0 + groupWidth * nomesLimpos.size());
-
-        chart.groupBars(0, groupSpace, barSpace); // agrupa corretamente
-        chart.setFitBars(true);
+        xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(0 + groupWidth * nomes.size());
+        chart.groupBars(0, groupSpace, barSpace);
         chart.invalidate();
     }
 
-
-    // ===================== GRÁFICO DE PIZZA =====================
-    private void configurarPieChart(PieChart chart, Map<String, Partida> dados) {
+    private void configurarPieChart(PieChart chart, Map<String, Float> tempo) {
         List<PieEntry> entries = new ArrayList<>();
-
-        for (String nome : dados.keySet()) {
-            Partida p = dados.get(nome);
-            String nomeCurto = nome.replace("Jogo da ", "").replace("Jogo dos ", "").replace("Jogo das ", "");
-            entries.add(new PieEntry(p.getTempo(), nomeCurto));
+        for (String nomeOriginal : tempo.keySet()) {
+            String nomeLimpo = nomeOriginal.replaceFirst("(?i)^jogo\\s+(de|da|do|das|dos)\\s+", "").trim();
+            entries.add(new PieEntry(tempo.get(nomeOriginal), nomeLimpo));
         }
 
-
-        PieDataSet dataSet = new PieDataSet(entries, "Tempo (segundos)");
+        PieDataSet dataSet = new PieDataSet(entries, "Tempo");
         dataSet.setColors(Color.rgb(66, 135, 245), Color.rgb(76, 175, 80),
                 Color.rgb(255, 193, 7), Color.rgb(244, 67, 54));
 
+        int corTexto = getResources().getColor(R.color.text);
+        dataSet.setValueTextColor(corTexto);
+
+        // Formata os valores para mm:ss
         PieData data = new PieData(dataSet);
+        data.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int totalSegundos = (int) value;
+                int minutos = totalSegundos / 60;
+                int segundos = totalSegundos % 60;
+                return String.format("%02d:%02d", minutos, segundos);
+            }
+        });
+
         chart.setData(data);
-        chart.setUsePercentValues(false);
         chart.getDescription().setEnabled(false);
+        chart.setUsePercentValues(false);
 
-        int textColor = ContextCompat.getColor(this, R.color.text);
-        int bgColor = ContextCompat.getColor(this, R.color.background); // 🟢
-
-        // 🟢 Centralizar e colorir o meio
-        chart.setHoleColor(bgColor);
-        chart.setTransparentCircleColor(bgColor);
-
-        chart.getLegend().setTextColor(textColor);
-        chart.getData().setValueTextColor(textColor);
-        chart.setEntryLabelColor(textColor);
+        Legend legend = chart.getLegend();
+        legend.setTextColor(corTexto);
 
         chart.invalidate();
     }
 
-    private void configurarRadarChart(RadarChart chart, Map<String, Partida> dados) {
+
+    private void configurarRadarChart(RadarChart chart, Map<String, Integer> acertos) {
         List<RadarEntry> entries = new ArrayList<>();
         List<String> nomes = new ArrayList<>();
-
-        // 🔤 Remove o prefixo "Jogo de / da / do / das / dos"
-        for (String nomeOriginal : dados.keySet()) {
-            String nomeLimpo = nomeOriginal
-                    .replaceFirst("(?i)^jogo\\s+(de|da|do|das|dos)\\s+", "")
-                    .trim();
+        for (String nomeOriginal : acertos.keySet()) {
+            String nomeLimpo = nomeOriginal.replaceFirst("(?i)^jogo\\s+(de|da|do|das|dos)\\s+", "").trim();
             nomes.add(nomeLimpo);
-            entries.add(new RadarEntry(dados.get(nomeOriginal).getAcertos()));
+            entries.add(new RadarEntry(acertos.get(nomeOriginal)));
         }
 
         RadarDataSet dataSet = new RadarDataSet(entries, "Acertos por jogo");
@@ -273,37 +342,29 @@ public class PerfilResultados extends AppCompatActivity {
         dataSet.setFillColor(Color.rgb(33, 150, 243));
         dataSet.setDrawFilled(true);
         dataSet.setLineWidth(2f);
+        int corTexto = getResources().getColor(R.color.text);
+        dataSet.setValueTextColor(corTexto);
 
         RadarData data = new RadarData(dataSet);
         chart.setData(data);
         chart.getDescription().setEnabled(false);
         chart.getYAxis().setAxisMinimum(0);
-
-        int textColor = ContextCompat.getColor(this, R.color.text);
-
-        chart.getXAxis().setTextColor(textColor);
-        chart.getYAxis().setTextColor(textColor);
-        chart.getData().setValueTextColor(textColor);
-
-        chart.getXAxis().setTextSize(8f);
-        chart.getYAxis().setTextSize(7f);
-        chart.getData().setValueTextSize(8f);
-
+        chart.getYAxis().setTextColor(corTexto);
+        chart.getXAxis().setTextColor(corTexto);
         chart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
+                if (nomes.isEmpty()) return "";
                 int index = (int) value % nomes.size();
                 return (index >= 0 && index < nomes.size()) ? nomes.get(index) : "";
             }
         });
 
-        chart.setExtraOffsets(0, 0, 0, 0);
-        chart.setRotationEnabled(false);
-        chart.setMinOffset(5f); // dá um leve respiro, mas mantém compacto
-
+        Legend legend = chart.getLegend();
+        legend.setTextColor(corTexto);
         chart.getLegend().setEnabled(false);
+
         chart.invalidate();
     }
-
 
 }

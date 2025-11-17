@@ -3,6 +3,9 @@ package com.example.integra_kids_mobile.API;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.integra_kids_mobile.model.Partida;
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -165,4 +168,31 @@ public class DependenteService {
         Response response = ApiClient.delete(context, BASE + "/" + id);
         return response.isSuccessful();
     }
+
+    public static List<Partida> getPartidasByDependente(Context context, int dependenteId) throws Exception {
+
+        String url = BASE + "/infoJogosByDependente/" + dependenteId;
+
+        Response response = ApiClient.get(context, url);
+        String resp = response.body().string();
+
+        JSONArray arr = new JSONArray(resp);
+
+        List<Partida> lista = new ArrayList<>();
+
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject obj = arr.getJSONObject(i);
+
+            Gson gson = new Gson();
+            Partida p = gson.fromJson(obj.toString(), Partida.class);
+            lista.add(p);
+
+
+
+            lista.add(p);
+        }
+
+        return lista;
+    }
+
 }
