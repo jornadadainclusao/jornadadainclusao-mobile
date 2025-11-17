@@ -1,21 +1,24 @@
 package com.example.integra_kids_mobile.ui.components.jogos;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 
+// Extende-se a View apenas para colocar a figura no Layout. O que importa pra sua forma mesmo é o
+// GradientDrawable
 public class KeyView extends View {
-    final protected Paint paint = new Paint();
-    private char keyContent = '\0';
-    private int keyWidth = 150;
-    private int keyHeight = 150;
-    private int keyFontSize = (int) (this.keyWidth * 0.75);
-    private int keyBackgroundColor = Color.RED; // Cor padrão bem óbvia caso algo inesperado ocorra
-    private boolean isPlaced = false;
+    protected GradientDrawable drawable = new GradientDrawable();
+    protected char content = '\0';
+    protected int width = 150;
+    protected int height = 150;
+    protected int fontSize = (int) (this.width * 0.75);
+    protected int backgroundColor = Color.RED; // Cor padrão bem óbvia caso algo inesperado ocorra
+    protected int borderSize = 8;
+    protected int borderColor = Color.BLACK;
+    protected boolean isPlaced = false;
 
     public KeyView(Context context) {
         super(context);
@@ -32,75 +35,101 @@ public class KeyView extends View {
         init();
     }
 
-    private void init() {
-        paint.setColor(this.keyBackgroundColor);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setAntiAlias(true);
-    }
-
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        int startX = 0;
-        int startY = 0;
-
-        canvas.drawOval(startX, startY, startX + this.keyWidth, startY + this.keyHeight, this.paint);
+    protected void init() {
+        drawable.setColor(this.backgroundColor);
+        drawable.setStroke(this.borderSize, this.borderColor);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(this.keyWidth, this.keyHeight);
+        setMeasuredDimension(this.width, this.height);
     }
 
-    public char getKeyContent() {
-        return this.keyContent;
+    public char getContent() {
+        return this.content;
     }
 
-    public void setKeyContent(char keyContent) {
-        this.keyContent = keyContent;
+    public void setContent(char content) {
+        this.content = content;
         requestLayout();
         invalidate();
     }
 
+    // Não sobrescreva o método base
     public int getKeyWidth() {
-        return this.keyWidth;
+        return this.width;
     }
 
-    public void setKeyWidth(int keyWidth) {
-        this.keyWidth = keyWidth;
+    public void setWidth(int width) {
+        this.width = width;
         requestLayout();
         invalidate();
     }
 
+    // Não sobrescreva o método base
     public int getKeyHeight() {
-        return this.keyHeight;
+        return this.height;
     }
 
-    public void setKeyHeight(int keyHeight) {
-        this.keyHeight = keyHeight;
+    public void setHeight(int height) {
+        this.height = height;
         requestLayout();
         invalidate();
     }
 
-    public int getKeyFontSize() {
-        return this.keyFontSize;
+    public int getFontSize() {
+        return this.fontSize;
     }
 
-    public void setKeyFontSize(int keyFontSize) {
-        this.keyFontSize = keyFontSize;
+    public void setFontSize(int fontSize) {
+        this.fontSize = fontSize;
         requestLayout();
         invalidate();
     }
 
-    public int getKeyBackgroundColor() {
-        return this.keyBackgroundColor;
+    public int getBackgroundColor() {
+        return this.backgroundColor;
     }
 
-    public void setKeyBackgroundColor(int keyBackgroundColor) {
-        this.keyBackgroundColor = keyBackgroundColor;
-        paint.setColor(this.keyBackgroundColor);
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+        this.drawable.setColor(this.backgroundColor);
         requestLayout();
         invalidate();
+    }
+
+    public void setBackgroundColorWithAnimation(int backgroundColor) {
+        ObjectAnimator animation = ObjectAnimator.ofArgb(this, "backgroundColor", backgroundColor);
+        animation.setDuration(150);
+        animation.start();
+    }
+
+    public int getBorderSize() {
+        return borderSize;
+    }
+
+    public void setBorderSize(int borderSize) {
+        this.borderSize = borderSize;
+        this.drawable.setStroke(this.borderColor, this.borderSize);
+        requestLayout();
+        invalidate();
+    }
+
+    public int getBorderColor() {
+        return borderColor;
+    }
+
+    public void setBorderColor(int borderColor) {
+        this.borderColor = borderColor;
+        this.drawable.setStroke(this.borderColor, this.borderSize);
+        requestLayout();
+        invalidate();
+    }
+
+    public void setBorderColorWithAnimation(int borderColor) {
+        ObjectAnimator animation = ObjectAnimator.ofArgb(this, "borderColor", borderColor);
+        animation.setDuration(150);
+        animation.start();
     }
 
     public boolean isPlaced() {

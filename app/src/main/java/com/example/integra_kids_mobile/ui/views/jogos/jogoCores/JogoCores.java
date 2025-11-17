@@ -2,6 +2,9 @@ package com.example.integra_kids_mobile.ui.views.jogos.jogoCores;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.transition.ChangeTransform;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -12,6 +15,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.ui.components.jogos.KeyView;
+import com.example.integra_kids_mobile.ui.components.jogos.KeyViewStateEnum;
+import com.example.integra_kids_mobile.ui.components.jogos.jogo_cores.ColorView;
 import com.example.integra_kids_mobile.ui.views.jogos.InfoJogos;
 
 import java.util.ArrayList;
@@ -20,7 +25,7 @@ import java.util.List;
 public class JogoCores extends AppCompatActivity {
     private final long id = 4;
     private final InfoJogos infoJogos = new InfoJogos(this.id, 0); // hardcoded
-    private final List<ColorBox> data = new ArrayList<>();
+    private final List<ColorViewState> data = new ArrayList<>();
     private int placedKeyViews = 0;
     private int selectedColorBoxIdx = -1;
 
@@ -36,7 +41,7 @@ public class JogoCores extends AppCompatActivity {
                 { "#8FF43F", "#78BD42" }, // verde
                 { "#FAA94B", "#BF8A4D" }, // laranja
                 { "#FFE96A", "#BFB15C" }, // amarelo
-                { "#EB4A4A", "#B84444" } // vermelho
+                { "#EB4A4A", "#B84444" }  // vermelho
         };
         ConstraintLayout[] containers = {
                 findViewById(R.id.coelho_slot),
@@ -51,50 +56,62 @@ public class JogoCores extends AppCompatActivity {
 
         for (int i = 0; i < colors.length; i++) {
             // Crie a cor
-            final ColorBox currentData = new ColorBox.Builder()
+            final ColorViewState currentData = new ColorViewState.Builder()
                     .withId(i)
-                    .withColors(colors[i])
                     .withContainer(containers[i])
-                    .withKeyView(new KeyView(this))
+                    .withColorView(new ColorView(this))
                     .build();
 
             data.add(currentData);
-            final KeyView keyView = currentData.getKeyView();
+
+            final ColorView colorView = currentData.getColorView();
+            colorView.setId(i);
+            colorView.setWidth(200);
+            colorView.setHeight(200);
+            colorView.setBorderSize(4);
+            colorView.setColors(colors[i]);
+            colorView.setBackgroundColor(Color.parseColor(colorView.getColors()[KeyViewStateEnum.NORMAL]));
+            colorView.setStateListAnimator(null);
 
             // Coloque a cor no grid
             final GridLayout.LayoutParams gridParams = new GridLayout.LayoutParams();
             gridParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             gridParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            final int margin = (int) (keyView.getKeyWidth() * 0.20);
+
+            final int margin = (int) (colorView.getKeyWidth() * 0.20);
             gridParams.setMargins(margin, margin, margin, margin);
 
-            keyView.setId(i);
-            keyView.setKeyBackgroundColor(Color.parseColor(currentData.getColors()[currentData.NORMAL]));
-            keyView.setStateListAnimator(null);
-            keyView.setLayoutParams(gridParams);
-            gridLayout.addView(keyView);
+            colorView.setLayoutParams(gridParams);
+            gridLayout.addView(colorView);
 
             final View container = currentData.getContainer();
             container.setOnClickListener(v -> {
-                KeyView kv = data.get(this.selectedColorBoxIdx).getKeyView();
+                final ColorViewState cvs = data.get(this.selectedColorBoxIdx);
+                final ColorView cv = cvs.getColorView();
 
                 infoJogos.setTentativas(infoJogos.getTentativas() + 1);
 
-                if (this.selectedColorBoxIdx == currentData.getId() && !kv.isPlaced()) {
-                    final ColorBox _currentData = data.get(this.selectedColorBoxIdx);
+                if (this.selectedColorBoxIdx == currentData.getId() && !cv.isPlaced()) {
 
                     infoJogos.setAcertos(infoJogos.getAcertos() + 1);
                     placedKeyViews += 1;
 
-                    ConstraintLayout l = (ConstraintLayout) v;
-                    GridLayout parent = findViewById(R.id.cores_grid);
-                    String color = _currentData.getColors()[_currentData.NORMAL];
+                    final ViewGroup oldParent = (ViewGroup) cv.getParent();
+                    final ConstraintLayout newParent = (ConstraintLayout) v;
 
-                    parent.removeView(kv);
-                    l.addView(kv);
-                    kv.setFocusable(false);
-                    kv.setPlaced(true);
-                    kv.setKeyBackgroundColor(Color.parseColor(color));
+                    // Animação entre ViewGroups. Importante ser uma Transition e não qualquer
+                    // animação normal (seja com ValueAnimator ou animação de View), caso contrário
+                    // o objeto é cortado se sair do parent
+                    Transition move = new ChangeTransform().addTarget(cv).setDuration(300);
+                    TransitionManager.beginDelayedTransition(findViewById(R.id.cores_root), move);
+                    oldParent.removeView(cv);
+                    newParent.addView(cv);
+
+                    cv.setFocusable(false);
+                    cv.setPlaced(true);
+
+                    String color = cv.getColors()[KeyViewStateEnum.NORMAL];
+                    cv.setBackgroundColor(Color.parseColor(color));
 
                     if (placedKeyViews == data.toArray().length) {
                         infoJogos.terminarJogo();
@@ -105,18 +122,18 @@ public class JogoCores extends AppCompatActivity {
                 }
             });
 
-            // Escureça o círculo caso selecionado
-            keyView.setOnClickListener(v -> {
+            // Faça highlight no círculo caso selecionado
+            colorView.setOnClickListener(v -> {
                 final KeyView kv = (KeyView) v;
                 if (kv.isPlaced()) {
                     return;
                 }
 
                 if (this.selectedColorBoxIdx != -1) {
-                    data.get(this.selectedColorBoxIdx).toggleColor();
+                    data.get(this.selectedColorBoxIdx).getColorView().toggleColor();
                 }
                 this.selectedColorBoxIdx = kv.getId();
-                data.get(this.selectedColorBoxIdx).toggleColor();
+                data.get(this.selectedColorBoxIdx).getColorView().toggleColor();
             });
         }
 
