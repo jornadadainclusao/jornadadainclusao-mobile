@@ -3,6 +3,7 @@ package com.example.integra_kids_mobile.auth;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.integra_kids_mobile.LoginCadastro;
 import com.example.integra_kids_mobile.MenuPrincipal;
@@ -21,9 +22,10 @@ public class LoginAuth {
     // ---------------------------------------------------------
     //                     LOGIN
     // ---------------------------------------------------------
-    public static boolean login(Context context, String email, String senha) {
+    public static boolean login(Context context, String usuario, String senha) {
         try {
-            JSONObject resp = UsuarioService.logar(email, senha);
+            // envia JSON {"usuario": "...", "senha": "..."}
+            JSONObject resp = UsuarioService.logar(usuario, senha);
 
             if (resp.has("token")) {
                 saveUserData(context, resp);
@@ -39,17 +41,42 @@ public class LoginAuth {
     }
 
     // ---------------------------------------------------------
+    //                     CADASTRO
+    // ---------------------------------------------------------
+    public static boolean cadastrar(Context context, String nome, String usuario, String senha) {
+        try {
+            JSONObject resp = UsuarioService.cadastrar(context, nome, usuario, senha);
+
+            // Sucesso se veio id do usuário
+            if (resp.has("id")) {
+                Log.d("DEBUG_CAD_RESP", "Cadastro bem-sucedido para usuário ID: " + resp.getLong("id"));
+            }
+
+            return true; // ✅ Considera sucesso independentemente do token
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ---------------------------------------------------------
     //           SALVAR DADOS DO USUÁRIO LOGADO
     // ---------------------------------------------------------
     private static void saveUserData(Context context, JSONObject json) throws Exception {
-
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        editor.putLong(KEY_ID, json.getLong("id"));
-        editor.putString(KEY_NOME, json.getString("nome"));
-        editor.putString(KEY_EMAIL, json.getString("email"));
-        editor.putString(KEY_TOKEN, json.getString("token"));
+        if (json.has("id"))
+            editor.putLong(KEY_ID, json.getLong("id"));
+
+        if (json.has("nome"))
+            editor.putString(KEY_NOME, json.getString("nome"));
+
+        if (json.has("usuario"))
+            editor.putString(KEY_EMAIL, json.getString("usuario"));
+
+        if (json.has("token"))
+            editor.putString(KEY_TOKEN, json.getString("token"));
 
         editor.apply();
     }
@@ -89,18 +116,22 @@ public class LoginAuth {
     //                  MÉTODOS DE ACESSO RÁPIDO
     // ---------------------------------------------------------
     public static long getUserId(Context context) {
-        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getLong(KEY_ID, -1);
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getLong(KEY_ID, -1);
     }
 
     public static String getUserNome(Context context) {
-        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getString(KEY_NOME, null);
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getString(KEY_NOME, null);
     }
 
     public static String getUserEmail(Context context) {
-        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getString(KEY_EMAIL, null);
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getString(KEY_EMAIL, null);
     }
 
     public static String getToken(Context context) {
-        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getString(KEY_TOKEN, null);
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getString(KEY_TOKEN, null);
     }
 }

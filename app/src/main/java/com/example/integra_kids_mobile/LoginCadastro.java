@@ -19,12 +19,10 @@ import com.example.integra_kids_mobile.API.UsuarioService;
 import com.example.integra_kids_mobile.auth.LoginAuth;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.json.JSONObject;
-
 public class LoginCadastro extends AppCompatActivity {
 
     private ImageView imageLogo;
-    private Button btnCadLog1, btnCadLog2, btnEsqueciSenha;
+    private Button btnCadLog1, btnCadLog2;
     private LinearLayout layoutRegister, layoutLogin;
     private TextInputEditText inputLoginEmail, inputLoginSenha;
     private TextInputEditText inputRegNome, inputRegEmail, inputRegSenha, inputRegSenhaConf;
@@ -36,10 +34,23 @@ public class LoginCadastro extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.login_cadastro);
 
-        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
-        int themeMode = prefs.getInt("themeMode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        // Tema
+        SharedPreferences themePrefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        int themeMode = themePrefs.getInt("themeMode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         AppCompatDelegate.setDefaultNightMode(themeMode);
 
+        // Verifica se deve manter login
+        SharedPreferences authPrefs = getSharedPreferences("AuthPrefs", MODE_PRIVATE);
+        boolean manterLogin = authPrefs.getBoolean("manter_login", false);
+        String token = authPrefs.getString("user_token", "");
+
+        if (manterLogin && token != null && !token.isEmpty()) {
+            startActivity(new Intent(this, MenuPrincipal.class));
+            finish();
+            return;
+        }
+
+        // Views
         imageLogo = findViewById(R.id.imageLogo);
         btnCadLog1 = findViewById(R.id.btnCadLog1);
         btnCadLog2 = findViewById(R.id.btnCadLog2);
@@ -57,14 +68,14 @@ public class LoginCadastro extends AppCompatActivity {
         inputRegSenha = findViewById(R.id.inputRegSenha);
         inputRegSenhaConf = findViewById(R.id.inputRegSenhaConf);
 
+        // Alternar login ↔ cadastro
         btnCadLog2.setOnClickListener(v -> {
-            if(layoutLogin.getVisibility() == View.GONE){
+            if (layoutLogin.getVisibility() == View.GONE) {
                 layoutLogin.setVisibility(View.VISIBLE);
                 layoutRegister.setVisibility(View.GONE);
                 btnCadLog2.setText("Faça seu cadastro");
                 btnCadLog1.setText("Logar");
-            }
-            else{
+            } else {
                 layoutRegister.setVisibility(View.VISIBLE);
                 layoutLogin.setVisibility(View.GONE);
                 btnCadLog2.setText("Já tem conta? Faça login");
@@ -72,80 +83,98 @@ public class LoginCadastro extends AppCompatActivity {
             }
         });
 
-        btnCadLog1.setOnClickListener(v -> {
+        // BOTÃO LOGAR / CADASTRAR
+        btnCadLog1.setOnClickListener(v -> handleAuthAction());
+    }
 
-            String btnText = btnCadLog1.getText().toString();
-            String cadEmail = inputRegEmail.getText().toString().trim();
-            String nome  = inputRegNome.getText().toString().trim();
-            String cadSenha = inputRegSenha.getText().toString().trim();
-            String cadSenhaConf = inputRegSenhaConf.getText().toString().trim();
+    // ============================================================
+    //                     FUNÇÃO PRINCIPAL
+    // ============================================================
+    private void handleAuthAction() {
 
-            String logEmail = inputLoginEmail.getText().toString().trim();
-            String logSenha = inputLoginSenha.getText().toString().trim();
+        String action = btnCadLog1.getText().toString();
 
-            // ============================================================
-            //                CADASTRAR
-            // ============================================================
-            if (btnText.equals("Cadastrar")) {
+        // ===========================
+        //        DADOS LOGIN
+        // ===========================
+        String logEmail = inputLoginEmail.getText().toString().trim();
+        String logSenha = inputLoginSenha.getText().toString().trim();
 
-                if (TextUtils.isEmpty(cadEmail) || TextUtils.isEmpty(nome) || TextUtils.isEmpty(cadSenha)) {
-                    Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+        // ===========================
+        //        DADOS CADASTRO
+        // ===========================
+        String nome = inputRegNome.getText().toString().trim();
+        String cadEmail = inputRegEmail.getText().toString().trim();
+        String cadSenha = inputRegSenha.getText().toString().trim();
+        String cadSenhaConf = inputRegSenhaConf.getText().toString().trim();
 
-                if (!cadSenha.equals(cadSenhaConf)) {
-                    Toast.makeText(this, "A confirmação de senha não coincide!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+        // ============================================================
+        //                        CADASTRAR
+        // ============================================================
+        if (action.equals("Cadastrar")) {
 
-                new Thread(() -> {
-                    try {
-                        JSONObject resp = UsuarioService.cadastrarUsuario(nome, cadEmail, cadSenha);
-
-                        runOnUiThread(() -> {
-                            Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
-
-                            // voltar para o login
-                            layoutLogin.setVisibility(View.VISIBLE);
-                            layoutRegister.setVisibility(View.GONE);
-                            btnCadLog2.setText("Faça seu cadastro");
-                            btnCadLog1.setText("Logar");
-                        });
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        runOnUiThread(() ->
-                                Toast.makeText(this, "Erro ao cadastrar!", Toast.LENGTH_SHORT).show()
-                        );
-                    }
-                }).start();
-
+            if (TextUtils.isEmpty(nome) || TextUtils.isEmpty(cadEmail) ||
+                    TextUtils.isEmpty(cadSenha) || TextUtils.isEmpty(cadSenhaConf)) {
+                Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // ============================================================
-            //                LOGIN (agora usando LoginAuth)
-            // ============================================================
-            if (TextUtils.isEmpty(logEmail) || TextUtils.isEmpty(logSenha)) {
-                Toast.makeText(this, "Preencha email e senha!", Toast.LENGTH_SHORT).show();
+            if (!cadSenha.equals(cadSenhaConf)) {
+                Toast.makeText(this, "As senhas não coincidem!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             new Thread(() -> {
-                boolean success = LoginAuth.login(this, logEmail, logSenha);
+                try {
+                    UsuarioService.cadastrar(this, nome, cadEmail, cadSenha);
 
-                runOnUiThread(() -> {
-                    if (success) {
-                        Intent i = new Intent(LoginCadastro.this, MenuPrincipal.class);
-                        startActivity(i);
-                        finish();
-                    } else {
-                        Toast.makeText(this, "Email ou senha incorretos!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                        voltarParaLogin();
+                    });
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    runOnUiThread(() ->
+                            Toast.makeText(this, "Erro ao cadastrar!", Toast.LENGTH_SHORT).show()
+                    );
+                }
             }).start();
-        });
 
+            return;
+        }
+
+        // ============================================================
+        //                            LOGIN
+        // ============================================================
+        if (TextUtils.isEmpty(logEmail) || TextUtils.isEmpty(logSenha)) {
+            Toast.makeText(this, "Preencha email e senha!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new Thread(() -> {
+            boolean sucesso = LoginAuth.login(this, logEmail, logSenha);
+
+            runOnUiThread(() -> {
+                if (sucesso) {
+
+                    // Salva o "lembrar login"
+                    SharedPreferences prefs = getSharedPreferences("AuthPrefs", MODE_PRIVATE);
+                    prefs.edit().putBoolean("manter_login", checkBoxLembrar.isChecked()).apply();
+
+                    startActivity(new Intent(this, MenuPrincipal.class));
+                    finish();
+                } else {
+                    Toast.makeText(this, "Email ou senha incorretos!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
+    }
+
+    private void voltarParaLogin() {
+        layoutLogin.setVisibility(View.VISIBLE);
+        layoutRegister.setVisibility(View.GONE);
+        btnCadLog2.setText("Faça seu cadastro");
+        btnCadLog1.setText("Logar");
     }
 }

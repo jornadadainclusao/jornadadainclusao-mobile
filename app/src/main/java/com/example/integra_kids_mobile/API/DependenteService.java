@@ -1,115 +1,119 @@
 package com.example.integra_kids_mobile.API;
 
+import android.content.Context;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 
 public class DependenteService {
 
-    private static final OkHttpClient client = new OkHttpClient();
-    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    private static final String BASE = "/dependente";
 
-    // ---------------------------------------------------------
-    //              MÉTODOS SIMPLIFICADOS
-    // ---------------------------------------------------------
+    // ==========================================================
+    //                         GET
+    // ==========================================================
 
-    // 🔹 1. Buscar todos os dependentes
-    public static JSONArray getTodos() throws Exception {
-        return new JSONArray(ApiClient.get("/dependente"));
+    // 🔹 Buscar todos os dependentes
+    public static JSONArray getTodos(Context context) throws Exception {
+        Response response = ApiClient.get(context, BASE);
+        String resp = response.body().string();
+        return new JSONArray(resp);
     }
 
-    // 🔹 2. Buscar por ID
-    public static JSONObject getById(long id) throws Exception {
-        return new JSONObject(ApiClient.get("/dependente/" + id));
+    // 🔹 Buscar dependente por ID
+    public static JSONObject getById(Context context, long id) throws Exception {
+        Response response = ApiClient.get(context, BASE + "/" + id);
+        String resp = response.body().string();
+        return new JSONObject(resp);
     }
 
-    // 🔹 3. Histórico de jogos
-    public static JSONArray getInfoJogos(long id) throws Exception {
-        return new JSONArray(ApiClient.get("/dependente/infoJogosByDependente/" + id));
+    // 🔹 Histórico de jogos do dependente
+    public static JSONArray getInfoJogos(Context context, long id) throws Exception {
+        Response response = ApiClient.get(context, BASE + "/infoJogosByDependente/" + id);
+        String resp = response.body().string();
+        return new JSONArray(resp);
     }
 
-    // 🔹 4. Buscar dependentes por usuário
-    public static JSONArray getDependentesDoUsuario(long usuarioId) throws Exception {
-        return new JSONArray(ApiClient.get("/dependente/getDependenteByIdUsuario/" + usuarioId));
+    // 🔹 Buscar dependentes de um usuário
+    public static JSONArray getDependentesDoUsuario(Context context, long usuarioId) throws Exception {
+        Response response = ApiClient.get(context, BASE + "/getDependenteByIdUsuario/" + usuarioId);
+        String resp = response.body().string();
+        return new JSONArray(resp);
     }
 
-    // 🔹 5. Cadastrar dependente — só valores
-    public static JSONObject cadastrar(String nome, int idade, String sexo, String avatar, long usuarioId) throws Exception {
+
+    // ==========================================================
+    //                         POST
+    // ==========================================================
+
+    // 🔹 Cadastrar dependente
+    public static JSONObject cadastrar(Context context, String nome, int idade, String sexo, String avatar, long usuarioId) throws Exception {
 
         JSONObject dep = new JSONObject();
         dep.put("nome", nome);
         dep.put("idade", idade);
         dep.put("sexo", sexo);
-        dep.put("avatar", avatar);
+        dep.put("foto", avatar);
 
         JSONObject usuario = new JSONObject();
         usuario.put("id", usuarioId);
         dep.put("usuario_id_fk", usuario);
 
-        return post("/dependente/cadastrar", dep);
+        Log.d("API_DEBUG", "Enviando JSON: " + dep.toString());
+
+        Response response = ApiClient.post(context, BASE, dep.toString());
+        String resp = response.body().string();
+        return new JSONObject(resp);
     }
 
-    // 🔹 6. Atualizar dependente — só valores
-    public static JSONObject atualizar(long id, String nome, int idade, String sexo, String avatar, long usuarioId) throws Exception {
+
+    // ==========================================================
+    //                         PUT
+    // ==========================================================
+
+    // 🔹 Atualização completa
+    public static JSONObject atualizar(Context context, long id, String nome, int idade, String sexo, String avatar, long usuarioId) throws Exception {
 
         JSONObject dep = new JSONObject();
         dep.put("id", id);
         dep.put("nome", nome);
         dep.put("idade", idade);
         dep.put("sexo", sexo);
-        dep.put("avatar", avatar);
+        dep.put("foto", avatar);
 
         JSONObject usuario = new JSONObject();
         usuario.put("id", usuarioId);
         dep.put("usuario_id_fk", usuario);
 
-        return put("/dependente/atualizar", dep);
-    }
-
-    // 🔹 7. Deletar dependente — só valor
-    public static boolean deletar(long id) throws Exception {
-        return delete("/dependente/" + id);
+        Response response = ApiClient.put(context, BASE, dep.toString());
+        String resp = response.body().string();
+        return new JSONObject(resp);
     }
 
 
-    // ---------------------------------------------------------
-    //              MÉTODOS PRIVADOS DE SUPORTE
-    // ---------------------------------------------------------
+    // ==========================================================
+    //                         PATCH
+    // ==========================================================
 
-    private static JSONObject post(String endpoint, JSONObject bodyJson) throws Exception {
-        String url = Api.BASE_URL + endpoint;
+    // 🔹 Atualização parcial
+    public static JSONObject atualizarParcial(Context context, long id, JSONObject dto) throws Exception {
 
-        RequestBody body = RequestBody.create(bodyJson.toString(), JSON);
-        Request request = new Request.Builder().url(url).post(body).build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return new JSONObject(response.body().string());
-        }
+        Response response = ApiClient.patch(context, BASE + "/" + id, dto.toString());
+        String resp = response.body().string();
+        return new JSONObject(resp);
     }
 
-    private static JSONObject put(String endpoint, JSONObject bodyJson) throws Exception {
-        String url = Api.BASE_URL + endpoint;
 
-        RequestBody body = RequestBody.create(bodyJson.toString(), JSON);
-        Request request = new Request.Builder().url(url).put(body).build();
+    // ==========================================================
+    //                         DELETE
+    // ==========================================================
 
-        try (Response response = client.newCall(request).execute()) {
-            return new JSONObject(response.body().string());
-        }
-    }
-
-    private static boolean delete(String endpoint) throws Exception {
-        String url = Api.BASE_URL + endpoint;
-
-        Request request = new Request.Builder().url(url).delete().build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return response.isSuccessful();
-        }
+    // 🔹 Deletar dependente
+    public static boolean deletar(Context context, long id) throws Exception {
+        Response response = ApiClient.delete(context, BASE + "/" + id);
+        return response.isSuccessful();
     }
 }

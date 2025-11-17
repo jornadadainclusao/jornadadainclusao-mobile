@@ -1,107 +1,104 @@
 package com.example.integra_kids_mobile.API;
 
-import org.json.JSONArray;
+import android.content.Context;
+import android.util.Log;
+
 import org.json.JSONObject;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 
 public class UsuarioService {
 
-    private static final OkHttpClient client = new OkHttpClient();
-    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    private static final String BASE_URL = "https://backend-9qjw.onrender.com";
 
-    // ---------------------------------------------------------
-    //                  USUARIO CONTROLLER
-    // ---------------------------------------------------------
+    // -----------------------
+    // LOGIN → envia usuario + senha
+    // -----------------------
+    public static JSONObject logar(String usuario, String senha) throws Exception {
+        String url = BASE_URL + "/usuarios/logar";
 
-    // 🔹 GET /usuarios — lista todos os usuários
-    public static JSONArray getUsuarios() throws Exception {
-        String resp = ApiClient.get("/usuarios");
-        return new JSONArray(resp);
-    }
+        JSONObject json = new JSONObject();
+        json.put("usuario", usuario); // ⚠️ o backend espera "usuario"
+        json.put("senha", senha);
 
-    // 🔹 GET /usuarios/{id}
-    public static JSONObject getUsuarioById(long id) throws Exception {
-        String resp = ApiClient.get("/usuarios/" + id);
-        return new JSONObject(resp);
-    }
+        // 🔹 LOG do JSON que será enviado
+        android.util.Log.d("LOGIN_DEBUG", "Enviando login: " + json.toString());
 
-    // 🔹 POST /usuarios/cadastrar
-    public static JSONObject cadastrarUsuario(String nome, String email, String senha) throws Exception {
+        Response resp = ApiClient.postNoAuth(url, json.toString());
+        String respBody = resp.body().string();
 
-        JSONObject body = new JSONObject();
-        body.put("nome", nome);
-        body.put("email", email);
-        body.put("senha", senha);
+        // 🔹 LOG da resposta recebida
+        android.util.Log.d("LOGIN_DEBUG", "Resposta do backend: " + respBody);
 
-        return post("/usuarios/cadastrar", body);
-    }
-
-    // 🔹 POST /usuarios/logar — login do usuário
-    public static JSONObject logar(String email, String senha) throws Exception {
-
-        JSONObject body = new JSONObject();
-        body.put("email", email);
-        body.put("senha", senha);
-
-        return post("/usuarios/logar", body);
-    }
-
-    // 🔹 PUT /usuarios/atualizar
-    public static JSONObject atualizarUsuario(long id, String nome, String email, String senha) throws Exception {
-
-        JSONObject body = new JSONObject();
-        body.put("id", id);
-        body.put("nome", nome);
-        body.put("email", email);
-        body.put("senha", senha);
-
-        return put("/usuarios/atualizar", body);
-    }
-
-    // 🔹 DELETE /usuarios/{id}
-    public static boolean deletarUsuario(long id) throws Exception {
-        return delete("/usuarios/" + id);
+        return new JSONObject(respBody);
     }
 
 
-    // ---------------------------------------------------------
-    //              PRIVATE HTTP HELPERS
-    // ---------------------------------------------------------
+    // -----------------------
+    // CADASTRO
+    // -----------------------
+    public static JSONObject cadastrar(Context context, String nome, String usuario, String senha) throws Exception {
+        String url = BASE_URL + "/usuarios/cadastrar";
 
-    private static JSONObject post(String endpoint, JSONObject bodyJson) throws Exception {
-        String url = Api.BASE_URL + endpoint;
+        JSONObject json = new JSONObject();
+        json.put("nome", nome);
+        json.put("usuario", usuario);
+        json.put("senha", senha);
 
-        RequestBody body = RequestBody.create(bodyJson.toString(), JSON);
-        Request request = new Request.Builder().url(url).post(body).build();
+        Response resp = ApiClient.postNoAuth(url, json.toString());
 
-        try (Response response = client.newCall(request).execute()) {
-            return new JSONObject(response.body().string());
+        String bodyString = resp.body() != null ? resp.body().string() : "";
+
+        Log.d("DEBUG_CAD_RESP", "Código: " + resp.code());
+        Log.d("DEBUG_CAD_RESP", "Body: " + bodyString);
+
+        if (resp.isSuccessful()) {
+            return new JSONObject(bodyString);
+        } else {
+            throw new Exception("Erro ao cadastrar: código " + resp.code() + " | Body: " + bodyString);
         }
+
     }
 
-    private static JSONObject put(String endpoint, JSONObject bodyJson) throws Exception {
-        String url = Api.BASE_URL + endpoint;
 
-        RequestBody body = RequestBody.create(bodyJson.toString(), JSON);
-        Request request = new Request.Builder().url(url).put(body).build();
 
-        try (Response response = client.newCall(request).execute()) {
-            return new JSONObject(response.body().string());
+
+
+    // -----------------------
+    // PATCH /usuarios/{id}
+    // -----------------------
+// PATCH /usuarios/atualizar-parcial
+    public static JSONObject atualizarParcial(Context context, String jsonBody) throws Exception {
+        String endpoint = "/usuarios/atualizar-parcial"; // sem ID na URL
+        Response resp = ApiClient.patch(context, endpoint, jsonBody);
+        return new JSONObject(resp.body().string());
+    }
+
+
+    // -----------------------
+    // DELETE /usuarios/{id}
+    // -----------------------
+    public static boolean deletar(Context context, long id) throws Exception {
+        String url = BASE_URL + "/usuarios/" + id;
+        String token = ApiClient.getToken(context);
+
+        Log.d("DEBUG_DELETE_REQ", "URL: " + url);
+        Log.d("DEBUG_DELETE_REQ", "Token: " + token);
+
+        Response resp = ApiClient.delete(context, url);
+
+        // Log da resposta
+        Log.d("DEBUG_DELETE_RESP", "Código: " + resp.code());
+        if (resp.body() != null) {
+            Log.d("DEBUG_DELETE_RESP", "Body: " + resp.body().string());
+        } else {
+            Log.d("DEBUG_DELETE_RESP", "Body: null (sem conteúdo)");
         }
+
+        // Aceita qualquer 2xx como sucesso
+        return resp.code() >= 200 && resp.code() < 300;
     }
 
-    private static boolean delete(String endpoint) throws Exception {
-        String url = Api.BASE_URL + endpoint;
 
-        Request request = new Request.Builder().url(url).delete().build();
 
-        try (Response response = client.newCall(request).execute()) {
-            return response.isSuccessful();
-        }
-    }
 }

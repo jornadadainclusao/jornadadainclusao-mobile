@@ -196,27 +196,30 @@
                 android:src="@drawable/player_icon12" />
         </GridLayout>
 
-
+        <!-- Input nome -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cadKidInputNomeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/cadKidInputNome"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content"
                 android:hint="Nome da criança" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Input data -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutDate"
+            android:id="@+id/cadKidInputNascimentoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="Data de nascimento (entre 3 à 10 anos)">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextDate"
+                android:id="@+id/cadKidInputNascimento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="false"
@@ -224,13 +227,14 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Gênero -->
         <RadioGroup
+            android:id="@+id/cadKidRadioGroupGenero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"
-            android:gravity="center"
-            >
+            android:gravity="center">
 
             <TextView
                 android:id="@+id/textView7"
@@ -243,7 +247,7 @@
                 android:text="Gênero:" />
 
             <RadioButton
-                android:id="@+id/radioButton4"
+                android:id="@+id/cadKidInputGeneroMasc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -253,7 +257,7 @@
                 android:layout_marginEnd="8dp"/>
 
             <RadioButton
-                android:id="@+id/radioButton5"
+                android:id="@+id/cadKidInputGeneroFem"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -264,7 +268,7 @@
         </RadioGroup>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/cadKidBtnCadastrar"
             style="@style/PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

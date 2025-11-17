@@ -1,59 +1,70 @@
 package com.example.integra_kids_mobile.API;
 
+import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.Response;
 
 public class GameService {
 
-    private static final OkHttpClient client = new OkHttpClient();
-    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    private static final String BASE_JOGO = "/jogo";
+    private static final String BASE_INFO = "/infoJogos";
 
-    // ---------------------------------------------------------
-    //                  JOGO CONTROLLER
-    // ---------------------------------------------------------
 
-    // 🔹 GET /jogo — lista todos os jogos
-    public static JSONArray getJogos() throws Exception {
-        String resp = ApiClient.get("/jogo");
+    // ==========================================================
+    //                     JOGO CONTROLLER
+    // ==========================================================
+
+    // 🔹 GET /jogo
+    public static JSONArray getJogos(Context context) throws Exception {
+        Response response = ApiClient.get(context, BASE_JOGO);
+        String resp = response.body().string();
         return new JSONArray(resp);
     }
 
     // 🔹 GET /jogo/{id}
-    public static JSONObject getJogoById(long id) throws Exception {
-        String resp = ApiClient.get("/jogo/" + id);
+    public static JSONObject getJogoById(Context context, long id) throws Exception {
+        Response response = ApiClient.get(context, BASE_JOGO + "/" + id);
+        String resp = response.body().string();
         return new JSONObject(resp);
     }
 
-    // ---------------------------------------------------------
-    //              INFO JOGOS CONTROLLER
-    // ---------------------------------------------------------
 
-    // 🔹 GET /infoJogos — lista geral de partidas
-    public static JSONArray getInfos() throws Exception {
-        String resp = ApiClient.get("/infoJogos");
+    // ==========================================================
+    //                 INFO JOGOS CONTROLLER
+    // ==========================================================
+
+    // 🔹 GET /infoJogos
+    public static JSONArray getInfos(Context context) throws Exception {
+        Response response = ApiClient.get(context, BASE_INFO);
+        String resp = response.body().string();
         return new JSONArray(resp);
     }
 
     // 🔹 GET /infoJogos/{id}
-    public static JSONObject getInfoById(long id) throws Exception {
-        String resp = ApiClient.get("/infoJogos/" + id);
+    public static JSONObject getInfoById(Context context, long id) throws Exception {
+        Response response = ApiClient.get(context, BASE_INFO + "/" + id);
+        String resp = response.body().string();
         return new JSONObject(resp);
     }
 
     // 🔹 GET /infoJogos/dependente/{id}
-    public static JSONArray getInfosByDependente(long depId) throws Exception {
-        String resp = ApiClient.get("/infoJogos/dependente/" + depId);
+    public static JSONArray getInfosByDependente(Context context, long depId) throws Exception {
+        Response response = ApiClient.get(context, BASE_INFO + "/dependente/" + depId);
+        String resp = response.body().string();
         return new JSONArray(resp);
     }
 
-    // 🔹 POST /infoJogos/cadastrar (somente valores)
+
+    // ==========================================================
+    //                        POST
+    // ==========================================================
+
+    // 🔹 POST /infoJogos/cadastrar
     public static JSONObject cadastrarInfo(
+            Context context,
             long dependenteId,
             long jogoId,
             int acertos,
@@ -75,11 +86,18 @@ public class GameService {
         body.put("erros", erros);
         body.put("tempo", tempo);
 
-        return post("/infoJogos/cadastrar", body);
+        Response response = ApiClient.post(context, BASE_INFO + "/cadastrar", body.toString());
+        return new JSONObject(response.body().string());
     }
+
+
+    // ==========================================================
+    //                        PUT
+    // ==========================================================
 
     // 🔹 PUT /infoJogos/atualizar
     public static JSONObject atualizarInfo(
+            Context context,
             long id,
             long dependenteId,
             long jogoId,
@@ -104,48 +122,18 @@ public class GameService {
         body.put("erros", erros);
         body.put("tempo", tempo);
 
-        return put("/infoJogos/atualizar", body);
+        Response response = ApiClient.put(context, BASE_INFO + "/atualizar", body.toString());
+        return new JSONObject(response.body().string());
     }
+
+
+    // ==========================================================
+    //                       DELETE
+    // ==========================================================
 
     // 🔹 DELETE /infoJogos/{id}
-    public static boolean deletarInfo(long id) throws Exception {
-        return delete("/infoJogos/" + id);
-    }
-
-
-    // ---------------------------------------------------------
-    //              PRIVATE HTTP HELPERS
-    // ---------------------------------------------------------
-
-    private static JSONObject post(String endpoint, JSONObject bodyJson) throws Exception {
-        String url = Api.BASE_URL + endpoint;
-
-        RequestBody body = RequestBody.create(bodyJson.toString(), JSON);
-        Request request = new Request.Builder().url(url).post(body).build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return new JSONObject(response.body().string());
-        }
-    }
-
-    private static JSONObject put(String endpoint, JSONObject bodyJson) throws Exception {
-        String url = Api.BASE_URL + endpoint;
-
-        RequestBody body = RequestBody.create(bodyJson.toString(), JSON);
-        Request request = new Request.Builder().url(url).put(body).build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return new JSONObject(response.body().string());
-        }
-    }
-
-    private static boolean delete(String endpoint) throws Exception {
-        String url = Api.BASE_URL + endpoint;
-
-        Request request = new Request.Builder().url(url).delete().build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return response.isSuccessful();
-        }
+    public static boolean deletarInfo(Context context, long id) throws Exception {
+        Response response = ApiClient.delete(context, BASE_INFO + "/" + id);
+        return response.isSuccessful();
     }
 }

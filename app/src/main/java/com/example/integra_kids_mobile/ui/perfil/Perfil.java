@@ -30,7 +30,6 @@ public class Perfil extends Fragment {
             PerfilEditKid.class,
             PerfilResultados.class,
             PerfilTrocarPlayer.class,
-            LoginCadastro.class
     };
 
 private PerfilBinding binding;
@@ -55,7 +54,11 @@ private PerfilBinding binding;
     btnProfile3.setOnClickListener(v -> callProfileScreen(2));
     btnProfile4.setOnClickListener(v -> callProfileScreen(3));
     btnProfile5.setOnClickListener(v -> callProfileScreen(4));
-    btnProfile6.setOnClickListener(v -> callProfileScreen(5));
+        btnProfile6.setOnClickListener(v -> {
+            // Logout usando LoginAuth
+            com.example.integra_kids_mobile.auth.LoginAuth.logout(requireContext());
+        });
+
 
         return root;
     }
