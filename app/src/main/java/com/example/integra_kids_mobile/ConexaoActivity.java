@@ -51,10 +51,10 @@ public class ConexaoActivity extends AppCompatActivity {
                 });
 
                 // ===============================
-                //  PRIMEIRA TENTATIVA → 5 segundos
+                //  PRIMEIRA TENTATIVA → 3 segundos
                 // ===============================
                 if (i == 1) {
-                    try { Thread.sleep(5000); } catch (Exception ignored) {}
+                    try { Thread.sleep(3000); } catch (Exception ignored) {}
                 }
 
                 boolean conectado = testarServidor();

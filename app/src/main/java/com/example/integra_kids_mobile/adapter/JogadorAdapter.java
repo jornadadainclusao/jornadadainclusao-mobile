@@ -25,10 +25,21 @@ public class JogadorAdapter extends RecyclerView.Adapter<JogadorAdapter.JogadorV
 
     private final List<Jogador> listaJogadores;
     private final Context context;
+    private OnJogadorClickListener listener; // 🔹 listener correto
 
     public JogadorAdapter(List<Jogador> listaJogadores, Context context) {
         this.listaJogadores = listaJogadores;
         this.context = context;
+    }
+
+    // 🔹 Interface do listener
+    public interface OnJogadorClickListener {
+        void onJogadorClick(Jogador jogador);
+    }
+
+    // 🔹 Método para setar o listener
+    public void setOnJogadorClickListener(OnJogadorClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -71,12 +82,11 @@ public class JogadorAdapter extends RecyclerView.Adapter<JogadorAdapter.JogadorV
             holder.animator.start();
         }
 
+        // 🔹 Usa o listener em vez de abrir intent direto
         holder.btnSelecionar.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PerfilTrocarPlayer.class);
-            intent.putExtra("JOGADOR_ID", jogador.getId());
-            intent.putExtra("JOGADOR_NOME", jogador.getNome());
-            intent.putExtra("JOGADOR_IMAGEM", jogador.getImagemResId());
-            context.startActivity(intent);
+            if (listener != null) {
+                listener.onJogadorClick(jogador);
+            }
         });
     }
 
@@ -90,7 +100,7 @@ public class JogadorAdapter extends RecyclerView.Adapter<JogadorAdapter.JogadorV
         TextView txtNomeJogador;
         Button btnSelecionar;
         LinearLayout fundoAnimado;
-        ValueAnimator animator; // para manter referência e evitar múltiplas animações
+        ValueAnimator animator;
 
         public JogadorViewHolder(@NonNull View itemView) {
             super(itemView);
