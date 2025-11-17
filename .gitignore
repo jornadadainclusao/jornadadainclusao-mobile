@@ -20,4 +20,5 @@ local.properties
 
 # Pastas intermediárias
 app/release/
+app/bin/
 

@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.ui.components.jogos.KeyView;
 import com.example.integra_kids_mobile.ui.components.jogos.KeyViewStateEnum;
+import com.example.integra_kids_mobile.ui.components.jogos.Timer;
 import com.example.integra_kids_mobile.ui.components.jogos.jogo_cores.ColorView;
 import com.example.integra_kids_mobile.ui.views.jogos.InfoJogos;
 
@@ -25,7 +26,8 @@ import java.util.List;
 public class JogoCores extends AppCompatActivity {
     private final long id = 4;
     private final InfoJogos infoJogos = new InfoJogos(this.id, 0); // hardcoded
-    private final List<ColorViewState> data = new ArrayList<>();
+    private final List<ColorViewState> colorViewState = new ArrayList<>();
+    private Timer timer;
     private int placedKeyViews = 0;
     private int selectedColorBoxIdx = -1;
 
@@ -52,6 +54,10 @@ public class JogoCores extends AppCompatActivity {
                 findViewById(R.id.joaninha_slot),
         };
 
+        final ConstraintLayout constraintLayout = findViewById(R.id.timer);
+        this.timer = new Timer(this);
+        constraintLayout.addView(this.timer);
+
         final GridLayout gridLayout = findViewById(R.id.cores_grid);
 
         for (int i = 0; i < colors.length; i++) {
@@ -62,7 +68,7 @@ public class JogoCores extends AppCompatActivity {
                     .withColorView(new ColorView(this))
                     .build();
 
-            data.add(currentData);
+            colorViewState.add(currentData);
 
             final ColorView colorView = currentData.getColorView();
             colorView.setId(i);
@@ -85,8 +91,9 @@ public class JogoCores extends AppCompatActivity {
             gridLayout.addView(colorView);
 
             final View container = currentData.getContainer();
+            // Coloque a cor no seu respectivo container
             container.setOnClickListener(v -> {
-                final ColorViewState cvs = data.get(this.selectedColorBoxIdx);
+                final ColorViewState cvs = colorViewState.get(this.selectedColorBoxIdx);
                 final ColorView cv = cvs.getColorView();
 
                 infoJogos.setTentativas(infoJogos.getTentativas() + 1);
@@ -113,7 +120,7 @@ public class JogoCores extends AppCompatActivity {
                     String color = cv.getColors()[KeyViewStateEnum.NORMAL];
                     cv.setBackgroundColor(Color.parseColor(color));
 
-                    if (placedKeyViews == data.toArray().length) {
+                    if (placedKeyViews == colorViewState.toArray().length) {
                         infoJogos.terminarJogo();
                         finish();
                     }
@@ -130,10 +137,10 @@ public class JogoCores extends AppCompatActivity {
                 }
 
                 if (this.selectedColorBoxIdx != -1) {
-                    data.get(this.selectedColorBoxIdx).getColorView().toggleColor();
+                    colorViewState.get(this.selectedColorBoxIdx).getColorView().toggleColor();
                 }
                 this.selectedColorBoxIdx = kv.getId();
-                data.get(this.selectedColorBoxIdx).getColorView().toggleColor();
+                colorViewState.get(this.selectedColorBoxIdx).getColorView().toggleColor();
             });
         }
 

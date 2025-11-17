@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.databinding.JogosBinding;
-import com.example.integra_kids_mobile.ui.views.jogos.jogoCores.JogoCores;
 
 public class JogosScreen extends Fragment {
     int[] gameDescribe = {
@@ -78,11 +77,6 @@ public class JogosScreen extends Fragment {
         btnGameScreenReturn.setOnClickListener(v -> {
             layoutGameFocus.setVisibility(GONE);
             layoutGameList.setVisibility(VISIBLE);
-        });
-
-        btnPlay.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), JogoCores.class);
-            startActivity(intent);
         });
 
         return root;
