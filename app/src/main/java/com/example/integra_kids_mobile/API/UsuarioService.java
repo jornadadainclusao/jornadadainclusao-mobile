@@ -60,10 +60,6 @@ public class UsuarioService {
 
     }
 
-
-
-
-
     // -----------------------
     // PATCH /usuarios/{id}
     // -----------------------

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.integra_kids_mobile.API.DependenteService;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.auth.LoginAuth;
+import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.utils.AvatarMapper;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -44,6 +45,7 @@ public class PerfilCadKid extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil_cad_kid);
+        ReturnButton.configurar(this);
 
         TextInputEditText inpNome = findViewById(R.id.cadKidInputNome);
         TextInputEditText inpData = findViewById(R.id.cadKidInputNascimento);
@@ -151,7 +153,7 @@ public class PerfilCadKid extends AppCompatActivity {
             String avatarUrl = AvatarMapper.getAvatarUrlFromResource(selectedAvatarDrawable);
 
             // ID do usuário logado
-            long usuarioId = LoginAuth.getUserId(this);
+            int usuarioId = LoginAuth.getUserId(this);
 
             // Enviar para o backend
             criarDependente(nome, idade, sexo, avatarUrl, usuarioId);
@@ -190,7 +192,7 @@ public class PerfilCadKid extends AppCompatActivity {
     // ======================
     //   CHAMAR cadastrar(...)
     // ======================
-    private void criarDependente(String nome, int idade, String sexo, String avatarUrl, long usuarioId) {
+    private void criarDependente(String nome, int idade, String sexo, String avatarUrl, int usuarioId) {
 
         new Thread(() -> {
             try {

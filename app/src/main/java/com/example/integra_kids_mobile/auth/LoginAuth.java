@@ -67,7 +67,7 @@ public class LoginAuth {
         SharedPreferences.Editor editor = prefs.edit();
 
         if (json.has("id"))
-            editor.putLong(KEY_ID, json.getLong("id"));
+            editor.putInt(KEY_ID, json.getInt("id"));
 
         if (json.has("nome"))
             editor.putString(KEY_NOME, json.getString("nome"));
@@ -115,9 +115,9 @@ public class LoginAuth {
     // ---------------------------------------------------------
     //                  MÉTODOS DE ACESSO RÁPIDO
     // ---------------------------------------------------------
-    public static long getUserId(Context context) {
+    public static int getUserId(Context context) {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                .getLong(KEY_ID, -1);
+                .getInt(KEY_ID, -1);
     }
 
     public static String getUserNome(Context context) {

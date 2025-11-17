@@ -1,6 +1,7 @@
 package com.example.integra_kids_mobile.profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.integra_kids_mobile.API.UsuarioService;
+import com.example.integra_kids_mobile.LoginCadastro;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.common.ReturnButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -84,7 +86,7 @@ public class PerfilEditCad extends AppCompatActivity {
     private void loadUserData() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
-        userId = prefs.getLong(KEY_ID, 0);
+        userId = prefs.getInt(KEY_ID, 0);
         token = prefs.getString(KEY_TOKEN, "");
 
         inputNome.setText(prefs.getString(KEY_NOME, ""));
@@ -98,7 +100,7 @@ public class PerfilEditCad extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
 
-            if (json.has("id")) editor.putLong(KEY_ID, json.getLong("id"));
+            if (json.has("id")) editor.putInt(KEY_ID, json.getInt("id"));
             if (json.has("nome")) editor.putString(KEY_NOME, json.getString("nome"));
             if (json.has("usuario")) editor.putString(KEY_EMAIL, json.getString("usuario"));
             if (json.has("token")) editor.putString(KEY_TOKEN, json.getString("token"));
@@ -147,8 +149,6 @@ public class PerfilEditCad extends AppCompatActivity {
         }).start();
     }
 
-
-
     // ---------------------------
     //   DELETE /usuarios/{id}
     // ---------------------------
@@ -159,12 +159,23 @@ public class PerfilEditCad extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     if (sucesso) {
+                        // Remove token e dados do usuário
+                        SharedPreferences prefs = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+                        prefs.edit().clear().apply();
+
                         Toast.makeText(this, "Conta deletada com sucesso!", Toast.LENGTH_SHORT).show();
+
+                        // Redireciona para a tela de login
+                        Intent intent = new Intent(this, LoginCadastro.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+
                         finish();
                     } else {
                         Toast.makeText(this, "Usuário não encontrado ou erro ao deletar.", Toast.LENGTH_SHORT).show();
                     }
                 });
+
             } catch (Exception e) {
                 e.printStackTrace();
                 runOnUiThread(() ->

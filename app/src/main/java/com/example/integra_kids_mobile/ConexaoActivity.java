@@ -35,7 +35,7 @@ public class ConexaoActivity extends AppCompatActivity {
                 "Quase lá...",
                 "Só mais um instante...",
                 "Estamos acordando o servidor...",
-                "Colocando as tochas de redstone faltantes...",
+                "Acendendo as tochas de redstone...",
                 "Conectando..."
         };
 
@@ -46,7 +46,7 @@ public class ConexaoActivity extends AppCompatActivity {
                 String frase = frases[i % frases.length];
 
                 runOnUiThread(() -> {
-                    tvStatus.setText("Contatando servidor :\nTentativa " + tentativa + " de 15...");
+                    tvStatus.setText("Conectando ao servidor :\nTentativa " + tentativa + " de 15...");
                     tvFrase.setText(frase);
                 });
 

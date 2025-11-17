@@ -3,12 +3,19 @@ package com.example.integra_kids_mobile.profile;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,15 +23,38 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.integra_kids_mobile.API.DependenteService;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.common.ReturnButton;
+import com.example.integra_kids_mobile.utils.AvatarMapper;
+import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PerfilEditKid extends AppCompatActivity {
 
     Button btnSelectedPlayer;
     LinearLayout layoutEditKid;
+
+    private final int[] avatarDrawables = {
+            R.drawable.player_icon1,
+            R.drawable.player_icon2,
+            R.drawable.player_icon3,
+            R.drawable.player_icon4,
+            R.drawable.player_icon5,
+            R.drawable.player_icon6,
+            R.drawable.player_icon7,
+            R.drawable.player_icon8,
+            R.drawable.player_icon9,
+            R.drawable.player_icon10,
+            R.drawable.player_icon11,
+            R.drawable.player_icon12
+    };
+    private int selectedAvatarDrawable = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,26 +64,21 @@ public class PerfilEditKid extends AppCompatActivity {
 
         ReturnButton.configurar(this);
 
-        btnSelectedPlayer = findViewById(R.id.btnSelectedPlayer);
-        layoutEditKid = findViewById(R.id.layoutEditKid);
-
-        layoutEditKid.setVisibility(GONE);
-
-        btnSelectedPlayer.setOnClickListener(v -> {
-            layoutEditKid.setVisibility(VISIBLE);
-            btnSelectedPlayer.setText("Mudar criança");
-        });
+        Button btnUpdateKid = findViewById(R.id.btnUpdateKid);
+        Button btnDeleteKid = findViewById(R.id.btnDeleteKid);
 
         GridLayout gridAvatares = findViewById(R.id.gridAvatares);
-        AtomicInteger selectedAvatarId = new AtomicInteger(-1);
 
         for (int i = 0; i < gridAvatares.getChildCount(); i++) {
             View child = gridAvatares.getChildAt(i);
             if (child instanceof ImageButton) {
-                ImageButton avatar = (ImageButton) child;
+                ImageButton avatarButton = (ImageButton) child;
 
-                avatar.setOnClickListener(v -> {
-                    // remove borda de todos
+                // Salva o drawable correspondente na tag
+                avatarButton.setTag(avatarDrawables[i]);
+
+                avatarButton.setOnClickListener(v -> {
+                    // Limpa seleção antiga
                     for (int j = 0; j < gridAvatares.getChildCount(); j++) {
                         View other = gridAvatares.getChildAt(j);
                         if (other instanceof ImageButton) {
@@ -61,11 +86,233 @@ public class PerfilEditKid extends AppCompatActivity {
                         }
                     }
 
-                    // adiciona a borda circular no selecionado
-                    avatar.setBackgroundResource(R.drawable.avatar_border);
-                    selectedAvatarId.set(avatar.getId()); // salva qual foi escolhido
+                    // Marca o novo selecionado
+                    avatarButton.setBackgroundResource(R.drawable.avatar_border);
+
+                    // Atualiza drawable selecionado
+                    selectedAvatarDrawable = (int) avatarButton.getTag();
                 });
             }
         }
+
+
+
+        btnSelectedPlayer = findViewById(R.id.btnSelectedPlayer);
+        layoutEditKid = findViewById(R.id.layoutEditKid);
+
+        layoutEditKid.setVisibility(GONE);
+
+        btnSelectedPlayer.setOnClickListener(v -> {
+            abrirDialogDependentes();
+        });
+
+        btnUpdateKid.setOnClickListener(v -> {
+            try {
+                int dependenteId = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
+                        .getInt("dependente_id", -1);
+                int userId = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
+                        .getInt("user_id", -1);
+
+                if (dependenteId == -1 || userId == -1) {
+                    Toast.makeText(this, "Erro: dependente ou usuário não selecionado", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                TextInputEditText nomeField = findViewById(R.id.inputNomeDependente);
+                String nome = nomeField.getText().toString();
+
+                RadioButton masc = findViewById(R.id.radioButton4);
+                String sexo = masc.isChecked() ? "M" : "F";
+
+                int idade = 10; // substitua pelo campo real se tiver
+                String fotoUrl = AvatarMapper.getAvatarUrlFromResource(selectedAvatarDrawable);
+
+                JSONObject payload = new JSONObject();
+                payload.put("nome", nome);
+                payload.put("idade", idade);
+                payload.put("sexo", sexo);
+                payload.put("foto", fotoUrl);
+
+                JSONObject usuarioFk = new JSONObject();
+                usuarioFk.put("id", userId);
+                payload.put("usuario_id_fk", usuarioFk);
+
+                new Thread(() -> {
+                    try {
+                        DependenteService.atualizarParcial(this, dependenteId, payload);
+                        runOnUiThread(() ->
+                                Toast.makeText(this, "Cadastro atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+                        );
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        runOnUiThread(() ->
+                                Toast.makeText(this, "Erro ao atualizar cadastro", Toast.LENGTH_SHORT).show()
+                        );
+                    }
+                }).start();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        btnDeleteKid.setOnClickListener(v -> {
+            int dependenteId = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
+                    .getInt("dependente_id", -1);
+
+            if (dependenteId == -1) {
+                Toast.makeText(this, "Erro: dependente não selecionado", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            new Thread(() -> {
+                try {
+                    DependenteService.deletar(this, dependenteId);
+                    runOnUiThread(() ->
+                            Toast.makeText(this, "Dependente deletado com sucesso!", Toast.LENGTH_SHORT).show()
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    runOnUiThread(() ->
+                            Toast.makeText(this, "Erro ao deletar dependente", Toast.LENGTH_SHORT).show()
+                    );
+                }
+            }).start();
+        });
+
     }
+
+    private void abrirDialogDependentes() {
+
+        Log.d("KID_DEBUG", "========== abrirDialogDependentes() ==========");
+
+        new Thread(() -> {
+            try {
+                Log.d("KID_DEBUG", "Thread iniciada...");
+
+                Log.d("KID_DEBUG", "Lendo user_id do SharedPreferences...");
+
+                int userId = PerfilEditKid.this
+                        .getSharedPreferences("AuthPrefs", MODE_PRIVATE)
+                        .getInt("user_id", -1);
+
+                Log.d("KID_DEBUG", "user_id lido: " + userId);
+
+
+                Log.d("KID_DEBUG", "Chamando DependenteService.getDependentesByUsuario...");
+                List<JSONObject> dependentes = DependenteService.getDependentesByUsuario(PerfilEditKid.this, userId);
+
+                Log.d("KID_DEBUG", "Resposta recebida! Quantidade: " + dependentes.size());
+
+                for (JSONObject d : dependentes) {
+                    Log.d("KID_DEBUG", "Dependente JSON: " + d.toString());
+                }
+
+                runOnUiThread(() -> {
+                    Log.d("KID_DEBUG", "Entrou no runOnUiThread para montar o dialog...");
+
+                    View dialogView = getLayoutInflater().inflate(R.layout.dialog_dependente, null);
+                    ListView listView = dialogView.findViewById(R.id.listDependentes);
+
+                    List<String> nomes = new ArrayList<>();
+                    for (JSONObject d : dependentes) {
+                        nomes.add(d.optString("nome"));
+                    }
+
+                    Log.d("KID_DEBUG", "Lista de nomes: " + nomes);
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            PerfilEditKid.this,
+                            android.R.layout.simple_list_item_1,
+                            nomes
+                    );
+
+                    listView.setAdapter(adapter);
+
+                    AlertDialog dialog = new AlertDialog.Builder(PerfilEditKid.this)
+                            .setTitle("Selecione a criança")
+                            .setView(dialogView)
+                            .create();
+
+                    listView.setOnItemClickListener((parent, view, position, id) -> {
+                        Log.d("KID_DEBUG", "Clicou no dependente index=" + position);
+
+                        try {
+                            JSONObject escolhido = dependentes.get(position);
+                            Log.d("KID_DEBUG", "Dependente escolhido: " + escolhido.toString());
+
+                            preencherCamposDependente(escolhido);
+
+                            layoutEditKid.setVisibility(View.VISIBLE);
+                            btnSelectedPlayer.setText("Trocar criança");
+
+                        } catch (Exception e) {
+                            Log.e("KID_DEBUG", "Erro ao preencher dependente", e);
+                        }
+
+                        dialog.dismiss();
+                    });
+
+                    dialog.show();
+                });
+
+            } catch (Exception e) {
+                Log.e("KID_DEBUG", "ERRO NO PROCESSO:", e);
+                runOnUiThread(() ->
+                        Toast.makeText(PerfilEditKid.this, "Erro ao carregar dependentes", Toast.LENGTH_SHORT).show()
+                );
+            }
+        }).start();
+    }
+
+    private void preencherCamposDependente(JSONObject dep) throws Exception {
+
+        layoutEditKid.setVisibility(VISIBLE);
+        btnSelectedPlayer.setText("Mudar criança");
+
+        String nome = dep.getString("nome");
+        String sexo = dep.getString("sexo");
+        String foto = dep.optString("foto", ""); // URL da foto
+        int idDep = dep.getInt("id");
+
+        // Salva ID da criança selecionada (para edição depois)
+        getSharedPreferences("AuthPrefs", MODE_PRIVATE)
+                .edit()
+                .putInt("dependente_id", idDep)
+                .apply();
+
+        // Preenche o nome
+        TextInputEditText nomeField = findViewById(R.id.inputNomeDependente);
+        nomeField.setText(nome);
+
+        // Marca o sexo
+        RadioButton masc = findViewById(R.id.radioButton4);
+        RadioButton fem = findViewById(R.id.radioButton5);
+        if (sexo.equalsIgnoreCase("M")) masc.setChecked(true); else fem.setChecked(true);
+
+        // ======================
+        // Seleciona o avatar no grid conforme a URL
+        // ======================
+        GridLayout gridAvatares = findViewById(R.id.gridAvatares);
+
+        for (int i = 0; i < gridAvatares.getChildCount(); i++) {
+            View child = gridAvatares.getChildAt(i);
+            if (child instanceof ImageButton) {
+                ImageButton avatarButton = (ImageButton) child;
+                int drawableRes = (int) avatarButton.getTag(); // tag definida ao inicializar o grid
+                String url = AvatarMapper.getAvatarUrlFromResource(drawableRes);
+
+                if (foto.equals(url)) {
+                    avatarButton.setBackgroundResource(R.drawable.avatar_border);
+                    selectedAvatarDrawable = drawableRes; // define o selecionado inicial
+                } else {
+                    avatarButton.setBackground(null);
+                }
+            }
+        }
+    }
+
+
+
+
 }

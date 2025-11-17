@@ -6,6 +6,9 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.Response;
 
 public class DependenteService {
@@ -38,11 +41,57 @@ public class DependenteService {
     }
 
     // 🔹 Buscar dependentes de um usuário
-    public static JSONArray getDependentesDoUsuario(Context context, long usuarioId) throws Exception {
-        Response response = ApiClient.get(context, BASE + "/getDependenteByIdUsuario/" + usuarioId);
-        String resp = response.body().string();
-        return new JSONArray(resp);
+    public static List<JSONObject> getDependentesByUsuario(Context context, int userId) throws Exception {
+
+        Log.d("DEPENDENTE_DEBUG", "Iniciando getDependentesByUsuario()");
+        Log.d("DEPENDENTE_DEBUG", "UserID recebido: " + userId);
+
+        Response response = ApiClient.get(context, "/dependente/getDependenteByIdUsuario/" + userId);
+
+        Log.d("DEPENDENTE_DEBUG", "Response recebido. Status: " + response.code());
+
+        String body = null;
+        try {
+            body = response.body().string();
+            Log.d("DEPENDENTE_DEBUG", "Body bruto: " + body);
+        } catch (Exception e) {
+            Log.e("DEPENDENTE_DEBUG", "Erro ao ler body da resposta", e);
+            throw e;
+        }
+
+        // Verificação extra — evita crash caso o backend retorne null / vazio / HTML de erro
+        if (body == null || body.trim().isEmpty()) {
+            Log.e("DEPENDENTE_DEBUG", "Body vazio ou null! Retornando lista vazia.");
+            return new ArrayList<>();
+        }
+
+        JSONArray array;
+        try {
+            array = new JSONArray(body);
+            Log.d("DEPENDENTE_DEBUG", "JSONArray criado. Tamanho: " + array.length());
+        } catch (Exception e) {
+            Log.e("DEPENDENTE_DEBUG", "ERRO ao converter resposta para JSONArray!", e);
+            throw e;
+        }
+
+        List<JSONObject> result = new ArrayList<>();
+
+        for (int i = 0; i < array.length(); i++) {
+            try {
+                JSONObject obj = array.getJSONObject(i);
+                Log.d("DEPENDENTE_DEBUG", "Dependente carregado: " + obj.toString());
+                result.add(obj);
+            } catch (Exception e) {
+                Log.e("DEPENDENTE_DEBUG", "Erro ao ler item [" + i + "] do JSONArray", e);
+            }
+        }
+
+        Log.d("DEPENDENTE_DEBUG", "Finalizado. Total de dependentes: " + result.size());
+
+        return result;
     }
+
+
 
 
     // ==========================================================
@@ -50,7 +99,7 @@ public class DependenteService {
     // ==========================================================
 
     // 🔹 Cadastrar dependente
-    public static JSONObject cadastrar(Context context, String nome, int idade, String sexo, String avatar, long usuarioId) throws Exception {
+    public static JSONObject cadastrar(Context context, String nome, int idade, String sexo, String avatar, int usuarioId) throws Exception {
 
         JSONObject dep = new JSONObject();
         dep.put("nome", nome);
@@ -75,7 +124,7 @@ public class DependenteService {
     // ==========================================================
 
     // 🔹 Atualização completa
-    public static JSONObject atualizar(Context context, long id, String nome, int idade, String sexo, String avatar, long usuarioId) throws Exception {
+    public static JSONObject atualizar(Context context, int id, String nome, int idade, String sexo, String avatar, int usuarioId) throws Exception {
 
         JSONObject dep = new JSONObject();
         dep.put("id", id);
@@ -99,7 +148,7 @@ public class DependenteService {
     // ==========================================================
 
     // 🔹 Atualização parcial
-    public static JSONObject atualizarParcial(Context context, long id, JSONObject dto) throws Exception {
+    public static JSONObject atualizarParcial(Context context, int id, JSONObject dto) throws Exception {
 
         Response response = ApiClient.patch(context, BASE + "/" + id, dto.toString());
         String resp = response.body().string();
