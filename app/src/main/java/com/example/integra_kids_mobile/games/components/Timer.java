@@ -41,9 +41,9 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
         drawable.setColor(Color.parseColor("#EB4A4A"));
         this.setBackground(drawable);
 
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(150, 150);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(100, 100);
         params.gravity = Gravity.TOP | Gravity.END;
-        params.setMargins(0, 65, 65, 0);
+        params.setMargins(0, 50, 10, 0);
         this.setLayoutParams(params);
     }
 

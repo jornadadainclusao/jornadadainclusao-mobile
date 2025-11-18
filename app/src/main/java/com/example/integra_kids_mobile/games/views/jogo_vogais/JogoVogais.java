@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.InfoJogos;
 
@@ -38,6 +39,8 @@ public class JogoVogais extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.jogo_vogais);
+
+        ReturnButton.configurar(this);
 
         Timer timer = new Timer(this);
         FrameLayout rootLayout = findViewById(R.id.timer);
@@ -62,7 +65,7 @@ public class JogoVogais extends AppCompatActivity {
             drawable.setStroke(8, Color.BLACK);
             letterView.setBackground(drawable);
 
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(140, 140);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(85, 85);
             params.gravity = Gravity.TOP | Gravity.END;
             params.setMargins(0, 40, 40, 0);
             letterView.setLayoutParams(params);

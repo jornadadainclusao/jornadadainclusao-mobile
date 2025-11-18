@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.transition.ChangeTransform;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.components.KeyView;
 import com.example.integra_kids_mobile.games.components.KeyViewStateEnum;
 import com.example.integra_kids_mobile.games.components.Timer;
@@ -37,6 +39,8 @@ public class JogoCores extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.jogo_cores);
+
+        ReturnButton.configurar(this);
 
         String[][] colors = {
                 { "#E9E9E9", "#B8B6B6" }, // branco
@@ -74,8 +78,8 @@ public class JogoCores extends AppCompatActivity {
 
             final ColorView colorView = currentData.getColorView();
             colorView.setId(i);
-            colorView.setWidth(200);
-            colorView.setHeight(200);
+            colorView.setWidth(75);
+            colorView.setHeight(75);
             colorView.setBorderSize(4);
             colorView.setColors(colors[i]);
             colorView.setBackgroundColor(Color.parseColor(colorView.getColors()[KeyViewStateEnum.NORMAL]));
@@ -85,6 +89,7 @@ public class JogoCores extends AppCompatActivity {
             final GridLayout.LayoutParams gridParams = new GridLayout.LayoutParams();
             gridParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             gridParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            gridParams.setGravity(Gravity.BOTTOM);
 
             final int margin = (int) (colorView.getKeyWidth() * 0.20);
             gridParams.setMargins(margin, margin, margin, margin);

@@ -16,4 +16,9 @@
     <string name="game_describe_mem">O Jogo da Memória ajuda as crianças a melhorarem a concentração e a memória visual. Ao encontrar pares de cartas relacionadas a conceitos educativos, os alunos reforçam o aprendizado de forma divertida.</string>
     <string name="game_describe_num">Neste jogo, as crianças praticam a ordenação de números em sequência crescente ou decrescente. Essa atividade desenvolve o raciocínio lógico e familiariza os alunos com a sequência numérica.</string>
     <string name="game_describe_vog">Neste jogo, as crianças aprendem sobre vogais de forma interativa. Através de atividades de reconhecimento e combinação, desenvolvem habilidades de leitura e aumentam o interesse pela linguagem.</string>
+
+    <string name="game_enun_cor">Objetivo: Analise as cores e escolha a cor que mais combina com cada animal.</string>
+    <string name="game_enun_mem">Objetivo: Combine as cartas e encontre todas as cartas que tenham o mesmo icone.</string>
+    <string name="game_enum_num">Objetivo: Selecione os números da segunda caixa e mande-os para a caixa verde, seguindo a sequencia dos valores: Menor para o Maior.</string>
+    <string name="game_enum_vog">Objetivo: Identifique todas as vogais da segunda caixa e mande-as para a caixa verde, seguindo a sequencia alfabetica.</string>
 </resources>

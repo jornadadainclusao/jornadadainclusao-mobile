@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.components.KeyView;
 import com.example.integra_kids_mobile.games.components.KeyViewStateEnum;
 import com.example.integra_kids_mobile.games.components.Timer;
@@ -45,6 +46,7 @@ public class JogoNumeros extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.jogo_numeros);
 
+        ReturnButton.configurar(this);
 
         Timer timer = new Timer(this);
         FrameLayout rootLayout = findViewById(R.id.timer);
@@ -69,7 +71,7 @@ public class JogoNumeros extends AppCompatActivity {
             drawable.setStroke(8, Color.BLACK);
             numberView.setBackground(drawable);
 
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(200, 200);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(85, 85);
             params.gravity = Gravity.TOP | Gravity.END;
             params.setMargins(0, 40, 40, 0);
             numberView.setLayoutParams(params);
