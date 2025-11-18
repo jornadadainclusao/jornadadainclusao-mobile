@@ -23,14 +23,6 @@ public class ColorView extends KeyView {
         super(context);
     }
 
-    public ColorView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public ColorView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     @Size(2)
     public String[] getColors() {
         return colors;
@@ -57,8 +49,6 @@ public class ColorView extends KeyView {
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
-        // super.onDraw(canvas);
-
         int startX = 0, startY = 0;
 
         this.drawable.setShape(GradientDrawable.OVAL);
