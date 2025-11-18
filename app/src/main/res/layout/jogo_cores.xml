@@ -6,13 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:id="@+id/timer"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="312dp"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="-2dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <GridLayout
         android:id="@+id/cores_grid"
@@ -64,7 +63,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/coelho" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
                         android:id="@+id/coelho_slot"
                         android:layout_width="110dp"
                         android:layout_height="110dp"
@@ -96,7 +95,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/borboleta" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
                         android:id="@+id/borboleta_slot"
                         android:layout_width="110dp"
                         android:layout_height="110dp"
@@ -107,7 +106,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -130,7 +129,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/sapo" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
                         android:id="@+id/sapo_slot"
                         android:layout_width="110dp"
                         android:layout_height="110dp"
@@ -141,7 +140,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="380dp"
@@ -163,7 +162,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/leao" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
                         android:id="@+id/leao_slot"
                         android:layout_width="110dp"
                         android:layout_height="110dp"
@@ -174,7 +173,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="380dp"
@@ -196,7 +195,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/peixe" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
                         android:id="@+id/peixe_slot"
                         android:layout_width="110dp"
                         android:layout_height="110dp"
@@ -207,7 +206,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="380dp"
@@ -229,7 +228,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/joaninha" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
                         android:id="@+id/joaninha_slot"
                         android:layout_width="110dp"
                         android:layout_height="110dp"
@@ -240,7 +239,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
     </ScrollView>

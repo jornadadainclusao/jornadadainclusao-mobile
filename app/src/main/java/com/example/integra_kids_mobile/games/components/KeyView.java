@@ -11,7 +11,6 @@ import android.view.View;
 // GradientDrawable
 public class KeyView extends View {
     protected GradientDrawable drawable = new GradientDrawable();
-    protected char content = '\0';
     protected int width = 150;
     protected int height = 150;
     protected int fontSize = (int) (this.width * 0.75);
@@ -25,16 +24,6 @@ public class KeyView extends View {
         init();
     }
 
-    public KeyView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public KeyView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-
     protected void init() {
         drawable.setColor(this.backgroundColor);
         drawable.setStroke(this.borderSize, this.borderColor);
@@ -43,16 +32,6 @@ public class KeyView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         setMeasuredDimension(this.width, this.height);
-    }
-
-    public char getContent() {
-        return this.content;
-    }
-
-    public void setContent(char content) {
-        this.content = content;
-        requestLayout();
-        invalidate();
     }
 
     // Não sobrescreva o método base

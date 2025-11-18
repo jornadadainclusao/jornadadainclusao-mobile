@@ -1,5 +1,6 @@
 package com.example.integra_kids_mobile.games.views.jogo_cores;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.transition.ChangeTransform;
@@ -7,11 +8,12 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.games.components.KeyView;
@@ -27,8 +29,7 @@ public class JogoCores extends AppCompatActivity {
     private final long id = 4;
     private final InfoJogos infoJogos = new InfoJogos(this.id, 0); // hardcoded
     private final List<ColorViewState> colorViewState = new ArrayList<>();
-    private Timer timer;
-    private int placedKeyViews = 0;
+    private int placedColorBoxes = 0;
     private int selectedColorBoxIdx = -1;
 
     @Override
@@ -45,7 +46,7 @@ public class JogoCores extends AppCompatActivity {
                 { "#FFE96A", "#BFB15C" }, // amarelo
                 { "#EB4A4A", "#B84444" }  // vermelho
         };
-        ConstraintLayout[] containers = {
+        FrameLayout[] containers = {
                 findViewById(R.id.coelho_slot),
                 findViewById(R.id.borboleta_slot),
                 findViewById(R.id.sapo_slot),
@@ -54,9 +55,10 @@ public class JogoCores extends AppCompatActivity {
                 findViewById(R.id.joaninha_slot),
         };
 
-        final ConstraintLayout constraintLayout = findViewById(R.id.timer);
-        this.timer = new Timer(this);
-        constraintLayout.addView(this.timer);
+        Timer timer = new Timer(this);
+        FrameLayout rootLayout = findViewById(R.id.timer);
+        rootLayout.addView(timer);
+        timer.startTimer();
 
         final GridLayout gridLayout = findViewById(R.id.cores_grid);
 
@@ -101,10 +103,10 @@ public class JogoCores extends AppCompatActivity {
                 if (this.selectedColorBoxIdx == currentData.getId() && !cv.isPlaced()) {
 
                     infoJogos.setAcertos(infoJogos.getAcertos() + 1);
-                    placedKeyViews += 1;
+                    placedColorBoxes += 1;
 
                     final ViewGroup oldParent = (ViewGroup) cv.getParent();
-                    final ConstraintLayout newParent = (ConstraintLayout) v;
+                    final FrameLayout newParent = (FrameLayout) v;
 
                     // Animação entre ViewGroups. Importante ser uma Transition e não qualquer
                     // animação normal (seja com ValueAnimator ou animação de View), caso contrário
@@ -120,9 +122,28 @@ public class JogoCores extends AppCompatActivity {
                     String color = cv.getColors()[KeyViewStateEnum.NORMAL];
                     cv.setBackgroundColor(Color.parseColor(color));
 
-                    if (placedKeyViews == colorViewState.toArray().length) {
+                    if (placedColorBoxes == colorViewState.toArray().length) {
                         infoJogos.terminarJogo();
-                        finish();
+                        timer.stopTimer();
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setPositiveButton("Voltar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    finish();
+                                }
+                            })
+                            .setTitle("Missão concluída!")
+                            .setMessage("Parabéns! Você completou o jogo.");
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
                 } else {
                     infoJogos.setErros(infoJogos.getErros() + 1);
@@ -136,11 +157,19 @@ public class JogoCores extends AppCompatActivity {
                     return;
                 }
 
-                if (this.selectedColorBoxIdx != -1) {
+                // Restaure a cor do colorbox se já tocado
+                if (this.selectedColorBoxIdx == kv.getId()) {
                     colorViewState.get(this.selectedColorBoxIdx).getColorView().toggleColor();
+                    return;
                 }
+
+                // Restaure a cor do colorbox anterior
+                if (this.selectedColorBoxIdx != -1) {
+                    colorViewState.get(this.selectedColorBoxIdx).getColorView().setNormalColor();
+                }
+
                 this.selectedColorBoxIdx = kv.getId();
-                colorViewState.get(this.selectedColorBoxIdx).getColorView().toggleColor();
+                colorViewState.get(this.selectedColorBoxIdx).getColorView().setFocusedColor();
             });
         }
 
