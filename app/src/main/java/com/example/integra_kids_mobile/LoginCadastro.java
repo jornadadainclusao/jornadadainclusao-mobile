@@ -28,6 +28,7 @@ public class LoginCadastro extends AppCompatActivity {
     private LinearLayout layoutRegister, layoutLogin;
     private TextInputEditText inputLoginEmail, inputLoginSenha;
     private TextInputEditText inputRegNome, inputRegEmail, inputRegSenha, inputRegSenhaConf;
+    private boolean isRegisterMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +66,17 @@ public class LoginCadastro extends AppCompatActivity {
                 layoutRegister.setVisibility(View.GONE);
                 btnCadLog2.setText("Faça seu cadastro");
                 btnCadLog1.setText("Logar");
+                isRegisterMode = false;
             }
             else{
                 layoutRegister.setVisibility(View.VISIBLE);
                 layoutLogin.setVisibility(View.GONE);
                 btnCadLog2.setText("Já tem conta? Faça login");
                 btnCadLog1.setText("Cadastrar");
+                isRegisterMode = true;
             }
         });
+
 
         btnCadLog1.setOnClickListener(v -> {
 
@@ -88,7 +92,7 @@ public class LoginCadastro extends AppCompatActivity {
             // ============================================================
             //                CADASTRAR
             // ============================================================
-            if (btnText.equals("Cadastrar")) {
+            if (isRegisterMode) {
 
                 if (TextUtils.isEmpty(cadEmail) || TextUtils.isEmpty(nome) || TextUtils.isEmpty(cadSenha)) {
                     Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
@@ -112,6 +116,7 @@ public class LoginCadastro extends AppCompatActivity {
                             layoutRegister.setVisibility(View.GONE);
                             btnCadLog2.setText("Faça seu cadastro");
                             btnCadLog1.setText("Logar");
+                            isRegisterMode = false;
                         });
 
                     } catch (Exception e) {

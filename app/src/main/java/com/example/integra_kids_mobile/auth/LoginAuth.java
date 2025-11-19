@@ -25,7 +25,7 @@ public class LoginAuth {
     public static boolean login(Context context, String usuario, String senha) {
         try {
             // envia JSON {"usuario": "...", "senha": "..."}
-            JSONObject resp = UsuarioService.logar(usuario, senha);
+            JSONObject resp = UsuarioService.logar(context, usuario, senha);
 
             if (resp.has("token")) {
                 saveUserData(context, resp);

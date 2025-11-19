@@ -1,6 +1,7 @@
 package com.example.integra_kids_mobile.API;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -14,7 +15,7 @@ public class UsuarioService {
     // -----------------------
     // LOGIN → envia usuario + senha
     // -----------------------
-    public static JSONObject logar(String usuario, String senha) throws Exception {
+    public static JSONObject logar(Context context, String usuario, String senha) throws Exception {
         String url = BASE_URL + "/usuarios/logar";
 
         JSONObject json = new JSONObject();
@@ -30,8 +31,20 @@ public class UsuarioService {
         // 🔹 LOG da resposta recebida
         android.util.Log.d("LOGIN_DEBUG", "Resposta do backend: " + respBody);
 
-        return new JSONObject(respBody);
+        JSONObject jsonResp = new JSONObject(respBody);
+
+        // ✅ Se login for bem-sucedido, limpar SharedPreferences antigos
+        if (jsonResp.has("success") && jsonResp.getBoolean("success")) {
+            SharedPreferences prefs = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.remove("KEY_SELECTED_PLAYER_ID");
+            editor.remove("KEY_SELECTED_PLAYER_NAME");
+            editor.apply();
+        }
+
+        return jsonResp;
     }
+
 
 
     // -----------------------
