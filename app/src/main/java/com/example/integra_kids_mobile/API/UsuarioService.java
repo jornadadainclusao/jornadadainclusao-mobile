@@ -57,7 +57,6 @@ public class UsuarioService {
         } else {
             throw new Exception("Erro ao cadastrar: código " + resp.code() + " | Body: " + bodyString);
         }
-
     }
 
     // -----------------------

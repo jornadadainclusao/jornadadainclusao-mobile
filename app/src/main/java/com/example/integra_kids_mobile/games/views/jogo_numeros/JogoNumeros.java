@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.integra_kids_mobile.API.GameService;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.components.KeyView;
@@ -26,11 +28,13 @@ import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.InfoJogos;
 import com.example.integra_kids_mobile.games.components.jogo_numeros.NumeroView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class JogoNumeros extends AppCompatActivity {
-    private final long id = 1;
+    private final long id = 2;
     private final InfoJogos infoJogos = new InfoJogos(this.id, 0); // hardcoded
     private TextView[] numberBoxes = new TextView[10];
     private int size = 0;
@@ -39,12 +43,16 @@ public class JogoNumeros extends AppCompatActivity {
     private int selectedNumberBoxIdx = -1;
     final String[] colors = { "#E9E9E9", "#B8B6B6" }; // branco
     int currentColor = 0;
+    private int dependenteId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.jogo_numeros);
+        dependenteId = getSharedPreferences("USER_PREFS", MODE_PRIVATE)
+                .getInt("selected_player_id", -1);
 
         ReturnButton.configurar(this);
 
@@ -113,6 +121,14 @@ public class JogoNumeros extends AppCompatActivity {
                         infoJogos.terminarJogo();
                         timer.stopTimer();
 
+                        registrarResultadoPartida(
+                                dependenteId,
+                                this.id,     // ou this.id, depende do que sua API espera
+                                infoJogos.getAcertos(),
+                                infoJogos.getErros(),
+                                timer.getTime()
+                        );
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                                 .setPositiveButton("Voltar", new DialogInterface.OnClickListener() {
                                     @Override
@@ -166,5 +182,38 @@ public class JogoNumeros extends AppCompatActivity {
         }
 
         infoJogos.comecarJogo();
+    }
+
+    private void registrarResultadoPartida(
+            long dependenteId,
+            long infoJogoId,
+            int acertos,
+            int erros,
+            int tempo
+    ) {
+
+        new Thread(() -> {
+            try {
+                JSONObject resp = GameService.registrarResultado(
+                        this,
+                        dependenteId,
+                        infoJogoId,
+                        acertos,
+                        erros,
+                        tempo
+                );
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Resultado registrado!", Toast.LENGTH_SHORT).show();
+                    // Se quiser finalizar a Activity, descomente:
+                    // finish();
+                });
+
+            } catch (Exception e) {
+                runOnUiThread(() ->
+                        Toast.makeText(this, "Erro ao registrar: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+            }
+        }).start();
     }
 }

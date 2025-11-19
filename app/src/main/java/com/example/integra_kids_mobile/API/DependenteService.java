@@ -186,10 +186,6 @@ public class DependenteService {
             Gson gson = new Gson();
             Partida p = gson.fromJson(obj.toString(), Partida.class);
             lista.add(p);
-
-
-
-            lista.add(p);
         }
 
         return lista;

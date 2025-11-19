@@ -1,6 +1,7 @@
 package com.example.integra_kids_mobile.API;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,10 +64,10 @@ public class GameService {
     // ==========================================================
 
     // 🔹 POST /infoJogos/cadastrar
-    public static JSONObject cadastrarInfo(
+    public static JSONObject registrarResultado(
             Context context,
             long dependenteId,
-            long jogoId,
+            long infoJogoId,
             int acertos,
             int erros,
             int tempo
@@ -78,15 +79,17 @@ public class GameService {
         dep.put("id", dependenteId);
 
         JSONObject jogo = new JSONObject();
-        jogo.put("id", jogoId);
+        jogo.put("id", infoJogoId);
 
         body.put("dependente", dep);
-        body.put("jogo", jogo);
+        body.put("infoJogos_id_fk", jogo);
         body.put("acertos", acertos);
         body.put("erros", erros);
-        body.put("tempo", tempo);
+        body.put("tempoTotal", tempo);
 
-        Response response = ApiClient.post(context, BASE_INFO + "/cadastrar", body.toString());
+        Log.d("JSON_ENVIADO", body.toString());
+
+        Response response = ApiClient.post(context, BASE_INFO, body.toString());
         return new JSONObject(response.body().string());
     }
 
@@ -108,23 +111,44 @@ public class GameService {
 
         JSONObject body = new JSONObject();
 
-        body.put("id", id);
+        try {
+            body.put("id", id);
 
-        JSONObject dep = new JSONObject();
-        dep.put("id", dependenteId);
+            JSONObject dep = new JSONObject();
+            dep.put("id", dependenteId);
 
-        JSONObject jogo = new JSONObject();
-        jogo.put("id", jogoId);
+            JSONObject jogo = new JSONObject();
+            jogo.put("id", jogoId);
 
-        body.put("dependente", dep);
-        body.put("jogo", jogo);
-        body.put("acertos", acertos);
-        body.put("erros", erros);
-        body.put("tempo", tempo);
+            body.put("dependente", dep);
+            body.put("jogo", jogo);
+            body.put("acertos", acertos);
+            body.put("erros", erros);
+            body.put("tempo", tempo);
 
-        Response response = ApiClient.put(context, BASE_INFO + "/atualizar", body.toString());
-        return new JSONObject(response.body().string());
+        } catch (Exception e) {
+            throw e;
+        }
+
+        Response response = null;
+
+        try {
+            response = ApiClient.put(context, BASE_INFO + "/atualizar", body.toString());
+        } catch (Exception e) {
+            throw e;
+        }
+
+        String rawResponse = response.body().string();
+
+        try {
+            JSONObject jsonResponse = new JSONObject(rawResponse);
+
+            return jsonResponse;
+        } catch (Exception e) {
+            throw e;
+        }
     }
+
 
 
     // ==========================================================

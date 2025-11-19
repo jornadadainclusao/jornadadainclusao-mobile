@@ -3,7 +3,10 @@ package com.example.integra_kids_mobile.ui.jogos;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,7 @@ import com.example.integra_kids_mobile.games.views.jogo_cores.JogoCores;
 import com.example.integra_kids_mobile.games.views.jogo_memoria.JogoMemoria;
 import com.example.integra_kids_mobile.games.views.jogo_numeros.JogoNumeros;
 import com.example.integra_kids_mobile.games.views.jogo_vogais.JogoVogais;
+import com.example.integra_kids_mobile.profile.PerfilTrocarPlayer;
 
 public class Jogos extends Fragment {
 
@@ -99,9 +103,40 @@ public class Jogos extends Fragment {
         });
 
         btnPlay.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), gameRoutes[localGame]);
-            startActivity(intent);
+            int selectedId = getSelectedPlayerId();
+            String selectedName = getSelectedPlayerName();
+
+            if (selectedId == -1) {
+                // Nenhum jogador selecionado
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle("Nenhum jogador selecionado")
+                        .setMessage("Você precisa escolher um jogador antes de jogar.")
+                        .setPositiveButton("Escolher jogador", (dialog, which) -> {
+                            Intent intent = new Intent(requireContext(), PerfilTrocarPlayer.class);
+                            startActivity(intent);
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .show();
+                return;
+            }
+
+            // Jogador já existe → perguntar o que quer fazer
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Jogador atual")
+                    .setMessage("O jogador selecionado é: " + selectedName + "\nDeseja usar este jogador?")
+                    .setPositiveButton("Usar", (dialog, which) -> {
+                        Intent intent = new Intent(requireContext(), gameRoutes[localGame]);
+                        startActivity(intent);
+                    })
+                    .setNeutralButton("Trocar", (dialog, which) -> {
+                        Intent intent = new Intent(requireContext(), PerfilTrocarPlayer.class);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
         });
+
+
         return root;
     }
 
@@ -128,4 +163,15 @@ public class Jogos extends Fragment {
     public void setGame(int id){
         localGame = id;
     }
+
+    private int getSelectedPlayerId() {
+        SharedPreferences prefs = requireActivity().getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        return prefs.getInt("selected_player_id", -1);
+    }
+
+    private String getSelectedPlayerName() {
+        SharedPreferences prefs = requireActivity().getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE);
+        return prefs.getString("selected_player_name", null);
+    }
+
 }

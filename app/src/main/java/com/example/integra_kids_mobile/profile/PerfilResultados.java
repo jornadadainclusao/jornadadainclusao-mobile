@@ -36,6 +36,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -293,27 +294,41 @@ public class PerfilResultados extends AppCompatActivity {
 
     private void configurarPieChart(PieChart chart, Map<String, Float> tempo) {
         List<PieEntry> entries = new ArrayList<>();
+
         for (String nomeOriginal : tempo.keySet()) {
-            String nomeLimpo = nomeOriginal.replaceFirst("(?i)^jogo\\s+(de|da|do|das|dos)\\s+", "").trim();
-            entries.add(new PieEntry(tempo.get(nomeOriginal), nomeLimpo));
+            String nomeLimpo = nomeOriginal
+                    .replaceFirst("(?i)^jogo\\s+(de|da|do|das|dos)\\s+", "")
+                    .trim();
+
+            float segundosReais = tempo.get(nomeOriginal);
+
+            // 🔥 Aqui dividimos por 2 antes de enviar
+            float segundosCorrigidos = segundosReais / 2f;
+
+            entries.add(new PieEntry(segundosCorrigidos, nomeLimpo, segundosCorrigidos));
         }
 
         PieDataSet dataSet = new PieDataSet(entries, "Tempo");
-        dataSet.setColors(Color.rgb(66, 135, 245), Color.rgb(76, 175, 80),
-                Color.rgb(255, 193, 7), Color.rgb(244, 67, 54));
+        dataSet.setColors(
+                Color.rgb(66, 135, 245),
+                Color.rgb(76, 175, 80),
+                Color.rgb(255, 193, 7),
+                Color.rgb(244, 67, 54)
+        );
 
         int corTexto = getResources().getColor(R.color.text);
         dataSet.setValueTextColor(corTexto);
 
-        // Formata os valores para mm:ss
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                int totalSegundos = (int) value;
-                int minutos = totalSegundos / 60;
-                int segundos = totalSegundos % 60;
-                return String.format("%02d:%02d", minutos, segundos);
+                int segundos = Math.round(value);
+
+                int min = segundos / 60;
+                int seg = segundos % 60;
+
+                return String.format("%02dm:%02ds", min, seg);
             }
         });
 
@@ -326,6 +341,7 @@ public class PerfilResultados extends AppCompatActivity {
 
         chart.invalidate();
     }
+
 
 
     private void configurarRadarChart(RadarChart chart, Map<String, Integer> acertos) {

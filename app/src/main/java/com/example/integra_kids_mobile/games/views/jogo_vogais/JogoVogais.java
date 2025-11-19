@@ -12,18 +12,22 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.integra_kids_mobile.API.GameService;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.InfoJogos;
 
+import org.json.JSONObject;
+
 public class JogoVogais extends AppCompatActivity {
-    private final long id = 1;
+    private final long id = 3;
     private final InfoJogos infoJogos = new InfoJogos(this.id, 0); // hardcoded
     private TextView[] letterBoxes = new TextView[26];
     private int size = 0;
@@ -33,12 +37,17 @@ public class JogoVogais extends AppCompatActivity {
     private int selectedLetterBoxIdx = -1;
     final String[] colors = { "#E9E9E9", "#B8B6B6" }; // branco
     int currentColor = 0;
+    private int dependenteId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.jogo_vogais);
+
+        dependenteId = getSharedPreferences("USER_PREFS", MODE_PRIVATE)
+                .getInt("selected_player_id", -1);
 
         ReturnButton.configurar(this);
 
@@ -49,8 +58,9 @@ public class JogoVogais extends AppCompatActivity {
 
         final GridLayout gridLayout = findViewById(R.id.vogais_grid);
 
+        // ========== CRIAÇÃO DAS LETRAS ==========
         for (int i = 'a'; i <= 'z'; i++) {
-            // Crie o numero
+
             TextView letterView = new TextView(this);
             letterView.setId(i - 'a');
             letterView.setText(Character.toString(Character.toUpperCase((char) i)));
@@ -70,95 +80,125 @@ public class JogoVogais extends AppCompatActivity {
             params.setMargins(0, 40, 40, 0);
             letterView.setLayoutParams(params);
 
-            // Coloque o numero no grid
-            final GridLayout.LayoutParams gridParams = new GridLayout.LayoutParams();
-            gridParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            gridParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-
             gridLayout.addView(letterView);
             letterBoxes[size++] = letterView;
 
-            GridLayout placedNumbersContainer = findViewById(R.id.placed_vogais);
-
-            // Coloque a vogal no seu respectivo container
-            placedNumbersContainer.setOnClickListener(v -> {
-                TextView n = letterBoxes[vogais[letterToBePlaced] - 'a'];
-                infoJogos.setTentativas(infoJogos.getTentativas() + 1);
-
-                if (this.selectedLetterBoxIdx == vogais[letterToBePlaced] - 'a') {
-                    infoJogos.setAcertos(infoJogos.getAcertos() + 1);
-                    placedKeyViews += 1;
-
-                    final ViewGroup oldParent = (ViewGroup) n.getParent();
-                    final GridLayout newParent = (GridLayout) v;
-
-                    // Animação entre ViewGroups. Importante ser uma Transition e não qualquer
-                    // animação normal (seja com ValueAnimator ou animação de View), caso contrário
-                    // o objeto é cortado se sair do parent
-                    Transition move = new ChangeTransform().addTarget(n).setDuration(300);
-                    TransitionManager.beginDelayedTransition(findViewById(R.id.vogais_root), move);
-                    oldParent.removeView(n);
-                    newParent.addView(n);
-                    letterToBePlaced++;
-
-                    n.setFocusable(false);
-
-                    if (placedKeyViews == vogais.length) {
-                        infoJogos.terminarJogo();
-                        timer.stopTimer();
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                                .setPositiveButton("Voltar", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        finish();
-                                    }
-                                })
-                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                    @Override
-                                    public void onDismiss(DialogInterface dialog) {
-                                        finish();
-                                    }
-                                })
-                                .setTitle("Missão concluída!")
-                                .setMessage("Parabéns! Você completou o jogo.");
-
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    }
-                } else {
-                    infoJogos.setErros(infoJogos.getErros() + 1);
-                }
-            });
-
-            // Faça highlight no círculo caso selecionado
+            // ========= CLICK EM UMA LETRA =========
             letterView.setOnClickListener(v -> {
                 final TextView kv = (TextView) v;
-                if (! kv.isFocusable()) {
-                    return;
-                }
+
+                if (!kv.isFocusable()) return;
 
                 GradientDrawable _drawable;
 
-                // Restaure a cor do colorbox se já tocado
+                // Se clicar novamente, alterna cor
                 if (this.selectedLetterBoxIdx == kv.getId()) {
                     _drawable = (GradientDrawable) kv.getBackground();
                     _drawable.setColor(Color.parseColor(colors[currentColor++ % 2]));
                     return;
                 }
 
-                // Restaure a cor do colorbox anterior
+                // Restaura o anterior
                 if (this.selectedLetterBoxIdx != -1) {
                     _drawable = (GradientDrawable) letterBoxes[this.selectedLetterBoxIdx].getBackground();
                     _drawable.setColor(Color.parseColor(colors[0]));
                 }
 
+                // Seleciona novo
                 this.selectedLetterBoxIdx = kv.getId();
-                _drawable = (GradientDrawable) letterBoxes[this.selectedLetterBoxIdx].getBackground();
+                _drawable = (GradientDrawable) kv.getBackground();
                 _drawable.setColor(Color.parseColor(colors[1]));
             });
         }
 
+        // =========================================
+        //        LISTENER DO placed_vogais
+        // (AGORA FORA DO FOR — DO JEITO CORRETO)
+        // =========================================
+        GridLayout placedNumbersContainer = findViewById(R.id.placed_vogais);
+
+        placedNumbersContainer.setOnClickListener(v -> {
+            TextView n = letterBoxes[vogais[letterToBePlaced] - 'a'];
+            infoJogos.setTentativas(infoJogos.getTentativas() + 1);
+
+            if (this.selectedLetterBoxIdx == vogais[letterToBePlaced] - 'a') {
+
+                infoJogos.setAcertos(infoJogos.getAcertos() + 1);
+                placedKeyViews++;
+
+                final ViewGroup oldParent = (ViewGroup) n.getParent();
+                final GridLayout newParent = (GridLayout) v;
+
+                Transition move = new ChangeTransform().addTarget(n).setDuration(300);
+                TransitionManager.beginDelayedTransition(findViewById(R.id.vogais_root), move);
+
+                oldParent.removeView(n);
+                newParent.addView(n);
+
+                letterToBePlaced++;
+                n.setFocusable(false);
+
+                // JOGO FINALIZADO
+                if (placedKeyViews == vogais.length) {
+
+                    infoJogos.terminarJogo();
+                    timer.stopTimer();
+
+                    registrarResultadoPartida(
+                            dependenteId,
+                            this.id,
+                            infoJogos.getAcertos(),
+                            infoJogos.getErros(),
+                            timer.getTime()
+                    );
+
+                    new AlertDialog.Builder(this)
+                            .setPositiveButton("Voltar", (d, w) -> finish())
+                            .setOnDismissListener(d -> finish())
+                            .setTitle("Missão concluída!")
+                            .setMessage("Parabéns! Você completou o jogo.")
+                            .create()
+                            .show();
+                }
+
+            } else {
+                infoJogos.setErros(infoJogos.getErros() + 1);
+            }
+        });
+
         infoJogos.comecarJogo();
+    }
+
+    private void registrarResultadoPartida(
+            long dependenteId,
+            long infoJogoId,
+            int acertos,
+            int erros,
+            int tempo
+    ) {
+
+        new Thread(() -> {
+            try {
+                JSONObject resp = GameService.registrarResultado(
+                        this,
+                        dependenteId,
+                        infoJogoId,
+                        acertos,
+                        erros,
+                        tempo
+                );
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Resultado registrado!", Toast.LENGTH_SHORT).show();
+                    // Se quiser finalizar a Activity, descomente:
+                    // finish();
+                });
+
+            } catch (Exception e) {
+                runOnUiThread(() ->
+                        Toast.makeText(this, "Erro ao registrar: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+            }
+        }).start();
     }
 }

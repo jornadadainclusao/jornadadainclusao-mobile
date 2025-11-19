@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -23,6 +24,9 @@ import com.example.integra_kids_mobile.games.components.KeyViewStateEnum;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.components.jogo_cores.ColorView;
 import com.example.integra_kids_mobile.games.InfoJogos;
+import com.example.integra_kids_mobile.API.GameService;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +37,17 @@ public class JogoCores extends AppCompatActivity {
     private final List<ColorViewState> colorViewState = new ArrayList<>();
     private int placedColorBoxes = 0;
     private int selectedColorBoxIdx = -1;
+    private int dependenteId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.jogo_cores);
+        dependenteId = getSharedPreferences("USER_PREFS", MODE_PRIVATE)
+            .getInt("selected_player_id", -1);
 
         ReturnButton.configurar(this);
 
@@ -128,8 +137,17 @@ public class JogoCores extends AppCompatActivity {
                     cv.setBackgroundColor(Color.parseColor(color));
 
                     if (placedColorBoxes == colorViewState.toArray().length) {
+
                         infoJogos.terminarJogo();
                         timer.stopTimer();
+
+                        registrarResultadoPartida(
+                                dependenteId,
+                                this.id,     // ou this.id, depende do que sua API espera
+                                infoJogos.getAcertos(),
+                                infoJogos.getErros(),
+                                timer.getTime()
+                        );
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                             .setPositiveButton("Voltar", new DialogInterface.OnClickListener() {
@@ -180,4 +198,38 @@ public class JogoCores extends AppCompatActivity {
 
         infoJogos.comecarJogo();
     }
+
+    private void registrarResultadoPartida(
+            long dependenteId,
+            long infoJogoId,
+            int acertos,
+            int erros,
+            int tempo
+    ) {
+
+        new Thread(() -> {
+            try {
+                JSONObject resp = GameService.registrarResultado(
+                        this,
+                        dependenteId,
+                        infoJogoId,
+                        acertos,
+                        erros,
+                        tempo
+                );
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Resultado registrado!", Toast.LENGTH_SHORT).show();
+                    // Se quiser finalizar a Activity, descomente:
+                    // finish();
+                });
+
+            } catch (Exception e) {
+                runOnUiThread(() ->
+                        Toast.makeText(this, "Erro ao registrar: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
+            }
+        }).start();
+    }
+
 }

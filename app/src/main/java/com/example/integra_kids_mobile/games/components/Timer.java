@@ -9,11 +9,11 @@ import android.os.Handler;
 import android.widget.FrameLayout;
 
 public class Timer extends androidx.appcompat.widget.AppCompatTextView {
+
     private final Handler handler = new Handler();
     private int time = 180_000;
-    private int minutes = 0;
-    private int seconds = 0;
-    private String string;
+
+    private long startedAt = 0;  // marca o início real
 
     public Timer(Context context) {
         super(context);
@@ -21,6 +21,7 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
     }
 
     public void startTimer() {
+        startedAt = System.currentTimeMillis();
         handler.post(updateTimer);
     }
 
@@ -28,13 +29,16 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
         handler.removeCallbacks(updateTimer);
     }
 
+    public int getTime() {
+        long now = System.currentTimeMillis();
+        return (int) ((now - startedAt) / 1000);  // segundos reais
+    }
+
+    // ---------- RESTO DO SEU CÓDIGO IGUAL ----------
     private void init() {
         this.setTextColor(Color.WHITE);
         this.setTextSize(18);
         this.setGravity(Gravity.CENTER);
-
-        this.setText(string);
-        setTimerText(formatTimerString());
 
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.OVAL);
@@ -45,21 +49,21 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
         params.gravity = Gravity.TOP | Gravity.END;
         params.setMargins(0, 50, 10, 0);
         this.setLayoutParams(params);
+
+        setTimerText(formatTimerString());
     }
 
     private String formatTimerString() {
-        minutes = (time / 1000) / 60;
-        seconds = (time / 1000) % 60;
-        string = String.format("%02d:%02d", minutes, seconds);
-
-        return string;
+        int minutes = (time / 1000) / 60;
+        int seconds = (time / 1000) % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     private void setTimerText(String s) {
         this.setText(s);
     }
 
-    private Runnable updateTimer = new Runnable() {
+    private final Runnable updateTimer = new Runnable() {
         public void run() {
             if (time <= 0) {
                 return;
