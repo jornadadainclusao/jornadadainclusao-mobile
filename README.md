@@ -94,104 +94,104 @@ Obs: sujeito à alteração.
 
 ### <p align="center">Tela de carregamento inicial</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0ab1da34-9c0c-47ad-a61a-6fb3aef0a61b" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/cdf8743b-a7bf-4b7a-897f-e3593d016ccd" width="200"/>
+  <img src="https://github.com/user-attachments/assets/0ab1da34-9c0c-47ad-a61a-6fb3aef0a61b" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/cdf8743b-a7bf-4b7a-897f-e3593d016ccd" width="250"/>
 </p>
 
 ### <p align="center">Login</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0f380bac-0399-4c89-87f1-d072be79b7ac" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/58a506a5-311d-4e18-a1a2-f0addfa649d9" width="200"/>
+  <img src="https://github.com/user-attachments/assets/0f380bac-0399-4c89-87f1-d072be79b7ac" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/58a506a5-311d-4e18-a1a2-f0addfa649d9" width="250"/>
 </p>
 
 ### <p align="center">Cadastro</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/dace957a-d3f5-487e-992d-239e43c2fff5" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/dc324d12-ff84-46b3-af3c-09ed418d82df" width="200"/>
+  <img src="https://github.com/user-attachments/assets/dace957a-d3f5-487e-992d-239e43c2fff5" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/dc324d12-ff84-46b3-af3c-09ed418d82df" width="250"/>
 </p>
 
 ### <p align="center">Tela de jogos</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/28a5a8e5-9500-4e76-8375-3dac77803fbf" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/d2b09cd1-8724-44b3-9410-47e5e4e2a913" width="200"/>
+  <img src="https://github.com/user-attachments/assets/28a5a8e5-9500-4e76-8375-3dac77803fbf" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/d2b09cd1-8724-44b3-9410-47e5e4e2a913" width="250"/>
 </p>
 
 ### <p align="center">Tela de descrição do jogo</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ebfd5935-1c93-4b65-919a-53cb844ccd19" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/a9259928-702f-4196-89d0-f8c59280f090" width="200"/>
+  <img src="https://github.com/user-attachments/assets/ebfd5935-1c93-4b65-919a-53cb844ccd19" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/a9259928-702f-4196-89d0-f8c59280f090" width="250"/>
 </p>
 
 ### <p align="center">Tela de Perfil</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/c2e27d63-2503-4a2f-a4d9-9a4cc1b3be8d" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/1848da18-9c27-4bf4-b92d-4b16051d7921" width="200"/>
+  <img src="https://github.com/user-attachments/assets/c2e27d63-2503-4a2f-a4d9-9a4cc1b3be8d" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/1848da18-9c27-4bf4-b92d-4b16051d7921" width="250"/>
 </p>
 
 ### <p align="center">Tela de Sobre</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/66aec1d3-574f-4641-a55c-f670fc05bff9" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/1f0ef22f-2406-42e3-8127-556a7c6294f8" width="200"/>
+  <img src="https://github.com/user-attachments/assets/66aec1d3-574f-4641-a55c-f670fc05bff9" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/1f0ef22f-2406-42e3-8127-556a7c6294f8" width="250"/>
 </p>
 
 ### <p align="center">Tela de configuração</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/bf2e3135-41d6-4390-a888-b1cc7af98c7c" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/4b8bd772-4132-4c1b-9de7-681364437bf7" width="200"/>
+  <img src="https://github.com/user-attachments/assets/bf2e3135-41d6-4390-a888-b1cc7af98c7c" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/4b8bd772-4132-4c1b-9de7-681364437bf7" width="250"/>
 </p>
 
 ### <p align="center">Jogo dos Números</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/36b66fcc-cf77-4672-a1d5-416e6e82683c" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/bada2f4b-1ab5-4721-b1c6-573a8c594b29" width="200"/>
+  <img src="https://github.com/user-attachments/assets/36b66fcc-cf77-4672-a1d5-416e6e82683c" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/bada2f4b-1ab5-4721-b1c6-573a8c594b29" width="250"/>
 </p>
 
 ### <p align="center">Jogo das Cores</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/1b581179-2a34-476b-b67e-630738dfca86" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/f6379dc3-9e82-4081-a53c-66d5052fcdd5" width="200"/>
+  <img src="https://github.com/user-attachments/assets/1b581179-2a34-476b-b67e-630738dfca86" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/f6379dc3-9e82-4081-a53c-66d5052fcdd5" width="250"/>
 </p>
 
 ### <p align="center">Jogo das Vogais</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/a579bf7a-ebe4-4a3e-867d-a9609db712de" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/905e88b9-c736-4b95-95f2-c1d12b926d2b" width="200"/>
+  <img src="https://github.com/user-attachments/assets/a579bf7a-ebe4-4a3e-867d-a9609db712de" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/905e88b9-c736-4b95-95f2-c1d12b926d2b" width="250"/>
 </p>
 
 ### <p align="center">Jogo da Memória</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/299292f4-4ad2-43d6-ab82-3ed80714e097" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/1e0cc0b8-8776-489f-a0aa-b32e8ae625cb" width="200"/>
+  <img src="https://github.com/user-attachments/assets/299292f4-4ad2-43d6-ab82-3ed80714e097" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/1e0cc0b8-8776-489f-a0aa-b32e8ae625cb" width="250"/>
 </p>
 
 ### <p align="center">Tela de edição de perfil</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/30fc8cbf-79fb-4823-91a0-cfa34d2c5f02" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/be30c0d1-90e8-444d-914c-d8e582f913f8" width="200"/>
+  <img src="https://github.com/user-attachments/assets/30fc8cbf-79fb-4823-91a0-cfa34d2c5f02" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/be30c0d1-90e8-444d-914c-d8e582f913f8" width="250"/>
 </p>
 
 ### <p align="center">Tela de cadastro de crianças</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/be4b8fc7-3940-488f-9d38-343a881e3c02" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/ffcb0559-2893-43eb-9fb5-0b4aea9ea585" width="200"/>
+  <img src="https://github.com/user-attachments/assets/be4b8fc7-3940-488f-9d38-343a881e3c02" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/ffcb0559-2893-43eb-9fb5-0b4aea9ea585" width="250"/>
 </p>
 
 ### <p align="center">Tela de edição de crianças</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/5f3b8e85-9d74-4831-b135-fc7c4c1a1ba8" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/38e4f699-e984-4968-babf-f637aa0a2bd6" width="200"/>
+  <img src="https://github.com/user-attachments/assets/5f3b8e85-9d74-4831-b135-fc7c4c1a1ba8" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/38e4f699-e984-4968-babf-f637aa0a2bd6" width="250"/>
 </p>
 
 ### <p align="center">Tela de exibição de resultados</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/8f069dea-fca4-48ba-8ce0-a31b1ef91d1d" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/dba19d7b-fd71-48bd-9b73-c341a30a5f05" width="200"/>
+  <img src="https://github.com/user-attachments/assets/8f069dea-fca4-48ba-8ce0-a31b1ef91d1d" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/dba19d7b-fd71-48bd-9b73-c341a30a5f05" width="250"/>
 </p>
 
 ### <p align="center">Tela de seleção de jogador</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e09ea161-5888-47bf-94ba-51c4fab3551c" width="200" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/ffb0bc47-1532-4a93-9a34-b5f48700bf7e" width="200"/>
+  <img src="https://github.com/user-attachments/assets/e09ea161-5888-47bf-94ba-51c4fab3551c" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/ffb0bc47-1532-4a93-9a34-b5f48700bf7e" width="250"/>
 </p>
 
 ## Considerações Finais
