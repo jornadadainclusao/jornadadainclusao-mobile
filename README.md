@@ -84,7 +84,7 @@ Este projeto visa contribuir diretamente para os seguintes ODS:
 
 
 ### Ativando o Back-end
-Diferente da versão WEB (React Native), na versão mobile, o App exige que o banco esteja disponivel antes de liberar as telas de login, tentando acorda-lo logo no inicio do app, dado pela tela de carregamento inicial.
+Diferente da versão WEB (React JS), na versão mobile, o App exige que o banco esteja disponivel antes de liberar as telas de login, tentando acorda-lo logo no inicio do app, dado pela tela de carregamento inicial.
 
 ## Screenshots
 
