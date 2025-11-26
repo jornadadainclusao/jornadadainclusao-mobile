@@ -2,7 +2,9 @@
 
 ## Índice
 - [Sobre](#sobre)
+- [Slide usado na apresentação](#slides-da-apresentação)
 - [Branch principal](#branch-principal-do-projeto)
+- [Outros Repositórios](#repositórios-adicionais)
 - [ODS](#ods)
 - [Integrantes](#integrantes)
 - [Tecnologias](#tecnologias)
@@ -20,11 +22,25 @@ O projeto Jornada da Inclusão é desenvolvido com o objetivo de identificar e a
 Faz-se a utilização de uma combinação de avaliações interativas e personalizadas, além de métodos de ensino, com recursos e atividades que auxiliam, principalmente, nos processos de alfabetização e identificação dos números.  
 O objetivo principal é melhorar o desempenho individual das crianças, podendo promover uma educação de qualidade e reduzir assim a desigualdade educacional, visando atingir os Objetivos de Desenvolvimento Sustentável (ODS) 4.
 
+## Slides da apresentação
+
+Segue abaixo o link contendo os slides da apresentação feita no periodo de apresentações do PI na Fatec:
+
+[Apresentação PI 5° semestre](https://1drv.ms/p/c/d0f24659dc18de2f/IQB6aHugvKXNTZODjCKEPtUWAQtdCCYr7jYAkkXCDrpkWl0)
+
 ## Branch principal do projeto
 
 `main-androidStudio` - Usa o Android Studio, mais desenvolvida, atualmente é a principal.
 
 `main` - Usa React Native, porém foi descontinuada devido a conflitos no uso de biblotecas que os jogos necessitam.
+
+## Repositórios adicionais
+
+Segue abaixo os links das outras partes do projeto, sendo elas o front-end feito em React.JS e o back-end utilizado em todo o projeto:
+
+[Front-End web](https://github.com/Jornada-Da-Inclusao/FrontEnd)
+
+[Back-End principal](https://github.com/Jornada-Da-Inclusao/BackEnd)
 
 ## ODS
 Este projeto visa contribuir diretamente para os seguintes ODS:
